@@ -40,7 +40,7 @@ Partial Class frmFlavorSyncMain
         '
         'btnDownloadBuilds
         '
-        Me.btnDownloadBuilds.Location = New System.Drawing.Point(328, 105)
+        Me.btnDownloadBuilds.Location = New System.Drawing.Point(328, 87)
         Me.btnDownloadBuilds.Name = "btnDownloadBuilds"
         Me.btnDownloadBuilds.Size = New System.Drawing.Size(146, 41)
         Me.btnDownloadBuilds.TabIndex = 8
@@ -50,7 +50,7 @@ Partial Class frmFlavorSyncMain
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 36)
+        Me.Label2.Location = New System.Drawing.Point(12, 20)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(328, 13)
         Me.Label2.TabIndex = 10
@@ -61,7 +61,7 @@ Partial Class frmFlavorSyncMain
         Me.chkDownloadLane.AutoSize = True
         Me.chkDownloadLane.Checked = True
         Me.chkDownloadLane.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkDownloadLane.Location = New System.Drawing.Point(354, 268)
+        Me.chkDownloadLane.Location = New System.Drawing.Point(354, 250)
         Me.chkDownloadLane.Name = "chkDownloadLane"
         Me.chkDownloadLane.Size = New System.Drawing.Size(81, 17)
         Me.chkDownloadLane.TabIndex = 11
@@ -73,7 +73,7 @@ Partial Class frmFlavorSyncMain
         Me.chkDownloadJungle.AutoSize = True
         Me.chkDownloadJungle.Checked = True
         Me.chkDownloadJungle.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkDownloadJungle.Location = New System.Drawing.Point(354, 292)
+        Me.chkDownloadJungle.Location = New System.Drawing.Point(354, 274)
         Me.chkDownloadJungle.Name = "chkDownloadJungle"
         Me.chkDownloadJungle.Size = New System.Drawing.Size(88, 17)
         Me.chkDownloadJungle.TabIndex = 12
@@ -85,7 +85,7 @@ Partial Class frmFlavorSyncMain
         Me.chkDownloadSupport.AutoSize = True
         Me.chkDownloadSupport.Checked = True
         Me.chkDownloadSupport.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkDownloadSupport.Location = New System.Drawing.Point(354, 316)
+        Me.chkDownloadSupport.Location = New System.Drawing.Point(354, 298)
         Me.chkDownloadSupport.Name = "chkDownloadSupport"
         Me.chkDownloadSupport.Size = New System.Drawing.Size(94, 17)
         Me.chkDownloadSupport.TabIndex = 13
@@ -97,7 +97,7 @@ Partial Class frmFlavorSyncMain
         Me.chkDownloadARAM.AutoSize = True
         Me.chkDownloadARAM.Checked = True
         Me.chkDownloadARAM.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkDownloadARAM.Location = New System.Drawing.Point(354, 339)
+        Me.chkDownloadARAM.Location = New System.Drawing.Point(354, 321)
         Me.chkDownloadARAM.Name = "chkDownloadARAM"
         Me.chkDownloadARAM.Size = New System.Drawing.Size(88, 17)
         Me.chkDownloadARAM.TabIndex = 14
@@ -107,14 +107,14 @@ Partial Class frmFlavorSyncMain
         'clbChamps
         '
         Me.clbChamps.FormattingEnabled = True
-        Me.clbChamps.Location = New System.Drawing.Point(15, 105)
+        Me.clbChamps.Location = New System.Drawing.Point(15, 87)
         Me.clbChamps.Name = "clbChamps"
         Me.clbChamps.Size = New System.Drawing.Size(307, 304)
         Me.clbChamps.TabIndex = 15
         '
         'btnSelectAll
         '
-        Me.btnSelectAll.Location = New System.Drawing.Point(15, 76)
+        Me.btnSelectAll.Location = New System.Drawing.Point(15, 58)
         Me.btnSelectAll.Name = "btnSelectAll"
         Me.btnSelectAll.Size = New System.Drawing.Size(96, 23)
         Me.btnSelectAll.TabIndex = 16
@@ -123,7 +123,7 @@ Partial Class frmFlavorSyncMain
         '
         'btnDeselectAll
         '
-        Me.btnDeselectAll.Location = New System.Drawing.Point(117, 76)
+        Me.btnDeselectAll.Location = New System.Drawing.Point(117, 58)
         Me.btnDeselectAll.Name = "btnDeselectAll"
         Me.btnDeselectAll.Size = New System.Drawing.Size(96, 23)
         Me.btnDeselectAll.TabIndex = 17
@@ -133,7 +133,7 @@ Partial Class frmFlavorSyncMain
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(340, 234)
+        Me.Label3.Location = New System.Drawing.Point(340, 216)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(122, 13)
         Me.Label3.TabIndex = 19
@@ -141,7 +141,7 @@ Partial Class frmFlavorSyncMain
         '
         'btnSettings
         '
-        Me.btnSettings.Location = New System.Drawing.Point(354, 21)
+        Me.btnSettings.Location = New System.Drawing.Point(354, 12)
         Me.btnSettings.Name = "btnSettings"
         Me.btnSettings.Size = New System.Drawing.Size(117, 28)
         Me.btnSettings.TabIndex = 20
@@ -151,7 +151,7 @@ Partial Class frmFlavorSyncMain
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(328, 171)
+        Me.Label4.Location = New System.Drawing.Point(328, 153)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(74, 13)
         Me.Label4.TabIndex = 21
@@ -160,7 +160,7 @@ Partial Class frmFlavorSyncMain
         'lblLastUsed
         '
         Me.lblLastUsed.AutoSize = True
-        Me.lblLastUsed.Location = New System.Drawing.Point(328, 193)
+        Me.lblLastUsed.Location = New System.Drawing.Point(328, 175)
         Me.lblLastUsed.Name = "lblLastUsed"
         Me.lblLastUsed.Size = New System.Drawing.Size(53, 13)
         Me.lblLastUsed.TabIndex = 22
@@ -171,7 +171,7 @@ Partial Class frmFlavorSyncMain
         Me.AcceptButton = Me.btnDownloadBuilds
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(483, 423)
+        Me.ClientSize = New System.Drawing.Size(483, 399)
         Me.Controls.Add(Me.lblLastUsed)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.btnSettings)

@@ -1,6 +1,5 @@
 ﻿Public Class frmFlavorSyncMain
     Public champsToDownload() As String
-    Private champs() As String = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Ashe", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Cassiopeia", "Chogath", "Corki", "Darius", "Diana", "DrMundo", "Draven", "Elise", "Evelynn", "Ezreal", "FiddleSticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Irelia", "Janna", "JarvanIV", "Jax", "Jayce", "Jinx", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kennen", "Khazix", "KogMaw", "Leblanc", "LeeSin", "Leona", "Lissandra", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai", "MasterYi", "MissFortune", "MonkeyKing", "Mordekaiser", "Morgana", "Nami", "Nasus", "Nautilus", "Nidalee", "Nocturne", "Nunu", "Olaf", "Orianna", "Pantheon", "Poppy", "Quinn", "Rammus", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Sejuani", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Syndra", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle", "Tryndamere", "TwistedFate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Velkoz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Xerath", "XinZhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zilean", "Zyra"}
 
     Public Property getLoLPath As String
         Get
@@ -74,13 +73,21 @@
         End Set
     End Property
 
-    Private Sub frmFlavorSync_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ActiveControl = btnDownloadBuilds
-        If lastUsed = Nothing Then lblLastUsed.Text = "Never" Else lblLastUsed.Text = lastUsed.ToShortDateString & " - " & lastUsed.ToShortTimeString
-        For Each i As String In champs
+    Public Sub initializeClbChamps(Optional ByVal SelectAll As Boolean = True)
+        clbChamps.Items.Clear()
+        For Each i As String In frmFlavorSyncLoad.champs
             clbChamps.Items.Add(i)
         Next
-        btnSelectAll.PerformClick()
+        If SelectAll Then
+            btnSelectAll.Enabled = True
+            btnSelectAll.PerformClick()
+        End If
+    End Sub
+
+    Private Sub frmFlavorSync_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        initializeClbChamps()
+        ActiveControl = btnDownloadBuilds
+        If lastUsed = Nothing Then lblLastUsed.Text = "Never" Else lblLastUsed.Text = lastUsed.ToShortDateString & " - " & lastUsed.ToShortTimeString
     End Sub
 
     Private Sub btnSelectAll_Click(sender As Object, e As EventArgs) Handles btnSelectAll.Click
@@ -129,7 +136,7 @@
         ReDim Preserve champsToDownload(CheckedCount - 1)
 
         For Each i In clbChamps.CheckedIndices
-            champsToDownload(count) = champs(i)
+            champsToDownload(count) = frmFlavorSyncLoad.champs(i)
             count = count + 1
         Next
         lastUsed = DateTime.Now

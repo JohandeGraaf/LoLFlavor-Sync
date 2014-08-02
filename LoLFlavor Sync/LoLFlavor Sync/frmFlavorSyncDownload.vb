@@ -106,7 +106,7 @@ Public Class frmFlavorSyncDownload
         Next
 
         addPbPercentage(100)
-        System.Threading.Thread.Sleep(500)
+        System.Threading.Thread.Sleep(250)
         setStage(2)
         prepareThread.Abort()
     End Sub
@@ -161,7 +161,7 @@ Public Class frmFlavorSyncDownload
         Next
 
         addPbPercentage(100)
-        System.Threading.Thread.Sleep(500)
+        System.Threading.Thread.Sleep(250)
         setStage(3)
         downloadThread.Abort()
     End Sub
@@ -179,7 +179,7 @@ Public Class frmFlavorSyncDownload
         My.Computer.FileSystem.CopyDirectory(tempDirectory & "\Config", LoLPath & "\Config", True)
 
         addPbPercentage(100)
-        System.Threading.Thread.Sleep(500)
+        System.Threading.Thread.Sleep(250)
         setStage(4)
         installThread.Abort()
     End Sub
@@ -187,7 +187,7 @@ Public Class frmFlavorSyncDownload
     Private Sub cleanup()
         deleteFilesAndDirectories(tempDirectory, True, 95, False)
 
-        System.Threading.Thread.Sleep(500)
+        System.Threading.Thread.Sleep(250)
         addPbPercentage(100)
         setStage(5)
         cleanupThread.Abort()

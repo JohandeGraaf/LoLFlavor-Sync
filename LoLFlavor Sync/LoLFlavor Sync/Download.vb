@@ -4,8 +4,9 @@
 
         Private Property DestinationPathBase As String
 
-        Public Property SourceUrlFormat As String = "http://www.lolflavor.com/champions/{Champion}/Recommended/{Champion}_{lane}_scrape.json"
-        Public Property DestinationPathFormat As String = "\Config\Champions\{Champion}\Recommended\{Champion}_{lane}_scrape.json"
+        Public Property SourceUrlFormat As String = "http://www.lolflavor.com/champions/{Champion}/Recommended/{Champion}_{Lane}_scrape.json"
+        Public Property DestinationPathFormat As String = "\Config\Champions\{Champion}\Recommended\"
+        Public Property DestinationFileFormat As String = "{Champion}_{Lane}_scrape.json"
 
         Public Enum laneTypes As Integer
             lane
@@ -17,8 +18,8 @@
         Public Function DownloadChamps(ByVal ChampsToDownload As Queue, ByVal Lane As laneTypes) As Queue
             Dim messageQueue As New Queue
 
-            Dim SourceUrlLane As String = SourceUrlFormat.Replace("{lane}", Lane.ToString())
-            Dim DestinationPathLane As String = DestinationPathBase & DestinationPathFormat.Replace("{lane}", Lane.ToString())
+            Dim SourceUrlLane As String = SourceUrlFormat.Replace("{Lane}", Lane.ToString())
+            Dim DestinationPathLane As String = DestinationPathBase & DestinationPathFormat.Replace("{Lane}", Lane.ToString()) & DestinationFileFormat.Replace("{Lane}", Lane.ToString())
 
             Using Dlclass As New DownloadClass
                 For Each Champion As String In ChampsToDownload
