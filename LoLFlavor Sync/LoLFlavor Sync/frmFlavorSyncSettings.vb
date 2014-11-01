@@ -97,6 +97,20 @@
 #Region "Event Handlers"
     Private Sub frmFlavorSyncSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadSettings()
+        txtChangelog.Text = _
+            "Changelog" & _
+            Environment.NewLine & _
+            "1.0 - Release." & Environment.NewLine & _
+            "1.1 - Fixed some bugs." & Environment.NewLine & _
+            "1.2 - Added some settings." & Environment.NewLine & _
+            Environment.NewLine & _
+            "1.5 - Changed the download method to improve performance." & Environment.NewLine & _
+            "1.6 - Added settings to add champions and add a custom source for builds." & Environment.NewLine & _
+            "1.6.1 - Added Azir and Gnar."
+        txtAbout.Text = _
+        "LoLFlavor Sync - Version 1.6.1" & Environment.NewLine & _
+        Environment.NewLine & _
+        "Copyright © 2014 - Johan de Graaf"
     End Sub
 
     Private Sub clbSource_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clbSource.SelectedIndexChanged
@@ -211,7 +225,7 @@
         Process.Start("skype:Johan_degraaf95?chat")
     End Sub
 
-    Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+    Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGithub.LinkClicked
         Process.Start("https://github.com/Ampersand0")
     End Sub
 

@@ -53,13 +53,13 @@ Partial Class frmFlavorSyncSettings
         Me.btnNew = New System.Windows.Forms.Button()
         Me.clbSource = New System.Windows.Forms.CheckedListBox()
         Me.tabAbout = New System.Windows.Forms.TabPage()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
+        Me.txtChangelog = New System.Windows.Forms.TextBox()
+        Me.lblGithub = New System.Windows.Forms.LinkLabel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lblSkype = New System.Windows.Forms.LinkLabel()
         Me.lblBoLProfile = New System.Windows.Forms.LinkLabel()
         Me.lblGetLatestVersion = New System.Windows.Forms.LinkLabel()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.txtAbout = New System.Windows.Forms.TextBox()
         Me.fbdLoLPath = New System.Windows.Forms.FolderBrowserDialog()
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
@@ -366,13 +366,13 @@ Partial Class frmFlavorSyncSettings
         'tabAbout
         '
         Me.tabAbout.BackColor = System.Drawing.SystemColors.Control
-        Me.tabAbout.Controls.Add(Me.TextBox2)
-        Me.tabAbout.Controls.Add(Me.LinkLabel1)
+        Me.tabAbout.Controls.Add(Me.txtChangelog)
+        Me.tabAbout.Controls.Add(Me.lblGithub)
         Me.tabAbout.Controls.Add(Me.Label1)
         Me.tabAbout.Controls.Add(Me.lblSkype)
         Me.tabAbout.Controls.Add(Me.lblBoLProfile)
         Me.tabAbout.Controls.Add(Me.lblGetLatestVersion)
-        Me.tabAbout.Controls.Add(Me.TextBox1)
+        Me.tabAbout.Controls.Add(Me.txtAbout)
         Me.tabAbout.Location = New System.Drawing.Point(4, 22)
         Me.tabAbout.Name = "tabAbout"
         Me.tabAbout.Padding = New System.Windows.Forms.Padding(3)
@@ -380,26 +380,26 @@ Partial Class frmFlavorSyncSettings
         Me.tabAbout.TabIndex = 2
         Me.tabAbout.Text = "About"
         '
-        'TextBox2
+        'txtChangelog
         '
-        Me.TextBox2.BackColor = System.Drawing.SystemColors.Control
-        Me.TextBox2.Location = New System.Drawing.Point(6, 45)
-        Me.TextBox2.Multiline = True
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.ReadOnly = True
-        Me.TextBox2.Size = New System.Drawing.Size(420, 202)
-        Me.TextBox2.TabIndex = 6
-        Me.TextBox2.Text = resources.GetString("TextBox2.Text")
+        Me.txtChangelog.BackColor = System.Drawing.SystemColors.Control
+        Me.txtChangelog.Location = New System.Drawing.Point(6, 45)
+        Me.txtChangelog.Multiline = True
+        Me.txtChangelog.Name = "txtChangelog"
+        Me.txtChangelog.ReadOnly = True
+        Me.txtChangelog.Size = New System.Drawing.Size(420, 202)
+        Me.txtChangelog.TabIndex = 6
+        Me.txtChangelog.Text = "Changelog"
         '
-        'LinkLabel1
+        'lblGithub
         '
-        Me.LinkLabel1.AutoSize = True
-        Me.LinkLabel1.Location = New System.Drawing.Point(258, 287)
-        Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(38, 13)
-        Me.LinkLabel1.TabIndex = 5
-        Me.LinkLabel1.TabStop = True
-        Me.LinkLabel1.Text = "Github"
+        Me.lblGithub.AutoSize = True
+        Me.lblGithub.Location = New System.Drawing.Point(258, 287)
+        Me.lblGithub.Name = "lblGithub"
+        Me.lblGithub.Size = New System.Drawing.Size(38, 13)
+        Me.lblGithub.TabIndex = 5
+        Me.lblGithub.TabStop = True
+        Me.lblGithub.Text = "Github"
         '
         'Label1
         '
@@ -440,16 +440,16 @@ Partial Class frmFlavorSyncSettings
         Me.lblGetLatestVersion.TabStop = True
         Me.lblGetLatestVersion.Text = "Click here to download the latest version of LoLFlavor Sync."
         '
-        'TextBox1
+        'txtAbout
         '
-        Me.TextBox1.BackColor = System.Drawing.SystemColors.Control
-        Me.TextBox1.Location = New System.Drawing.Point(6, 253)
-        Me.TextBox1.Multiline = True
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
-        Me.TextBox1.Size = New System.Drawing.Size(246, 49)
-        Me.TextBox1.TabIndex = 0
-        Me.TextBox1.Text = "LoLFlavor Sync - Version 1.6" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Copyright © 2014 - Johan de Graaf"
+        Me.txtAbout.BackColor = System.Drawing.SystemColors.Control
+        Me.txtAbout.Location = New System.Drawing.Point(6, 253)
+        Me.txtAbout.Multiline = True
+        Me.txtAbout.Name = "txtAbout"
+        Me.txtAbout.ReadOnly = True
+        Me.txtAbout.Size = New System.Drawing.Size(246, 49)
+        Me.txtAbout.TabIndex = 0
+        Me.txtAbout.Text = "About"
         '
         'fbdLoLPath
         '
@@ -503,12 +503,12 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents fbdLoLPath As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents chkHide As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents txtAbout As System.Windows.Forms.TextBox
     Friend WithEvents lblGetLatestVersion As System.Windows.Forms.LinkLabel
     Friend WithEvents lblSkype As System.Windows.Forms.LinkLabel
     Friend WithEvents lblBoLProfile As System.Windows.Forms.LinkLabel
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents LinkLabel1 As System.Windows.Forms.LinkLabel
+    Friend WithEvents lblGithub As System.Windows.Forms.LinkLabel
     Friend WithEvents tabAdvanced As System.Windows.Forms.TabPage
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents clbSource As System.Windows.Forms.CheckedListBox
@@ -521,7 +521,7 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents btnAddChamp As System.Windows.Forms.Button
     Friend WithEvents txtAddChamp As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtChangelog As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents Label7 As System.Windows.Forms.Label
