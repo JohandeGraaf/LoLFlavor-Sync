@@ -96,6 +96,7 @@
 
 #Region "Event Handlers"
     Private Sub frmFlavorSyncSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text = "LoLFlavor Sync " & frmFlavorSyncMain.localVersion
         LoadSettings()
         txtChangelog.Text = _
             "Changelog" & _
@@ -106,9 +107,10 @@
             Environment.NewLine & _
             "1.5 - Changed the download method to improve performance." & Environment.NewLine & _
             "1.6 - Added settings to add champions and add a custom source for builds." & Environment.NewLine & _
-            "1.6.1 - Added Azir and Gnar."
+            "1.6.1 - Added Azir and Gnar." & Environment.NewLine & _
+            "1.6.2 - Added update message."
         txtAbout.Text = _
-        "LoLFlavor Sync - Version 1.6.1" & Environment.NewLine & _
+        "LoLFlavor Sync - Version " & frmFlavorSyncMain.localVersion & Environment.NewLine & _
         Environment.NewLine & _
         "Copyright © 2014 - Johan de Graaf"
     End Sub

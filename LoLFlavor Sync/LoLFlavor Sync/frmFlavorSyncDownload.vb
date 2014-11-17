@@ -19,6 +19,7 @@ Public Class frmFlavorSyncDownload
     Private finished As Boolean = False
 
     Private Sub frmFlavorSyncDownload_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text = "LoLFlavor Sync " & frmFlavorSyncMain.localVersion
         For Each champion In frmFlavorSyncMain.champsToDownload
             champsToDownload.Enqueue(champion)
         Next
@@ -279,5 +280,9 @@ Public Class frmFlavorSyncDownload
         Else
             frmFlavorSyncMain.formFlavorSyncMainEnabled = True
         End If
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
     End Sub
 End Class

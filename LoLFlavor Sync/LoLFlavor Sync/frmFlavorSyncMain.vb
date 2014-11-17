@@ -1,13 +1,17 @@
-﻿Public Class frmFlavorSyncMain
+﻿Imports System.IO
+Public Class frmFlavorSyncMain
     Public champsToDownload() As String
-    Public version As String = "1.6.1"
+    Public localVersion As String = "1.6.2"
+    Public onlineVersion As String
+    Public versionUrl As String = "https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version"
+    Public versionFileName As String = "LoLFlavorSync.version"
 
     Public Property getLoLPath As String
         Get
             Return frmFlavorSyncLoad.getLoLPath
         End Get
         Set(value As String)
-            frmFlavorSyncLoad.GetLoLPath = value
+            frmFlavorSyncLoad.getLoLPath = value
         End Set
     End Property
 
@@ -75,9 +79,11 @@
     End Property
 
     Private Sub frmFlavorSync_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text = "LoLFlavor Sync " & localVersion
         initializeClbChamps()
-        ActiveControl = btnDownloadBuilds
         If lastUsed = Nothing Then lblLastUsed.Text = "Never" Else lblLastUsed.Text = lastUsed.ToShortDateString & " - " & lastUsed.ToShortTimeString
+        ActiveControl = btnDownloadBuilds
+        CheckNewVersion()
     End Sub
 
     Public Sub initializeClbChamps(Optional ByVal SelectAll As Boolean = True)
@@ -90,6 +96,63 @@
             btnSelectAll.PerformClick()
         End If
     End Sub
+
+    Private Sub CheckNewVersion()
+        Dim tmpDir As String = Environment.GetEnvironmentVariable("TEMP") & "\FlavorSyncVersion"
+        Try
+            DelFolderContent(tmpDir)
+            DownloadFile(versionUrl, tmpDir & "\" & versionFileName)
+            If File.Exists(tmpDir & "\" & versionFileName) Then
+                ReadVersion(tmpDir & "\" & versionFileName)
+            End If
+            If String.Compare(localVersion, onlineVersion) <> 0 Then
+                Dim popup As New NotifyIcon
+                AddHandler popup.BalloonTipClicked, AddressOf popup_Clicked
+                popup.BalloonTipTitle = "LoLFlavor Sync " & localVersion
+                popup.BalloonTipText = "New version available." & Environment.NewLine & "Click here to download LoLFlavor Sync " & onlineVersion
+                popup.BalloonTipIcon = ToolTipIcon.Info
+                popup.Icon = Me.Icon
+                popup.Visible = True
+                popup.ShowBalloonTip(10000)
+            End If
+        Catch ex As Exception
+            Exit Sub
+        Finally
+            DelFolderContent(tmpDir)
+            My.Computer.FileSystem.DeleteDirectory(tmpDir, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+        End Try
+    End Sub
+
+    Private Sub popup_Clicked(sender As Object, e As EventArgs)
+        Process.Start("http://lolflavorsync.mcpvp.eu")
+    End Sub
+
+    Private Sub ReadVersion(ByVal path As String)
+        Dim fs As New System.IO.FileStream(path, System.IO.FileMode.OpenOrCreate)
+        Dim fileBuffer(fs.Length - 1) As Byte
+        fs.Read(fileBuffer, 0, fs.Length)
+        fs.Dispose()
+        fs.Close()
+        onlineVersion = System.Text.Encoding.UTF8.GetString(fileBuffer)
+    End Sub
+
+    Private Sub DownloadFile(ByVal url As String, ByVal path As String)
+        My.Computer.Network.DownloadFile(url, path, "", "", False, 4000, True)
+    End Sub
+
+    Private Sub DelFolderContent(ByVal path As String)
+        If System.IO.Directory.Exists(path) Then
+            For Each foundFile As String In Enumerable.Reverse(My.Computer.FileSystem.GetFiles(path, FileIO.SearchOption.SearchAllSubDirectories))
+                My.Computer.FileSystem.DeleteFile(foundFile, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            Next
+            For Each foundFolder As String In Enumerable.Reverse(My.Computer.FileSystem.GetDirectories(path, FileIO.SearchOption.SearchAllSubDirectories))
+                My.Computer.FileSystem.DeleteDirectory(foundFolder, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            Next
+        Else
+            My.Computer.FileSystem.CreateDirectory(path)
+        End If
+    End Sub
+
 
     Private Sub btnSelectAll_Click(sender As Object, e As EventArgs) Handles btnSelectAll.Click
         For i = 0 To clbChamps.Items.Count - 1

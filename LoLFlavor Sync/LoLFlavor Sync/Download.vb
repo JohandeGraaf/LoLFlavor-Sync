@@ -75,7 +75,7 @@
 
         Public Function Download(ByVal SourceUrl As String, ByVal DestinationPath As String) As String
             Try
-                My.Computer.Network.DownloadFile(SourceUrl, DestinationPath, "", "", False, 100000, True)
+                My.Computer.Network.DownloadFile(SourceUrl, DestinationPath, "", "", False, 5000, True)
             Catch ex As Exception
                 Return ex.Message & Environment.NewLine & "  While downloading: " & Environment.NewLine & "  " & SourceUrl
                 Exit Function
