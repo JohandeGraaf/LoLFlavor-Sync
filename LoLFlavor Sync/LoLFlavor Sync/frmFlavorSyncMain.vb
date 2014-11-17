@@ -1,5 +1,6 @@
 ﻿Public Class frmFlavorSyncMain
     Public champsToDownload() As String
+    Public version As String = "1.6.1"
 
     Public Property getLoLPath As String
         Get
@@ -73,6 +74,12 @@
         End Set
     End Property
 
+    Private Sub frmFlavorSync_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        initializeClbChamps()
+        ActiveControl = btnDownloadBuilds
+        If lastUsed = Nothing Then lblLastUsed.Text = "Never" Else lblLastUsed.Text = lastUsed.ToShortDateString & " - " & lastUsed.ToShortTimeString
+    End Sub
+
     Public Sub initializeClbChamps(Optional ByVal SelectAll As Boolean = True)
         clbChamps.Items.Clear()
         For Each i As String In frmFlavorSyncLoad.champs
@@ -82,12 +89,6 @@
             btnSelectAll.Enabled = True
             btnSelectAll.PerformClick()
         End If
-    End Sub
-
-    Private Sub frmFlavorSync_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        initializeClbChamps()
-        ActiveControl = btnDownloadBuilds
-        If lastUsed = Nothing Then lblLastUsed.Text = "Never" Else lblLastUsed.Text = lastUsed.ToShortDateString & " - " & lastUsed.ToShortTimeString
     End Sub
 
     Private Sub btnSelectAll_Click(sender As Object, e As EventArgs) Handles btnSelectAll.Click
