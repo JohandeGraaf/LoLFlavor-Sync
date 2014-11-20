@@ -108,7 +108,8 @@
             "1.5 - Changed the download method to improve performance." & Environment.NewLine & _
             "1.6 - Added settings to add champions and add a custom source for builds." & Environment.NewLine & _
             "1.6.1 - Added Azir and Gnar." & Environment.NewLine & _
-            "1.6.2 - Added update message."
+            "1.6.2 - Added update message." & Environment.NewLine & _
+            "1.6.3 - Added Kalista"
         txtAbout.Text = _
         "LoLFlavor Sync - Version " & frmFlavorSyncMain.localVersion & Environment.NewLine & _
         Environment.NewLine & _
