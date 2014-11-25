@@ -387,6 +387,7 @@ Partial Class frmFlavorSyncSettings
         Me.txtChangelog.Multiline = True
         Me.txtChangelog.Name = "txtChangelog"
         Me.txtChangelog.ReadOnly = True
+        Me.txtChangelog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtChangelog.Size = New System.Drawing.Size(420, 202)
         Me.txtChangelog.TabIndex = 6
         Me.txtChangelog.Text = "Changelog"

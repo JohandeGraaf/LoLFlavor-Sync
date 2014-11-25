@@ -42,7 +42,7 @@ Partial Class frmFlavorSyncDownload
         Me.txtStatus.ReadOnly = True
         Me.txtStatus.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtStatus.Size = New System.Drawing.Size(449, 142)
+        Me.txtStatus.Size = New System.Drawing.Size(525, 142)
         Me.txtStatus.TabIndex = 0
         '
         'lblStatus
@@ -59,12 +59,12 @@ Partial Class frmFlavorSyncDownload
         '
         Me.pbStatus.Location = New System.Drawing.Point(13, 71)
         Me.pbStatus.Name = "pbStatus"
-        Me.pbStatus.Size = New System.Drawing.Size(448, 23)
+        Me.pbStatus.Size = New System.Drawing.Size(524, 23)
         Me.pbStatus.TabIndex = 2
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(366, 21)
+        Me.btnCancel.Location = New System.Drawing.Point(442, 21)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(95, 29)
         Me.btnCancel.TabIndex = 3
@@ -75,14 +75,14 @@ Partial Class frmFlavorSyncDownload
         '
         Me.pbOverallStatus.Location = New System.Drawing.Point(12, 113)
         Me.pbOverallStatus.Name = "pbOverallStatus"
-        Me.pbOverallStatus.Size = New System.Drawing.Size(449, 23)
+        Me.pbOverallStatus.Size = New System.Drawing.Size(525, 23)
         Me.pbOverallStatus.TabIndex = 5
         '
         'lblpbStatusPercent
         '
         Me.lblpbStatusPercent.AutoSize = True
         Me.lblpbStatusPercent.BackColor = System.Drawing.SystemColors.Control
-        Me.lblpbStatusPercent.Location = New System.Drawing.Point(216, 55)
+        Me.lblpbStatusPercent.Location = New System.Drawing.Point(264, 55)
         Me.lblpbStatusPercent.Name = "lblpbStatusPercent"
         Me.lblpbStatusPercent.Size = New System.Drawing.Size(21, 13)
         Me.lblpbStatusPercent.TabIndex = 6
@@ -92,7 +92,7 @@ Partial Class frmFlavorSyncDownload
         '
         Me.lblpbOverallStatusPercent.AutoSize = True
         Me.lblpbOverallStatusPercent.BackColor = System.Drawing.SystemColors.Control
-        Me.lblpbOverallStatusPercent.Location = New System.Drawing.Point(216, 97)
+        Me.lblpbOverallStatusPercent.Location = New System.Drawing.Point(264, 97)
         Me.lblpbOverallStatusPercent.Name = "lblpbOverallStatusPercent"
         Me.lblpbOverallStatusPercent.Size = New System.Drawing.Size(21, 13)
         Me.lblpbOverallStatusPercent.TabIndex = 7
@@ -111,7 +111,7 @@ Partial Class frmFlavorSyncDownload
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(473, 176)
+        Me.ClientSize = New System.Drawing.Size(549, 176)
         Me.Controls.Add(Me.btnDisplayOutput)
         Me.Controls.Add(Me.lblpbOverallStatusPercent)
         Me.Controls.Add(Me.lblpbStatusPercent)

@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Public Class frmFlavorSyncMain
     Public champsToDownload() As String
-    Public localVersion As String = "1.6.3"
+    Public localVersion As String = "1.6.4"
     Public onlineVersion As String
     Public versionUrl As String = "https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999)
     Public versionFileName As String = "LoLFlavorSync.version"

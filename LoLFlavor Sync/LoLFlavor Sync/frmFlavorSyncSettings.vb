@@ -109,7 +109,8 @@
             "1.6 - Added settings to add champions and add a custom source for builds." & Environment.NewLine & _
             "1.6.1 - Added Azir and Gnar." & Environment.NewLine & _
             "1.6.2 - Added update message." & Environment.NewLine & _
-            "1.6.3 - Added Kalista"
+            "1.6.3 - Added Kalista" & Environment.NewLine & _
+            "1.6.4 - Added Rek'Sai"
         txtAbout.Text = _
         "LoLFlavor Sync - Version " & frmFlavorSyncMain.localVersion & Environment.NewLine & _
         Environment.NewLine & _
@@ -180,6 +181,10 @@
             Me.btnOk.Location = New System.Drawing.Point(215, 352)
             Me.btnCancel.Location = New System.Drawing.Point(296, 352)
             Me.btnApply.Location = New System.Drawing.Point(377, 352)
+        End If
+        If TabControl1.SelectedIndex = 2 Then
+            txtChangelog.Select(txtChangelog.TextLength, 0)
+            txtChangelog.ScrollToCaret()
         End If
     End Sub
 

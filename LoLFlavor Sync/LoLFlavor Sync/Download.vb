@@ -25,7 +25,8 @@
                 For Each Champion As String In ChampsToDownload
                     Dim SourceUrl As String = SourceUrlLane.Replace("{Champion}", Champion)
                     Dim DestinationPath As String = DestinationPathLane.Replace("{Champion}", Champion)
-                    messageQueue.Enqueue(Dlclass.Download(SourceUrl, DestinationPath))
+                    Dim msg As String = Dlclass.Download(SourceUrl, DestinationPath)
+                    If Not String.IsNullOrWhiteSpace(msg) Then messageQueue.Enqueue(msg)
                 Next
             End Using
             Return messageQueue
@@ -80,7 +81,7 @@
                 Return ex.Message & Environment.NewLine & "  While downloading: " & Environment.NewLine & "  " & SourceUrl
                 Exit Function
             End Try
-            Return ""
+            Return Nothing
         End Function
 
 #Region "IDisposable Support"

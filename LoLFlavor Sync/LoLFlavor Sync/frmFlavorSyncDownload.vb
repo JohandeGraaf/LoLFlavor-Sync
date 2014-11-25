@@ -60,7 +60,7 @@ Public Class frmFlavorSyncDownload
     Private Sub deleteFilesAndDirectories(ByVal path As String, Optional ByVal pbControl As Boolean = False, Optional ByVal pbPercent As Integer = 100, Optional ByVal displayStatus As Boolean = True)
         Dim pbIncrement As Integer = 0
         If pbControl Then
-            addStatus("Preparing to delete " & path)
+            addStatus("Deleting: " & path)
             If pbPercent < 1 Or pbPercent > 99 Then pbPercent = 100
             Dim numberOfFiles As Integer = 0
             Dim numberOfFolders As Integer = 0
@@ -120,7 +120,8 @@ Public Class frmFlavorSyncDownload
         If downloadLane Then
             addStatus("Downloading Lane Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                errorAll.Enqueue(Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.lane))
+                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.lane)
+                If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
 
@@ -129,7 +130,8 @@ Public Class frmFlavorSyncDownload
         If downloadJungle Then
             addStatus("Downloading Jungle Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                errorAll.Enqueue(Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.jungle))
+                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.jungle)
+                If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
 
@@ -138,7 +140,8 @@ Public Class frmFlavorSyncDownload
         If downloadSupport Then
             addStatus("Downloading Support Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                errorAll.Enqueue(Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.support))
+                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.support)
+                If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
 
@@ -147,16 +150,19 @@ Public Class frmFlavorSyncDownload
         If downloadARAM Then
             addStatus("Downloading ARAM Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                errorAll.Enqueue(Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.aram))
+                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.aram)
+                If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
 
         addStatus(" ")
 
         For Each q As Queue In errorAll
+            addStatus(" ")
             For Each s As String In q
                 If Not String.IsNullOrWhiteSpace(s) Then
                     addStatus(s)
+                    addStatus(" ")
                 End If
             Next
         Next
