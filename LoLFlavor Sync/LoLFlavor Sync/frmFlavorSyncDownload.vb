@@ -120,7 +120,7 @@ Public Class frmFlavorSyncDownload
         If downloadLane Then
             addStatus("Downloading Lane Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.lane)
+                Dim q As Queue = Download.Download(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.lane)
                 If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
@@ -130,7 +130,7 @@ Public Class frmFlavorSyncDownload
         If downloadJungle Then
             addStatus("Downloading Jungle Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.jungle)
+                Dim q As Queue = Download.Download(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.jungle)
                 If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
@@ -140,7 +140,7 @@ Public Class frmFlavorSyncDownload
         If downloadSupport Then
             addStatus("Downloading Support Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.support)
+                Dim q As Queue = Download.Download(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.support)
                 If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
@@ -150,7 +150,7 @@ Public Class frmFlavorSyncDownload
         If downloadARAM Then
             addStatus("Downloading ARAM Builds.", True)
             Using Download As New Download.DownloadHandler(tempDirectory)
-                Dim q As Queue = Download.DownloadChamps(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.aram)
+                Dim q As Queue = Download.Download(champsToDownload, LoLFlavor_Sync.Download.DownloadHandler.laneTypes.aram)
                 If q.Count > 0 Then errorAll.Enqueue(q)
             End Using
         End If
