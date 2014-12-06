@@ -1,18 +1,120 @@
-﻿Public Class frmFlavorSyncSettings
+﻿Imports LoLFlavor_Sync.Library
+Public Class frmFlavorSyncSettings
+
+    Public Property RenewChampions As Boolean
+    Public Property Quit As Boolean
+
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        Me.AcceptButton = btnOk
+        Me.CancelButton = btnCancel
+        Me.txtLoLPath.Text = Properties.LoLPath
+        Me.chkHide.Checked = Not Properties.OptionSkipForm
+        Me.chkCheckNewVersion.Checked = Not Properties.OptionVersionCheckDisabled
+        Me.txtChangelog.Text = Properties.Changelog
+        Me.txtAbout.Text = Properties.About
+        Me.btnApply.Enabled = False
+    End Sub
+
+    Private Sub LoadSettings()
+        LoadBuitinSources()
+    End Sub
+
+    Private Sub SaveSettings(ByVal save As Boolean, ByVal close As Boolean)
+        If Not save Then
+            Me.Close()
+        Else
+            If clbSource.CheckedIndices.Count <= 0 Then
+                MessageBox.Show("Select at least one source.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
+            ElseIf clbSource.CheckedIndices.Count >= 2 Then
+                MessageBox.Show("Please select only one source.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
+            End If
+
+            Properties.OptionSkipForm = Not chkHide.Checked
+            Properties.OptionVersionCheckDisabled = Not chkCheckNewVersion.Checked
+
+            If Properties.OptionSkipForm Then
+                Properties.OptionLoLPath = Properties.LoLPath
+            Else
+                Properties.OptionLoLPath = ""
+            End If
+
+            If close Then
+                Me.Close()
+            Else
+                btnApply.Enabled = False
+            End If
+        End If
+    End Sub
+
+    Private Sub DefaultSettings()
+        If MessageBox.Show("Restore default settings? This will restart LoLFlavor Sync.", "Restore defaults", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+            Properties.DeleteRegistryKeys()
+            If System.IO.File.Exists(Environment.GetCommandLineArgs(0)) Then
+                Process.Start(Environment.GetCommandLineArgs(0))
+            End If
+            Quit = True
+            Me.Close()
+        End If
+    End Sub
+
+    Private Sub ChangeLoLPath()
+        fbdLoLPath.SelectedPath = Properties.LoLPath
+        If fbdLoLPath.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If Properties.ValidLoLPath(fbdLoLPath.SelectedPath) Then
+            Properties.LoLPath = fbdLoLPath.SelectedPath
+            txtLoLPath.Text = Properties.LoLPath
+        Else
+            MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub AddChampion(ByVal Name As String, Optional ByVal DisplayName As String = Nothing)
+        For Each obj As Champion In Properties.AllChampions
+            If obj.Name.ToLower() = Name.ToLower() Then
+                MessageBox.Show("Champion already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
+            End If
+        Next
+        If String.IsNullOrWhiteSpace(DisplayName) Then
+            Properties.AllChampions.Add(New Champion(Name))
+        Else
+            Properties.AllChampions.Add(New Champion(Name, DisplayName))
+        End If
+        RenewChampions = True
+        MessageBox.Show("Champion added!", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    End Sub
 
     Public srcArray(0) As Sources
-
     Public Structure Sources
         Public Name As String
         Public SourceUrlFormat As String
         Public DestinationPathFormat As String
     End Structure
+    Private Sub LoadBuitinSources()
+        Dim src As New Sources
+        src.Name = "LoLFlavor.com"
+        src.SourceUrlFormat = "http://www.lolflavor.com/champions/{Champion}/Recommended/{Champion}_{Lane}_scrape.json"
+        src.DestinationPathFormat = "{Champion}_{Lane}_scrape.json"
+        srcArray(0) = src
+        LoadClb()
+    End Sub
 
-    Public WriteOnly Property SaveLoLPath As String
-        Set(value As String)
-            frmFlavorSyncLoad.getLoLPath = value
-        End Set
-    End Property
+    Private Sub LoadClb()
+        clbSource.Items.Clear()
+        For Each obj In srcArray
+            clbSource.Items.Add(obj.Name)
+        Next
+        clbSource.SetItemChecked(0, True)
+        clbSource.SelectedIndex = 0
+    End Sub
 
     Private Sub AddSources(ByVal Name As String, ByVal SourceUrlFormat As String, ByVal DestinationPathFormat As String)
         Dim src As New Sources
@@ -21,6 +123,12 @@
         src.DestinationPathFormat = DestinationPathFormat
         ReDim Preserve srcArray(srcArray.Length)
         srcArray(srcArray.Length - 1) = src
+        LoadClb()
+    End Sub
+
+    Private Sub DeleteSources(ByVal Index As Integer)
+        If Not Index = srcArray.Length - 1 Then moveItemToEndOfArray(srcArray, Index)
+        ReDim Preserve srcArray(srcArray.Length - 2)
         LoadClb()
     End Sub
 
@@ -37,88 +145,13 @@
         End If
     End Sub
 
-    Private Sub DeleteSources(ByVal Index As Integer)
-        If Not Index = srcArray.Length - 1 Then moveItemToEndOfArray(srcArray, Index)
-        ReDim Preserve srcArray(srcArray.Length - 2)
-        LoadClb()
-    End Sub
-
-    Private Sub LoadBuitinSources()
-        Dim src As New Sources
-        src.Name = "LoLFlavor.com"
-        src.SourceUrlFormat = "http://www.lolflavor.com/champions/{Champion}/Recommended/{Champion}_{Lane}_scrape.json"
-        src.DestinationPathFormat = "{Champion}_{Lane}_scrape.json"
-        srcArray(0) = src
-    End Sub
-
-    Private Sub LoadClb()
-        clbSource.Items.Clear()
-        For Each obj In srcArray
-            clbSource.Items.Add(obj.Name)
-        Next
-        clbSource.SetItemChecked(0, True)
-        clbSource.SelectedIndex = 0
-    End Sub
-
-    Private Sub LoadSettings()
-        LoadBuitinSources()
-        LoadClb()
-        txtLoLPath.Text = frmFlavorSyncLoad.getLoLPath
-        chkHide.Checked = frmFlavorSyncLoad.skipForm
-    End Sub
-
-    Private Sub SaveSettings(ByVal btn As String)
-        If btn = "Cancel" Then
-            Me.Close()
-            Exit Sub
-        End If
-        Dim CheckedCount As Integer = 0
-        For i = 0 To clbSource.Items.Count - 1
-            If clbSource.GetItemChecked(i) Then
-                CheckedCount = CheckedCount + 1
-            End If
-        Next
-        If CheckedCount = 0 Then
-            MessageBox.Show("Please select at least one source.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        ElseIf CheckedCount > 1 Then
-            MessageBox.Show("Please select only one source.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        End If
-        SaveLoLPath = txtLoLPath.Text
-        frmFlavorSyncLoad.skipForm = chkHide.Checked
-        If btn = "OK" Then
-            Me.Close()
-        ElseIf btn = "Apply" Then
-            btnApply.Enabled = False
-        End If
-    End Sub
-
 #Region "Event Handlers"
     Private Sub frmFlavorSyncSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Text = "LoLFlavor Sync " & frmFlavorSyncMain.localVersion
         LoadSettings()
-        txtChangelog.Text = _
-            "Changelog" & _
-            Environment.NewLine & _
-            "1.0 - Release." & Environment.NewLine & _
-            "1.1 - Fixed some bugs." & Environment.NewLine & _
-            "1.2 - Added some settings." & Environment.NewLine & _
-            Environment.NewLine & _
-            "1.5 - Changed the download method to improve performance." & Environment.NewLine & _
-            "1.6 - Added settings to add champions and add a custom source for builds." & Environment.NewLine & _
-            "1.6.1 - Added Azir and Gnar." & Environment.NewLine & _
-            "1.6.2 - Added update message." & Environment.NewLine & _
-            "1.6.3 - Added Kalista" & Environment.NewLine & _
-            "1.6.4 - Added Rek'Sai"
-        txtAbout.Text = _
-        "LoLFlavor Sync - Version " & frmFlavorSyncMain.localVersion & Environment.NewLine & _
-        Environment.NewLine & _
-        "Copyright © 2014 - Johan de Graaf"
     End Sub
 
     Private Sub clbSource_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clbSource.SelectedIndexChanged
-        If clbSource.SelectedIndex = -1 Or clbSource.SelectedIndex = 0 Then
+        If clbSource.SelectedIndex <= 0 Then
             btnSave.Visible = False
             btnSave.Enabled = False
             btnDelete.Enabled = False
@@ -181,10 +214,11 @@
             Me.btnOk.Location = New System.Drawing.Point(215, 352)
             Me.btnCancel.Location = New System.Drawing.Point(296, 352)
             Me.btnApply.Location = New System.Drawing.Point(377, 352)
-        End If
-        If TabControl1.SelectedIndex = 2 Then
-            txtChangelog.Select(txtChangelog.TextLength, 0)
-            txtChangelog.ScrollToCaret()
+            'About tab
+            If TabControl1.SelectedIndex = 2 Then
+                txtChangelog.Select(txtChangelog.TextLength, 0)
+                txtChangelog.ScrollToCaret()
+            End If
         End If
     End Sub
 
@@ -192,66 +226,61 @@
         btnApply.Enabled = True
     End Sub
 
+    Private Sub chkCheckNewVersion_CheckedChanged(sender As Object, e As EventArgs) Handles chkCheckNewVersion.CheckedChanged
+        btnApply.Enabled = True
+    End Sub
+
     Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
-        fbdLoLPath.SelectedPath = txtLoLPath.Text
-        If fbdLoLPath.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
-        If frmFlavorSyncLoad.checkLoLPath(fbdLoLPath.SelectedPath) Then
-            txtLoLPath.Text = fbdLoLPath.SelectedPath
-            btnApply.Enabled = True
-        Else
-            MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-        End If
+        ChangeLoLPath()
     End Sub
 
     Private Sub btnAddChamp_Click(sender As Object, e As EventArgs) Handles btnAddChamp.Click
         If String.IsNullOrWhiteSpace(txtAddChamp.Text) Then
             MessageBox.Show("Please enter a valid champion name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         Else
-            For Each champ In frmFlavorSyncLoad.champs
-                If txtAddChamp.Text = champ Then
-                    MessageBox.Show("Champion already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    Exit Sub
-                End If
-            Next
-            ReDim Preserve frmFlavorSyncLoad.champs(frmFlavorSyncLoad.champs.Length)
-            frmFlavorSyncLoad.champs(frmFlavorSyncLoad.champs.Length - 1) = txtAddChamp.Text
-            frmFlavorSyncMain.initializeClbChamps()
-            MessageBox.Show("Champion added!", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            AddChampion(txtAddChamp.Text)
             txtAddChamp.Clear()
         End If
     End Sub
 
+    Private Sub txtAddChamp_Enter(sender As Object, e As EventArgs) Handles txtAddChamp.Enter
+        Me.AcceptButton = btnAddChamp
+    End Sub
+
+    Private Sub txtAddChamp_Leave(sender As Object, e As EventArgs) Handles txtAddChamp.Leave
+        Me.AcceptButton = btnOk
+    End Sub
+
     Private Sub lblGetLatestVersion_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGetLatestVersion.LinkClicked
-        Process.Start("http://lolflavorsync.mcpvp.eu")
+        Process.Start(Properties.UrlExecutable)
     End Sub
 
     Private Sub lblBoLProfile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblBoLProfile.LinkClicked
-        Process.Start("http://botoflegends.com/forum/user/59209-ampersand/")
+        Process.Start(Properties.UrlBoLProfile)
     End Sub
 
     Private Sub lblSkype_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblSkype.LinkClicked
-        Process.Start("skype:Johan_degraaf95?chat")
+        Process.Start(Properties.UrlSkype)
     End Sub
 
     Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGithub.LinkClicked
-        Process.Start("https://github.com/Ampersand0")
+        Process.Start(Properties.UrlGitHub)
     End Sub
 
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
-        SaveSettings("OK")
+        SaveSettings(True, True)
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        SaveSettings("Cancel")
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs)
+        SaveSettings(False, True)
     End Sub
 
     Private Sub btnApply_Click(sender As Object, e As EventArgs) Handles btnApply.Click
-        SaveSettings("Apply")
+        SaveSettings(True, False)
     End Sub
 
-    Private Sub frmFlavorSyncSettings_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        frmFlavorSyncMain.formFlavorSyncMainEnabled = True
+    Private Sub btnRestoreDefaults_Click(sender As Object, e As EventArgs) Handles btnRestoreDefaults.Click
+        DefaultSettings()
     End Sub
 #End Region
-
 End Class

@@ -1,151 +1,226 @@
-﻿Public Class frmFlavorSyncLoad
-    Private LoLPath As String
-    Public champs() As String = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Ashe", "Azir", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Cassiopeia", "Chogath", "Corki", "Darius", "Diana", "DrMundo", "Draven", "Elise", "Evelynn", "Ezreal", "FiddleSticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Irelia", "Janna", "JarvanIV", "Jax", "Jayce", "Jinx", "Kalista", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kennen", "Khazix", "KogMaw", "Leblanc", "LeeSin", "Leona", "Lissandra", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai", "MasterYi", "MissFortune", "MonkeyKing", "Mordekaiser", "Morgana", "Nami", "Nasus", "Nautilus", "Nidalee", "Nocturne", "Nunu", "Olaf", "Orianna", "Pantheon", "Poppy", "Quinn", "Rammus", "Reksai", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Sejuani", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Syndra", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle", "Tryndamere", "TwistedFate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Velkoz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Xerath", "XinZhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zilean", "Zyra"}
-
-    Public Property sourceLoLFlavor As Boolean
+﻿Imports LoLFlavor_Sync.Library
+Public Class frmFlavorSyncLoad
+    Public Property LoLPath As String
         Get
-            If String.IsNullOrWhiteSpace(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\FlavorSync", "sourceLoLFlavor", "")) Then
-                Return True
-            Else
-                Return My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\FlavorSync", "sourceLoLFlavor", "")
-            End If
-        End Get
-        Set(value As Boolean)
-            My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\FlavorSync", "sourceLoLFlavor", value, Microsoft.Win32.RegistryValueKind.String)
-        End Set
-    End Property
-
-    Public Property getLoLPath As String
-        Get
-            Return LoLPath
+            Return Properties.LoLPath
         End Get
         Set(value As String)
-            LoLPath = value
+            Properties.LoLPath = value
             fbdLoLPath.SelectedPath = value
             txtLoLPath.Text = value
         End Set
     End Property
 
-    Public Property skipForm As Boolean
-        Get
-            If String.IsNullOrWhiteSpace(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\FlavorSync", "skip", "")) OrElse Not CBool(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\FlavorSync", "skip", "")) Then
-                Return False
-            Else
-                Return CBool(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\FlavorSync", "skip", ""))
-            End If
-        End Get
-        Set(value As Boolean)
-            My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\FlavorSync", "skip", value, Microsoft.Win32.RegistryValueKind.String)
-        End Set
-    End Property
+    Private Sub FormLoad()
+        Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        Me.AcceptButton = btnConfirm
+        InitAllChamps()
+    End Sub
 
-    Private Sub frmFlavorSyncLoad_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        If detectLoLPath() Then
-            If skipForm Then
-                Me.Hide()
-                frmFlavorSyncMain.Show()
-                frmFlavorSyncMain.Focus()
-            Else
-                chkSkip.Enabled = True
-                ActiveControl = btnConfirm
-            End If
+    Private Sub FormShown()
+        If Not String.IsNullOrWhiteSpace(Properties.OptionLoLPath) AndAlso Properties.ValidLoLPath(Properties.OptionLoLPath) Then
+            Me.LoLPath = Properties.OptionLoLPath
         Else
-            ActiveControl = btnBrowse
+            If String.IsNullOrWhiteSpace(Properties.DetectLoLPath()) Then
+                ActiveControl = btnBrowse
+                Exit Sub
+            Else
+                Me.LoLPath = Properties.DetectLoLPath()
+            End If
+        End If
+        If Properties.OptionSkipForm Then
+            Me.Hide()
+            ShowMainForm()
+        Else
+            chkSkip.Enabled = True
+            ActiveControl = btnConfirm
         End If
     End Sub
 
-    Public Function checkLoLPath(ByVal path As String) As Boolean
-        If My.Computer.FileSystem.DirectoryExists(path & "\RADS") And (My.Computer.FileSystem.DirectoryExists(path & "\Config") Or My.Computer.FileSystem.FileExists(path & "\lol.launcher.exe") Or My.Computer.FileSystem.FileExists(path & "\lol.launcher.admin.exe")) Then
-            Return True
-        Else
-            Return False
-        End If
+    Private Sub ShowMainForm()
+        Dim frm As New frmFlavorSyncMain
+        frm.Show()
+        frm.Focus()
+    End Sub
+
+    Private Sub InitAllChamps()
+        Dim Champions As New List(Of Champion)
+        For Each arr As String() In GetChampList()
+            If arr IsNot Nothing AndAlso arr.Length > 0 Then
+                If arr.Length = 1 Then
+                    Champions.Add(New Champion(arr(0)))
+                ElseIf arr.Length >= 2 Then
+                    Champions.Add(New Champion(arr(0), arr(1)))
+                End If
+            End If
+        Next
+        Properties.AllChampions = Champions
+    End Sub
+
+    Private Function GetChampList() As List(Of String())
+        Dim lst As New List(Of String())
+        lst.Add({"Aatrox"})
+        lst.Add({"Ahri"})
+        lst.Add({"Akali"})
+        lst.Add({"Alistar"})
+        lst.Add({"Amumu"})
+        lst.Add({"Anivia"})
+        lst.Add({"Annie"})
+        lst.Add({"Ashe"})
+        lst.Add({"Azir"})
+        lst.Add({"Blitzcrank"})
+        lst.Add({"Brand"})
+        lst.Add({"Braum"})
+        lst.Add({"Caitlyn"})
+        lst.Add({"Cassiopeia"})
+        lst.Add({"Chogath", "Cho'Gath"})
+        lst.Add({"Corki"})
+        lst.Add({"Darius"})
+        lst.Add({"Diana"})
+        lst.Add({"Draven"})
+        lst.Add({"DrMundo", "Dr. Mundo"})
+        lst.Add({"Elise"})
+        lst.Add({"Evelynn"})
+        lst.Add({"Ezreal"})
+        lst.Add({"FiddleSticks", "Fiddlesticks"})
+        lst.Add({"Fiora"})
+        lst.Add({"Fizz"})
+        lst.Add({"Galio"})
+        lst.Add({"Gangplank"})
+        lst.Add({"Garen"})
+        lst.Add({"Gnar"})
+        lst.Add({"Gragas"})
+        lst.Add({"Graves"})
+        lst.Add({"Hecarim"})
+        lst.Add({"Heimerdinger"})
+        lst.Add({"Irelia"})
+        lst.Add({"Janna"})
+        lst.Add({"JarvanIV", "Jarvan IV"})
+        lst.Add({"Jax"})
+        lst.Add({"Jayce"})
+        lst.Add({"Jinx"})
+        lst.Add({"Kalista"})
+        lst.Add({"Karma"})
+        lst.Add({"Karthus"})
+        lst.Add({"Kassadin"})
+        lst.Add({"Katarina"})
+        lst.Add({"Kayle"})
+        lst.Add({"Kennen"})
+        lst.Add({"Khazix", "Kha'Zix"})
+        lst.Add({"KogMaw", "Kog'Maw"})
+        lst.Add({"Leblanc", "LeBlanc"})
+        lst.Add({"LeeSin", "Lee Sin"})
+        lst.Add({"Leona"})
+        lst.Add({"Lissandra"})
+        lst.Add({"Lucian"})
+        lst.Add({"Lulu"})
+        lst.Add({"Lux"})
+        lst.Add({"Malphite"})
+        lst.Add({"Malzahar"})
+        lst.Add({"Maokai"})
+        lst.Add({"MasterYi", "Master Yi"})
+        lst.Add({"MissFortune", "Miss Fortune"})
+        lst.Add({"MonkeyKing", "Wukong"})
+        lst.Add({"Mordekaiser"})
+        lst.Add({"Morgana"})
+        lst.Add({"Nami"})
+        lst.Add({"Nasus"})
+        lst.Add({"Nautilus"})
+        lst.Add({"Nidalee"})
+        lst.Add({"Nocturne"})
+        lst.Add({"Nunu"})
+        lst.Add({"Olaf"})
+        lst.Add({"Orianna"})
+        lst.Add({"Pantheon"})
+        lst.Add({"Poppy"})
+        lst.Add({"Quinn"})
+        lst.Add({"Rammus"})
+        lst.Add({"Reksai", "Rek'Sai"})
+        lst.Add({"Renekton"})
+        lst.Add({"Rengar"})
+        lst.Add({"Riven"})
+        lst.Add({"Rumble"})
+        lst.Add({"Ryze"})
+        lst.Add({"Sejuani"})
+        lst.Add({"Shaco"})
+        lst.Add({"Shen"})
+        lst.Add({"Shyvana"})
+        lst.Add({"Singed"})
+        lst.Add({"Sion"})
+        lst.Add({"Sivir"})
+        lst.Add({"Skarner"})
+        lst.Add({"Sona"})
+        lst.Add({"Soraka"})
+        lst.Add({"Swain"})
+        lst.Add({"Syndra"})
+        lst.Add({"Talon"})
+        lst.Add({"Taric"})
+        lst.Add({"Teemo"})
+        lst.Add({"Thresh"})
+        lst.Add({"Tristana"})
+        lst.Add({"Trundle"})
+        lst.Add({"Tryndamere"})
+        lst.Add({"TwistedFate", "Twisted Fate"})
+        lst.Add({"Twitch"})
+        lst.Add({"Udyr"})
+        lst.Add({"Urgot"})
+        lst.Add({"Varus"})
+        lst.Add({"Vayne"})
+        lst.Add({"Veigar"})
+        lst.Add({"Velkoz", "Vel'Koz"})
+        lst.Add({"Vi"})
+        lst.Add({"Viktor"})
+        lst.Add({"Vladimir"})
+        lst.Add({"Volibear"})
+        lst.Add({"Warwick"})
+        lst.Add({"Xerath"})
+        lst.Add({"XinZhao", "Xin Zhao"})
+        lst.Add({"Yasuo"})
+        lst.Add({"Yorick"})
+        lst.Add({"Zac"})
+        lst.Add({"Zed"})
+        lst.Add({"Ziggs"})
+        lst.Add({"Zilean"})
+        lst.Add({"Zyra"})
+        Return lst
     End Function
 
-    Private Function detectLoLPath() As Boolean
-        Dim LoLpth1 As String
-        Dim LoLpth2 As String
-        Dim LoLpth3 As String
-        Dim LoLpth4 As String
-        If Environment.Is64BitOperatingSystem Then
-            'Keyname: Path, Value: C:\Riot Games\League of Legends\
-            LoLpth1 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Riot Games\League of Legends", "Path", Nothing)
-            'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-            LoLpth2 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Riot Games\RADS", "LocalRootFolder", Nothing)
-            'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-            LoLpth3 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\Riot Games\RADS", "LocalRootFolder", Nothing)
-            'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-            LoLpth4 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games\RADS", "LocalRootFolder", Nothing)
-        Else
-            'Keyname: Path, Value: C:\Riot Games\League of Legends\
-            LoLpth1 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Riot Games\League of Legends", "Path", Nothing)
-            'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-            LoLpth2 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Riot Games\RADS", "LocalRootFolder", Nothing)
-            'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-            LoLpth3 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Riot Games\RADS", "LocalRootFolder", Nothing)
-            'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-            LoLpth4 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Riot Games\RADS", "LocalRootFolder", Nothing)
-        End If
-        If Not String.IsNullOrWhiteSpace(LoLpth1) Then
-            LoLpth1 = LoLpth1.Replace("League of Legends\", "League of Legends")
-        End If
-        If Not String.IsNullOrWhiteSpace(LoLpth2) Then
-            LoLpth2 = LoLpth2.Replace("/", "\")
-            LoLpth2 = LoLpth2.Replace("\RADS", "\")
-        End If
-        If Not String.IsNullOrWhiteSpace(LoLpth3) Then
-            LoLpth3 = LoLpth3.Replace("/", "\")
-            LoLpth3 = LoLpth3.Replace("\RADS", "\")
-        End If
-        If Not String.IsNullOrWhiteSpace(LoLpth4) Then
-            LoLpth4 = LoLpth4.Replace("/", "\")
-            LoLpth4 = LoLpth4.Replace("\RADS", "\")
-        End If
-        If checkLoLPath("C:\Riot Games\League of Legends") Then
-            getLoLPath = "C:\Riot Games\League of Legends"
-            Return True
-        ElseIf Not String.IsNullOrWhiteSpace(LoLpth1) AndAlso checkLoLPath(LoLpth1) Then
-            getLoLPath = LoLpth1
-            Return True
-        ElseIf Not String.IsNullOrWhiteSpace(LoLpth2) AndAlso checkLoLPath(LoLpth2) Then
-            getLoLPath = LoLpth2
-            Return True
-        ElseIf Not String.IsNullOrWhiteSpace(LoLpth3) AndAlso checkLoLPath(LoLpth3) Then
-            getLoLPath = LoLpth3
-            Return True
-        ElseIf Not String.IsNullOrWhiteSpace(LoLpth4) AndAlso checkLoLPath(LoLpth4) Then
-            getLoLPath = LoLpth4
-            Return True
-        Else
-            Return False
-        End If
-    End Function
+#Region "Event Handlers"
+    Private Sub frmFlavorSyncLoad_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        FormLoad()
+    End Sub
+
+    Private Sub frmFlavorSyncLoad_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        FormShown()
+    End Sub
 
     Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
-        If String.IsNullOrWhiteSpace(getLoLPath) Then fbdLoLPath.SelectedPath = ""
-        fbdLoLPath.ShowDialog()
-        getLoLPath = fbdLoLPath.SelectedPath
+        fbdLoLPath.SelectedPath = Me.LoLPath
+        If fbdLoLPath.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
+        If Properties.ValidLoLPath(fbdLoLPath.SelectedPath) Then
+            Me.LoLPath = fbdLoLPath.SelectedPath
+            chkSkip.Enabled = True
+        Else
+            MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
     End Sub
 
     Private Sub btnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click
-        If checkLoLPath(getLoLPath) Then
-            If chkSkip.Checked Then
-                skipForm = True
-            ElseIf Not chkSkip.Checked Then
-                skipForm = False
+        If Properties.ValidLoLPath(Me.LoLPath) Then
+            Properties.OptionSkipForm = chkSkip.Checked
+
+            If Properties.OptionSkipForm Then
+                Properties.OptionLoLPath = Properties.LoLPath
+            Else
+                Properties.OptionLoLPath = ""
             End If
+
             Me.Hide()
-            frmFlavorSyncMain.Show()
+            ShowMainForm()
         Else
             MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
-
-    Private Sub frmFlavorSyncLoad_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        Environment.Exit(0)
-    End Sub
-
-    Private Sub frmFlavorSyncLoad_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
+#End Region
 End Class

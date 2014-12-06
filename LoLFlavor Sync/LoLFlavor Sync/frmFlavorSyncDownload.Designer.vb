@@ -124,7 +124,7 @@ Partial Class frmFlavorSyncDownload
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "frmFlavorSyncDownload"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "LoLFlavor Sync"
         Me.ResumeLayout(False)
         Me.PerformLayout()

@@ -24,15 +24,15 @@ Partial Class frmFlavorSyncSettings
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFlavorSyncSettings))
         Me.btnOk = New System.Windows.Forms.Button()
-        Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnApply = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabGeneral = New System.Windows.Forms.TabPage()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.grpAddChampions = New System.Windows.Forms.GroupBox()
         Me.btnAddChamp = New System.Windows.Forms.Button()
         Me.txtAddChamp = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.grpGeneral = New System.Windows.Forms.GroupBox()
+        Me.chkCheckNewVersion = New System.Windows.Forms.CheckBox()
         Me.chkHide = New System.Windows.Forms.CheckBox()
         Me.grpLoLPath = New System.Windows.Forms.GroupBox()
         Me.btnBrowse = New System.Windows.Forms.Button()
@@ -61,10 +61,13 @@ Partial Class frmFlavorSyncSettings
         Me.lblGetLatestVersion = New System.Windows.Forms.LinkLabel()
         Me.txtAbout = New System.Windows.Forms.TextBox()
         Me.fbdLoLPath = New System.Windows.Forms.FolderBrowserDialog()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnRestoreDefaults = New System.Windows.Forms.Button()
+        Me.lblChangelogInfo = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.grpAddChampions.SuspendLayout()
+        Me.grpGeneral.SuspendLayout()
         Me.grpLoLPath.SuspendLayout()
         Me.tabAdvanced.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -80,16 +83,6 @@ Partial Class frmFlavorSyncSettings
         Me.btnOk.TabIndex = 0
         Me.btnOk.Text = "OK"
         Me.btnOk.UseVisualStyleBackColor = True
-        '
-        'btnCancel
-        '
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(296, 352)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
-        Me.btnCancel.TabIndex = 1
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'btnApply
         '
@@ -115,8 +108,8 @@ Partial Class frmFlavorSyncSettings
         'tabGeneral
         '
         Me.tabGeneral.BackColor = System.Drawing.SystemColors.Control
-        Me.tabGeneral.Controls.Add(Me.GroupBox2)
-        Me.tabGeneral.Controls.Add(Me.GroupBox1)
+        Me.tabGeneral.Controls.Add(Me.grpAddChampions)
+        Me.tabGeneral.Controls.Add(Me.grpGeneral)
         Me.tabGeneral.Controls.Add(Me.grpLoLPath)
         Me.tabGeneral.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneral.Name = "tabGeneral"
@@ -125,17 +118,17 @@ Partial Class frmFlavorSyncSettings
         Me.tabGeneral.TabIndex = 0
         Me.tabGeneral.Text = "General"
         '
-        'GroupBox2
+        'grpAddChampions
         '
-        Me.GroupBox2.Controls.Add(Me.btnAddChamp)
-        Me.GroupBox2.Controls.Add(Me.txtAddChamp)
-        Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 118)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(419, 88)
-        Me.GroupBox2.TabIndex = 3
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Add champions"
+        Me.grpAddChampions.Controls.Add(Me.btnAddChamp)
+        Me.grpAddChampions.Controls.Add(Me.txtAddChamp)
+        Me.grpAddChampions.Controls.Add(Me.Label4)
+        Me.grpAddChampions.Location = New System.Drawing.Point(6, 141)
+        Me.grpAddChampions.Name = "grpAddChampions"
+        Me.grpAddChampions.Size = New System.Drawing.Size(419, 88)
+        Me.grpAddChampions.TabIndex = 3
+        Me.grpAddChampions.TabStop = False
+        Me.grpAddChampions.Text = "Add champions"
         '
         'btnAddChamp
         '
@@ -162,31 +155,42 @@ Partial Class frmFlavorSyncSettings
         Me.Label4.TabIndex = 0
         Me.Label4.Text = "This allows you to add champions that aren't implemented yet in LoLFlavor Sync."
         '
-        'GroupBox1
+        'grpGeneral
         '
-        Me.GroupBox1.Controls.Add(Me.chkHide)
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 6)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(419, 42)
-        Me.GroupBox1.TabIndex = 2
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "General"
+        Me.grpGeneral.Controls.Add(Me.chkCheckNewVersion)
+        Me.grpGeneral.Controls.Add(Me.chkHide)
+        Me.grpGeneral.Location = New System.Drawing.Point(6, 6)
+        Me.grpGeneral.Name = "grpGeneral"
+        Me.grpGeneral.Size = New System.Drawing.Size(419, 65)
+        Me.grpGeneral.TabIndex = 2
+        Me.grpGeneral.TabStop = False
+        Me.grpGeneral.Text = "General"
+        '
+        'chkCheckNewVersion
+        '
+        Me.chkCheckNewVersion.AutoSize = True
+        Me.chkCheckNewVersion.Location = New System.Drawing.Point(10, 42)
+        Me.chkCheckNewVersion.Name = "chkCheckNewVersion"
+        Me.chkCheckNewVersion.Size = New System.Drawing.Size(146, 17)
+        Me.chkCheckNewVersion.TabIndex = 1
+        Me.chkCheckNewVersion.Text = "Show update notification."
+        Me.chkCheckNewVersion.UseVisualStyleBackColor = True
         '
         'chkHide
         '
         Me.chkHide.AutoSize = True
-        Me.chkHide.Location = New System.Drawing.Point(6, 19)
+        Me.chkHide.Location = New System.Drawing.Point(10, 19)
         Me.chkHide.Name = "chkHide"
-        Me.chkHide.Size = New System.Drawing.Size(144, 17)
+        Me.chkHide.Size = New System.Drawing.Size(136, 17)
         Me.chkHide.TabIndex = 0
-        Me.chkHide.Text = "Hide welcome dialogbox."
+        Me.chkHide.Text = "Show welcome screen."
         Me.chkHide.UseVisualStyleBackColor = True
         '
         'grpLoLPath
         '
         Me.grpLoLPath.Controls.Add(Me.btnBrowse)
         Me.grpLoLPath.Controls.Add(Me.txtLoLPath)
-        Me.grpLoLPath.Location = New System.Drawing.Point(6, 54)
+        Me.grpLoLPath.Location = New System.Drawing.Point(6, 77)
         Me.grpLoLPath.Name = "grpLoLPath"
         Me.grpLoLPath.Size = New System.Drawing.Size(419, 58)
         Me.grpLoLPath.TabIndex = 1
@@ -195,9 +199,9 @@ Partial Class frmFlavorSyncSettings
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(322, 28)
+        Me.btnBrowse.Location = New System.Drawing.Point(326, 28)
         Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(90, 20)
+        Me.btnBrowse.Size = New System.Drawing.Size(86, 20)
         Me.btnBrowse.TabIndex = 1
         Me.btnBrowse.Text = "Browse"
         Me.btnBrowse.UseVisualStyleBackColor = True
@@ -205,7 +209,7 @@ Partial Class frmFlavorSyncSettings
         'txtLoLPath
         '
         Me.txtLoLPath.BackColor = System.Drawing.SystemColors.Window
-        Me.txtLoLPath.Location = New System.Drawing.Point(6, 28)
+        Me.txtLoLPath.Location = New System.Drawing.Point(10, 28)
         Me.txtLoLPath.Name = "txtLoLPath"
         Me.txtLoLPath.ReadOnly = True
         Me.txtLoLPath.Size = New System.Drawing.Size(310, 20)
@@ -366,6 +370,7 @@ Partial Class frmFlavorSyncSettings
         'tabAbout
         '
         Me.tabAbout.BackColor = System.Drawing.SystemColors.Control
+        Me.tabAbout.Controls.Add(Me.lblChangelogInfo)
         Me.tabAbout.Controls.Add(Me.txtChangelog)
         Me.tabAbout.Controls.Add(Me.lblGithub)
         Me.tabAbout.Controls.Add(Me.Label1)
@@ -383,12 +388,12 @@ Partial Class frmFlavorSyncSettings
         'txtChangelog
         '
         Me.txtChangelog.BackColor = System.Drawing.SystemColors.Control
-        Me.txtChangelog.Location = New System.Drawing.Point(6, 45)
+        Me.txtChangelog.Location = New System.Drawing.Point(6, 35)
         Me.txtChangelog.Multiline = True
         Me.txtChangelog.Name = "txtChangelog"
         Me.txtChangelog.ReadOnly = True
         Me.txtChangelog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtChangelog.Size = New System.Drawing.Size(420, 202)
+        Me.txtChangelog.Size = New System.Drawing.Size(420, 212)
         Me.txtChangelog.TabIndex = 6
         Me.txtChangelog.Text = "Changelog"
         '
@@ -434,7 +439,7 @@ Partial Class frmFlavorSyncSettings
         'lblGetLatestVersion
         '
         Me.lblGetLatestVersion.AutoSize = True
-        Me.lblGetLatestVersion.Location = New System.Drawing.Point(6, 16)
+        Me.lblGetLatestVersion.Location = New System.Drawing.Point(136, 12)
         Me.lblGetLatestVersion.Name = "lblGetLatestVersion"
         Me.lblGetLatestVersion.Size = New System.Drawing.Size(290, 13)
         Me.lblGetLatestVersion.TabIndex = 1
@@ -457,29 +462,56 @@ Partial Class frmFlavorSyncSettings
         Me.fbdLoLPath.Description = "Please select your League of Legends directory."
         Me.fbdLoLPath.ShowNewFolderButton = False
         '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(296, 352)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancel.TabIndex = 4
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'btnRestoreDefaults
+        '
+        Me.btnRestoreDefaults.Location = New System.Drawing.Point(12, 352)
+        Me.btnRestoreDefaults.Name = "btnRestoreDefaults"
+        Me.btnRestoreDefaults.Size = New System.Drawing.Size(119, 23)
+        Me.btnRestoreDefaults.TabIndex = 5
+        Me.btnRestoreDefaults.Text = "Restore defaults"
+        Me.btnRestoreDefaults.UseVisualStyleBackColor = True
+        '
+        'lblChangelogInfo
+        '
+        Me.lblChangelogInfo.AutoSize = True
+        Me.lblChangelogInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblChangelogInfo.Location = New System.Drawing.Point(6, 12)
+        Me.lblChangelogInfo.Name = "lblChangelogInfo"
+        Me.lblChangelogInfo.Size = New System.Drawing.Size(67, 13)
+        Me.lblChangelogInfo.TabIndex = 7
+        Me.lblChangelogInfo.Text = "Changelog"
+        '
         'frmFlavorSyncSettings
         '
-        Me.AcceptButton = Me.btnOk
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(464, 387)
+        Me.Controls.Add(Me.btnRestoreDefaults)
+        Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnApply)
-        Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOk)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "frmFlavorSyncSettings"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "LoLFlavor Sync: Settings"
         Me.TabControl1.ResumeLayout(False)
         Me.tabGeneral.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.grpAddChampions.ResumeLayout(False)
+        Me.grpAddChampions.PerformLayout()
+        Me.grpGeneral.ResumeLayout(False)
+        Me.grpGeneral.PerformLayout()
         Me.grpLoLPath.ResumeLayout(False)
         Me.grpLoLPath.PerformLayout()
         Me.tabAdvanced.ResumeLayout(False)
@@ -493,7 +525,6 @@ Partial Class frmFlavorSyncSettings
 
     End Sub
     Friend WithEvents btnOk As System.Windows.Forms.Button
-    Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnApply As System.Windows.Forms.Button
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents tabGeneral As System.Windows.Forms.TabPage
@@ -502,7 +533,7 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents txtLoLPath As System.Windows.Forms.TextBox
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents fbdLoLPath As System.Windows.Forms.FolderBrowserDialog
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents grpGeneral As System.Windows.Forms.GroupBox
     Friend WithEvents chkHide As System.Windows.Forms.CheckBox
     Friend WithEvents txtAbout As System.Windows.Forms.TextBox
     Friend WithEvents lblGetLatestVersion As System.Windows.Forms.LinkLabel
@@ -518,7 +549,7 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents txtUrlFormat As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents grpAddChampions As System.Windows.Forms.GroupBox
     Friend WithEvents btnAddChamp As System.Windows.Forms.Button
     Friend WithEvents txtAddChamp As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
@@ -530,4 +561,8 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents btnDelete As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
+    Friend WithEvents chkCheckNewVersion As System.Windows.Forms.CheckBox
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnRestoreDefaults As System.Windows.Forms.Button
+    Friend WithEvents lblChangelogInfo As System.Windows.Forms.Label
 End Class
