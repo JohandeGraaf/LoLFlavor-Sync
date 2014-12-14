@@ -191,57 +191,45 @@ Namespace Global.LoLFlavor_Sync.Library
         End Function
 
         Public Function DetectLoLPath() As String
-            Dim LoLpth1 As String
-            Dim LoLpth2 As String
-            Dim LoLpth3 As String
-            Dim LoLpth4 As String
-            If Environment.Is64BitOperatingSystem Then
-                'Keyname: Path, Value: C:\Riot Games\League of Legends\
-                LoLpth1 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Riot Games\League of Legends", "Path", Nothing)
-                'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-                LoLpth2 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Riot Games\RADS", "LocalRootFolder", Nothing)
-                'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-                LoLpth3 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\Riot Games\RADS", "LocalRootFolder", Nothing)
-                'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-                LoLpth4 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games\RADS", "LocalRootFolder", Nothing)
-            Else
-                'Keyname: Path, Value: C:\Riot Games\League of Legends\
-                LoLpth1 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Riot Games\League of Legends", "Path", Nothing)
-                'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-                LoLpth2 = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Riot Games\RADS", "LocalRootFolder", Nothing)
-                'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-                LoLpth3 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Riot Games\RADS", "LocalRootFolder", Nothing)
-                'Keyname: LocalRootFolder, Value: C:/Riot Games/League of Legends/RADS
-                LoLpth4 = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\Riot Games\RADS", "LocalRootFolder", Nothing)
-            End If
-            If Not String.IsNullOrWhiteSpace(LoLpth1) Then
-                LoLpth1 = LoLpth1.Replace("League of Legends\", "League of Legends")
-            End If
-            If Not String.IsNullOrWhiteSpace(LoLpth2) Then
-                LoLpth2 = LoLpth2.Replace("/", "\")
-                LoLpth2 = LoLpth2.Replace("\RADS", "\")
-            End If
-            If Not String.IsNullOrWhiteSpace(LoLpth3) Then
-                LoLpth3 = LoLpth3.Replace("/", "\")
-                LoLpth3 = LoLpth3.Replace("\RADS", "\")
-            End If
-            If Not String.IsNullOrWhiteSpace(LoLpth4) Then
-                LoLpth4 = LoLpth4.Replace("/", "\")
-                LoLpth4 = LoLpth4.Replace("\RADS", "\")
-            End If
+            Dim keys32 As List(Of Func(Of String)) = New List(Of Func(Of String))({ _
+            Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Riot Games\League of Legends").GetValue("Path").Replace("League of Legends\", "League of Legends"), _
+            Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
+            Function() Registry.CurrentUser.OpenSubKey("Software\Classes\VirtualStore\MACHINE\SOFTWARE\Riot Games\RAD").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
+            Function() Registry.CurrentUser.OpenSubKey("Software\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\")})
+
+            Dim keys64 As List(Of Func(Of String)) = New List(Of Func(Of String))({ _
+            Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Riot Games\League of Legends").GetValue("Path").Replace("League of Legends\", "League of Legends"), _
+            Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
+            Function() Registry.CurrentUser.OpenSubKey("Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
+            Function() Registry.CurrentUser.OpenSubKey("Software\Wow6432Node\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\")})
+
             If ValidLoLPath("C:\Riot Games\League of Legends") Then
                 Return "C:\Riot Games\League of Legends"
-            ElseIf Not String.IsNullOrWhiteSpace(LoLpth1) AndAlso ValidLoLPath(LoLpth1) Then
-                Return LoLpth1
-            ElseIf Not String.IsNullOrWhiteSpace(LoLpth2) AndAlso ValidLoLPath(LoLpth2) Then
-                Return LoLpth2
-            ElseIf Not String.IsNullOrWhiteSpace(LoLpth3) AndAlso ValidLoLPath(LoLpth3) Then
-                Return LoLpth3
-            ElseIf Not String.IsNullOrWhiteSpace(LoLpth4) AndAlso ValidLoLPath(LoLpth4) Then
-                Return LoLpth4
-            Else
-                Return Nothing
             End If
+
+            For Each objFunc As Func(Of String) In keys32
+                Try
+                    Dim str As String = objFunc()
+                    If Not String.IsNullOrWhiteSpace(str) Then
+                        str = str.TrimEnd({Convert.ToChar("\")})
+                        If ValidLoLPath(str) Then Return str
+                    End If
+                Catch : End Try
+            Next
+
+            If Environment.Is64BitOperatingSystem Then
+                For Each objFunc As Func(Of String) In keys64
+                    Try
+                        Dim str As String = objFunc()
+                        If Not String.IsNullOrWhiteSpace(str) Then
+                            str = str.TrimEnd({Convert.ToChar("\")})
+                            If ValidLoLPath(str) Then Return str
+                        End If
+                    Catch : End Try
+                Next
+            End If
+
+            Return Nothing
         End Function
     End Module
 End Namespace
