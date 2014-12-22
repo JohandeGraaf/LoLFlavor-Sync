@@ -18,16 +18,26 @@ Public Class frmFlavorSyncMain
     End Property
 
     Private Sub FormLoad()
-        Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        If Properties.Garena Then
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+        Else
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        End If
         Me.MenuStrip1.BackColor = Color.FromArgb(130, 186, 201, 212)
+        Me.cmbMode.SelectedIndex = 0
         If Properties.OptionLastUsed = Nothing Then
             lblLastUsed.Text = "Never"
         Else
             lblLastUsed.Text = Properties.OptionLastUsed.ToShortDateString() & " - " & Properties.OptionLastUsed.ToShortTimeString()
         End If
         initializeClbChamps(True)
-        CheckNewVersion()
         ActiveControl = btnDownloadBuilds
+    End Sub
+
+    Private Sub FormShown()
+        Application.DoEvents()
+        Me.lblLoLFlavorUpdated.Text = LFVersion()
+        CheckNewVersion()
     End Sub
 
     Private Sub initializeClbChamps(ByVal checkAll As Boolean)
@@ -41,28 +51,12 @@ Public Class frmFlavorSyncMain
     Private Sub CheckNewVersion()
         If Properties.OptionVersionCheckDisabled Then Exit Sub
         Try
-            If System.IO.Directory.Exists(Properties.TempDirVersion) Then
-                Properties.DelFolderContent(Properties.TempDirVersion)
-            Else
-                My.Computer.FileSystem.CreateDirectory(TempDirVersion)
-            End If
+            Dim cl As New System.Net.WebClient
+            Dim str As New StreamReader(cl.OpenRead(Properties.VersionUrl))
 
-            Using dl As New Download : With dl
-                    .Timeout = 4000
-                    .Download(Properties.VersionUrl, Properties.TempDirVersion & "\" & Properties.VersionFileName)
-                End With
-            End Using
-
-            If File.Exists(Properties.TempDirVersion & "\" & Properties.VersionFileName) Then
-                Dim v As String = Properties.ReadFile(Properties.TempDirVersion & "\" & Properties.VersionFileName)
-                If String.IsNullOrWhiteSpace(v) Then
-                    Throw New IOException("Error while reading versionfile. No data.")
-                Else
-                    Properties.VersionOnline = v
-                End If
-            Else
-                Throw New FileNotFoundException("Error while reading versionfile. No file at " & Properties.TempDirVersion & "\" & Properties.VersionFileName)
-            End If
+            Properties.VersionOnline = str.ReadToEnd()
+            str.Close()
+            cl.Dispose()
 
             If String.Compare(Properties.VersionLocal, Properties.VersionOnline) <> 0 Then
                 Dim popup As New NotifyIcon
@@ -76,10 +70,30 @@ Public Class frmFlavorSyncMain
             End If
         Catch ex As Exception
             Exit Sub
-        Finally
-            DelFolderContent(Properties.TempDirVersion, True)
         End Try
     End Sub
+
+    Private Function LFVersion() As String
+        Dim dt As DateTime
+        Try
+            Dim cl As New System.Net.WebClient
+            Dim stread As New StreamReader(cl.OpenRead(Properties.VersionLFS))
+            Dim rawData As String = stread.ReadToEnd()
+            stread.Close()
+            Dim firstIndex As Integer = rawData.IndexOf("""createDate""") + ("""createDate""").Count + 2
+            Dim lastIndex As Integer = rawData.Substring(firstIndex).IndexOf("""")
+            Dim rawDate As String = rawData.Substring(firstIndex, lastIndex)
+            dt = Date.Parse(rawDate)
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString())
+        End Try
+
+        If dt = Nothing Then
+            Return "Unknown"
+        Else
+            Return dt.ToShortDateString() & " - " & dt.ToShortTimeString()
+        End If
+    End Function
 
     Private Sub Settings()
         Dim frm As New frmFlavorSyncSettings
@@ -118,8 +132,14 @@ Public Class frmFlavorSyncMain
             Exit Sub
         End If
 
-        If MessageBox.Show("You are about to download " & If(clbChamps.CheckedIndices.Count <= 1 And buildsChecked({chkDownloadLane, chkDownloadJungle, chkDownloadSupport, chkDownloadARAM}) <= 1, "a build", "builds") & " for " & clbChamps.CheckedIndices.Count & " " & If(clbChamps.CheckedIndices.Count > 1, "champions", "champion") & ", are you sure?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
-            Exit Sub
+        If cmbMode.SelectedIndex <> 2 Then
+            If MessageBox.Show("You are about to download " & If(clbChamps.CheckedIndices.Count <= 1 And buildsChecked({chkDownloadLane, chkDownloadJungle, chkDownloadSupport, chkDownloadARAM}) <= 1, "a build", "builds") & " for " & clbChamps.CheckedIndices.Count & " " & If(clbChamps.CheckedIndices.Count > 1, "champions", "champion") & ", are you sure?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
+                Exit Sub
+            End If
+        Else
+            If MessageBox.Show("Remove all builds?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
+                Exit Sub
+            End If
         End If
 
         Dim champsToDownload As New List(Of Champion)
@@ -137,6 +157,15 @@ Public Class frmFlavorSyncMain
         frmState = False
 
         Dim frmDownload As New frmFlavorSyncDownload(champsToDownload, buildTypesToDownload)
+
+        If cmbMode.SelectedIndex = 0 Then
+            frmDownload.mode = frmFlavorSyncDownload.modes.Remove
+        ElseIf cmbMode.SelectedIndex = 1 Then
+            frmDownload.mode = frmFlavorSyncDownload.modes.Overwrite
+        ElseIf cmbMode.SelectedIndex = 2 Then
+            frmDownload.mode = frmFlavorSyncDownload.modes.RemoveOnly
+        End If
+
         frmDownload.ShowDialog()
         frmDownload.Dispose()
         frmDownload = Nothing
@@ -159,6 +188,10 @@ Public Class frmFlavorSyncMain
 #Region "Event Handlers"
     Private Sub frmFlavorSync_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         FormLoad()
+    End Sub
+
+    Private Sub frmFlavorSyncMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        FormShown()
     End Sub
 
     Private Sub btnDownloadBuilds_Click(sender As Object, e As EventArgs) Handles btnDownloadBuilds.Click

@@ -31,6 +31,7 @@ Partial Class frmFlavorSyncLoad
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.btnConfirm = New System.Windows.Forms.Button()
         Me.chkSkip = New System.Windows.Forms.CheckBox()
+        Me.chkGarena = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Label1
@@ -85,7 +86,7 @@ Partial Class frmFlavorSyncLoad
         '
         'btnConfirm
         '
-        Me.btnConfirm.Location = New System.Drawing.Point(96, 133)
+        Me.btnConfirm.Location = New System.Drawing.Point(91, 129)
         Me.btnConfirm.Name = "btnConfirm"
         Me.btnConfirm.Size = New System.Drawing.Size(75, 23)
         Me.btnConfirm.TabIndex = 6
@@ -96,18 +97,29 @@ Partial Class frmFlavorSyncLoad
         '
         Me.chkSkip.AutoSize = True
         Me.chkSkip.Enabled = False
-        Me.chkSkip.Location = New System.Drawing.Point(177, 137)
+        Me.chkSkip.Location = New System.Drawing.Point(172, 133)
         Me.chkSkip.Name = "chkSkip"
         Me.chkSkip.Size = New System.Drawing.Size(154, 17)
         Me.chkSkip.TabIndex = 7
         Me.chkSkip.Text = "Hide this window next time."
         Me.chkSkip.UseVisualStyleBackColor = True
         '
+        'chkGarena
+        '
+        Me.chkGarena.AutoSize = True
+        Me.chkGarena.Location = New System.Drawing.Point(365, 12)
+        Me.chkGarena.Name = "chkGarena"
+        Me.chkGarena.Size = New System.Drawing.Size(61, 17)
+        Me.chkGarena.TabIndex = 8
+        Me.chkGarena.Text = "Garena"
+        Me.chkGarena.UseVisualStyleBackColor = True
+        '
         'frmFlavorSyncLoad
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(438, 171)
+        Me.ClientSize = New System.Drawing.Size(438, 161)
+        Me.Controls.Add(Me.chkGarena)
         Me.Controls.Add(Me.chkSkip)
         Me.Controls.Add(Me.btnConfirm)
         Me.Controls.Add(Me.btnBrowse)
@@ -133,5 +145,6 @@ Partial Class frmFlavorSyncLoad
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents btnConfirm As System.Windows.Forms.Button
     Friend WithEvents chkSkip As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGarena As System.Windows.Forms.CheckBox
 
 End Class

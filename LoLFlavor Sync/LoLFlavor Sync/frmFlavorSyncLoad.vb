@@ -1,5 +1,7 @@
 ﻿Imports LoLFlavor_Sync.Library
+Imports System.IO
 Public Class frmFlavorSyncLoad
+    Private LPD As Boolean?
     Public Property LoLPath As String
         Get
             Return Properties.LoLPath
@@ -14,33 +16,77 @@ Public Class frmFlavorSyncLoad
     Private Sub FormLoad()
         Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
         Me.AcceptButton = btnConfirm
+        ToFromGarena(Properties.OptionUseGarena())
         InitAllChamps()
-    End Sub
 
-    Private Sub FormShown()
         If Not String.IsNullOrWhiteSpace(Properties.OptionLoLPath) AndAlso Properties.ValidLoLPath(Properties.OptionLoLPath) Then
             Me.LoLPath = Properties.OptionLoLPath
+            LPD = True
         Else
             If String.IsNullOrWhiteSpace(Properties.DetectLoLPath()) Then
                 ActiveControl = btnBrowse
-                Exit Sub
+                Me.LoLPath = Nothing
+                chkSkip.Enabled = False
+                LPD = False
             Else
                 Me.LoLPath = Properties.DetectLoLPath()
+                LPD = True
             End If
         End If
-        If Properties.OptionSkipForm Then
-            Me.Hide()
-            ShowMainForm()
-        Else
-            chkSkip.Enabled = True
-            ActiveControl = btnConfirm
+    End Sub
+
+    Private Sub FormShown()
+        Application.DoEvents()
+        While LPD Is Nothing
+            System.Threading.Thread.Sleep(30)
+        End While
+
+        If LPD = True Then
+            If Properties.OptionSkipForm Then
+                Me.Hide()
+                ShowMainForm()
+            Else
+                chkSkip.Enabled = True
+                ActiveControl = btnConfirm
+            End If
         End If
     End Sub
 
     Private Sub ShowMainForm()
+        If Properties.Garena Then Properties.DetectGarenaPath()
         Dim frm As New frmFlavorSyncMain
         frm.Show()
         frm.Focus()
+    End Sub
+
+    Private Sub ToFromGarena(ByVal _Garena As Boolean)
+        RemoveHandler chkGarena.CheckedChanged, AddressOf chkGarena_CheckedChanged
+        chkGarena.Checked = _Garena
+        AddHandler chkGarena.CheckedChanged, AddressOf chkGarena_CheckedChanged
+        Properties.Garena = _Garena
+        Properties.OptionUseGarena = _Garena
+
+        If _Garena Then
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+            If Environment.Is64BitOperatingSystem Then
+                Label2.Text = "Example: C:\Program Files (x86)\GarenaLoL"
+            Else
+                Label2.Text = "Example: C:\Program Files\GarenaLoL"
+            End If
+        Else
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+            Label2.Text = "Example: C:\Riot Games\League of Legends"
+        End If
+
+        If String.IsNullOrWhiteSpace(Properties.DetectLoLPath()) Then
+            ActiveControl = btnBrowse
+            Me.LoLPath = Nothing
+            chkSkip.Enabled = False
+        Else
+            ActiveControl = btnConfirm
+            Me.LoLPath = Properties.DetectLoLPath()
+            chkSkip.Enabled = True
+        End If
     End Sub
 
     Private Sub InitAllChamps()
@@ -221,6 +267,10 @@ Public Class frmFlavorSyncLoad
         Else
             MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
+    End Sub
+
+    Private Sub chkGarena_CheckedChanged(sender As Object, e As EventArgs) Handles chkGarena.CheckedChanged
+        ToFromGarena(chkGarena.Checked)
     End Sub
 #End Region
 End Class

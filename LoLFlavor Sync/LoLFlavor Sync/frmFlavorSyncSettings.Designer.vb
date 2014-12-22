@@ -37,22 +37,8 @@ Partial Class frmFlavorSyncSettings
         Me.grpLoLPath = New System.Windows.Forms.GroupBox()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.txtLoLPath = New System.Windows.Forms.TextBox()
-        Me.tabAdvanced = New System.Windows.Forms.TabPage()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.btnSave = New System.Windows.Forms.Button()
-        Me.btnDelete = New System.Windows.Forms.Button()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.txtFileFormat = New System.Windows.Forms.TextBox()
-        Me.txtUrlFormat = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.btnNew = New System.Windows.Forms.Button()
-        Me.clbSource = New System.Windows.Forms.CheckedListBox()
         Me.tabAbout = New System.Windows.Forms.TabPage()
+        Me.lblChangelogInfo = New System.Windows.Forms.Label()
         Me.txtChangelog = New System.Windows.Forms.TextBox()
         Me.lblGithub = New System.Windows.Forms.LinkLabel()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -63,15 +49,11 @@ Partial Class frmFlavorSyncSettings
         Me.fbdLoLPath = New System.Windows.Forms.FolderBrowserDialog()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnRestoreDefaults = New System.Windows.Forms.Button()
-        Me.lblChangelogInfo = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.grpAddChampions.SuspendLayout()
         Me.grpGeneral.SuspendLayout()
         Me.grpLoLPath.SuspendLayout()
-        Me.tabAdvanced.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
         Me.tabAbout.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -97,7 +79,6 @@ Partial Class frmFlavorSyncSettings
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.tabGeneral)
-        Me.TabControl1.Controls.Add(Me.tabAdvanced)
         Me.TabControl1.Controls.Add(Me.tabAbout)
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
@@ -215,158 +196,6 @@ Partial Class frmFlavorSyncSettings
         Me.txtLoLPath.Size = New System.Drawing.Size(310, 20)
         Me.txtLoLPath.TabIndex = 0
         '
-        'tabAdvanced
-        '
-        Me.tabAdvanced.BackColor = System.Drawing.SystemColors.Control
-        Me.tabAdvanced.Controls.Add(Me.GroupBox3)
-        Me.tabAdvanced.Location = New System.Drawing.Point(4, 22)
-        Me.tabAdvanced.Name = "tabAdvanced"
-        Me.tabAdvanced.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabAdvanced.Size = New System.Drawing.Size(432, 308)
-        Me.tabAdvanced.TabIndex = 3
-        Me.tabAdvanced.Text = "Advanced"
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.btnSave)
-        Me.GroupBox3.Controls.Add(Me.btnDelete)
-        Me.GroupBox3.Controls.Add(Me.GroupBox4)
-        Me.GroupBox3.Controls.Add(Me.txtFileFormat)
-        Me.GroupBox3.Controls.Add(Me.txtUrlFormat)
-        Me.GroupBox3.Controls.Add(Me.Label3)
-        Me.GroupBox3.Controls.Add(Me.Label2)
-        Me.GroupBox3.Controls.Add(Me.btnNew)
-        Me.GroupBox3.Controls.Add(Me.clbSource)
-        Me.GroupBox3.Location = New System.Drawing.Point(6, 6)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(423, 296)
-        Me.GroupBox3.TabIndex = 4
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Source"
-        '
-        'btnSave
-        '
-        Me.btnSave.Enabled = False
-        Me.btnSave.Location = New System.Drawing.Point(153, 107)
-        Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(75, 23)
-        Me.btnSave.TabIndex = 16
-        Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = True
-        Me.btnSave.Visible = False
-        '
-        'btnDelete
-        '
-        Me.btnDelete.Enabled = False
-        Me.btnDelete.Location = New System.Drawing.Point(78, 251)
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(69, 26)
-        Me.btnDelete.TabIndex = 15
-        Me.btnDelete.Text = "Delete"
-        Me.btnDelete.UseVisualStyleBackColor = True
-        '
-        'GroupBox4
-        '
-        Me.GroupBox4.Controls.Add(Me.Label8)
-        Me.GroupBox4.Controls.Add(Me.Label7)
-        Me.GroupBox4.Controls.Add(Me.Label5)
-        Me.GroupBox4.Controls.Add(Me.Label6)
-        Me.GroupBox4.Location = New System.Drawing.Point(153, 145)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(264, 100)
-        Me.GroupBox4.TabIndex = 14
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Variables"
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(16, 75)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(326, 13)
-        Me.Label8.TabIndex = 15
-        Me.Label8.Text = "Gets replaced with one of the following: lane, jungle, support, aram. "
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(16, 33)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(194, 13)
-        Me.Label7.TabIndex = 14
-        Me.Label7.Text = "Gets replaced with the champion name."
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(13, 16)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(62, 13)
-        Me.Label5.TabIndex = 12
-        Me.Label5.Text = "{Champion}"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(13, 58)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(39, 13)
-        Me.Label6.TabIndex = 13
-        Me.Label6.Text = "{Lane}"
-        '
-        'txtFileFormat
-        '
-        Me.txtFileFormat.BackColor = System.Drawing.SystemColors.Window
-        Me.txtFileFormat.Location = New System.Drawing.Point(153, 72)
-        Me.txtFileFormat.Name = "txtFileFormat"
-        Me.txtFileFormat.ReadOnly = True
-        Me.txtFileFormat.Size = New System.Drawing.Size(260, 20)
-        Me.txtFileFormat.TabIndex = 11
-        '
-        'txtUrlFormat
-        '
-        Me.txtUrlFormat.BackColor = System.Drawing.SystemColors.Window
-        Me.txtUrlFormat.Location = New System.Drawing.Point(153, 33)
-        Me.txtUrlFormat.Name = "txtUrlFormat"
-        Me.txtUrlFormat.ReadOnly = True
-        Me.txtUrlFormat.Size = New System.Drawing.Size(260, 20)
-        Me.txtUrlFormat.TabIndex = 10
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(150, 56)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(87, 13)
-        Me.Label3.TabIndex = 9
-        Me.Label3.Text = "Filename format: "
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(150, 16)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(118, 13)
-        Me.Label2.TabIndex = 8
-        Me.Label2.Text = "Download URL format: "
-        '
-        'btnNew
-        '
-        Me.btnNew.Location = New System.Drawing.Point(6, 251)
-        Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(69, 26)
-        Me.btnNew.TabIndex = 6
-        Me.btnNew.Text = "New"
-        Me.btnNew.UseVisualStyleBackColor = True
-        '
-        'clbSource
-        '
-        Me.clbSource.FormattingEnabled = True
-        Me.clbSource.Location = New System.Drawing.Point(6, 16)
-        Me.clbSource.Name = "clbSource"
-        Me.clbSource.Size = New System.Drawing.Size(141, 229)
-        Me.clbSource.TabIndex = 5
-        '
         'tabAbout
         '
         Me.tabAbout.BackColor = System.Drawing.SystemColors.Control
@@ -385,6 +214,16 @@ Partial Class frmFlavorSyncSettings
         Me.tabAbout.TabIndex = 2
         Me.tabAbout.Text = "About"
         '
+        'lblChangelogInfo
+        '
+        Me.lblChangelogInfo.AutoSize = True
+        Me.lblChangelogInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblChangelogInfo.Location = New System.Drawing.Point(6, 12)
+        Me.lblChangelogInfo.Name = "lblChangelogInfo"
+        Me.lblChangelogInfo.Size = New System.Drawing.Size(67, 13)
+        Me.lblChangelogInfo.TabIndex = 7
+        Me.lblChangelogInfo.Text = "Changelog"
+        '
         'txtChangelog
         '
         Me.txtChangelog.BackColor = System.Drawing.SystemColors.Control
@@ -392,7 +231,7 @@ Partial Class frmFlavorSyncSettings
         Me.txtChangelog.Multiline = True
         Me.txtChangelog.Name = "txtChangelog"
         Me.txtChangelog.ReadOnly = True
-        Me.txtChangelog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtChangelog.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtChangelog.Size = New System.Drawing.Size(420, 212)
         Me.txtChangelog.TabIndex = 6
         Me.txtChangelog.Text = "Changelog"
@@ -480,16 +319,6 @@ Partial Class frmFlavorSyncSettings
         Me.btnRestoreDefaults.Text = "Restore defaults"
         Me.btnRestoreDefaults.UseVisualStyleBackColor = True
         '
-        'lblChangelogInfo
-        '
-        Me.lblChangelogInfo.AutoSize = True
-        Me.lblChangelogInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblChangelogInfo.Location = New System.Drawing.Point(6, 12)
-        Me.lblChangelogInfo.Name = "lblChangelogInfo"
-        Me.lblChangelogInfo.Size = New System.Drawing.Size(67, 13)
-        Me.lblChangelogInfo.TabIndex = 7
-        Me.lblChangelogInfo.Text = "Changelog"
-        '
         'frmFlavorSyncSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -514,11 +343,6 @@ Partial Class frmFlavorSyncSettings
         Me.grpGeneral.PerformLayout()
         Me.grpLoLPath.ResumeLayout(False)
         Me.grpLoLPath.PerformLayout()
-        Me.tabAdvanced.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.tabAbout.ResumeLayout(False)
         Me.tabAbout.PerformLayout()
         Me.ResumeLayout(False)
@@ -541,26 +365,11 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents lblBoLProfile As System.Windows.Forms.LinkLabel
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblGithub As System.Windows.Forms.LinkLabel
-    Friend WithEvents tabAdvanced As System.Windows.Forms.TabPage
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents clbSource As System.Windows.Forms.CheckedListBox
-    Friend WithEvents btnNew As System.Windows.Forms.Button
-    Friend WithEvents txtFileFormat As System.Windows.Forms.TextBox
-    Friend WithEvents txtUrlFormat As System.Windows.Forms.TextBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents grpAddChampions As System.Windows.Forms.GroupBox
     Friend WithEvents btnAddChamp As System.Windows.Forms.Button
     Friend WithEvents txtAddChamp As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtChangelog As System.Windows.Forms.TextBox
-    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents btnDelete As System.Windows.Forms.Button
-    Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents chkCheckNewVersion As System.Windows.Forms.CheckBox
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnRestoreDefaults As System.Windows.Forms.Button

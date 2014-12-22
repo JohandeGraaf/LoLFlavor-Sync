@@ -2,11 +2,20 @@
 Imports System.IO
 Imports System.Threading
 Public Class frmFlavorSyncDownload
+    Public Property mode As modes = modes.Remove
+
+    Public Enum modes As Integer
+        Remove
+        Overwrite
+        RemoveOnly
+    End Enum
+
     Private downloading As Boolean
     Private cancel As Boolean
 
     Private champsToDownload As List(Of Champion)
     Private buildsToDownload As List(Of DownloadChampion.laneType)
+    Private builds As New List(Of DownloadChampion)
     Private wrkThread As Thread
 
     Sub New(ByVal chTD As List(Of Champion), ByVal bTD As List(Of DownloadChampion.laneType))
@@ -19,7 +28,11 @@ Public Class frmFlavorSyncDownload
     End Sub
 
     Private Sub formLoad()
-        Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        If Properties.Garena Then
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+        Else
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        End If
         Me.Cursor = Cursors.WaitCursor
         Me.ActiveControl = btnCancel
         Me.txtStatus.Visible = False
@@ -27,6 +40,7 @@ Public Class frmFlavorSyncDownload
         downloading = True
         If String.IsNullOrEmpty(Thread.CurrentThread.Name) Then Thread.CurrentThread.Name = "Main Thread"
         If String.IsNullOrEmpty(wrkThread.Name) Then wrkThread.Name = "Worker Thread"
+        If mode < modes.Remove Or mode > modes.RemoveOnly Then mode = modes.Remove
     End Sub
 
     Private Sub formShown()
@@ -74,44 +88,31 @@ Public Class frmFlavorSyncDownload
         End If
     End Sub
 
-    Private Sub deleteFilesAndDirectories(ByVal path As String, ByVal deleteRootDirectory As Boolean, Optional ByVal pbControl As Boolean = False, Optional ByVal pbPercent As Integer = 100, Optional ByVal displayStatus As Boolean = True)
-        If pbControl Then
-            addStatus("Deleting: " & path)
-            If pbPercent < 1 Or pbPercent > 99 Then pbPercent = 100
-            Dim items As Integer = My.Computer.FileSystem.GetDirectories(path, FileIO.SearchOption.SearchAllSubDirectories).Count + My.Computer.FileSystem.GetFiles(path, FileIO.SearchOption.SearchAllSubDirectories).Count
-            If items <= 0 Then
-                addPbPercentage(pbPercent / 100)
-                Properties.DelFolderContent(path, deleteRootDirectory)
-            Else
-                Properties.DelFolderContent(path, deleteRootDirectory, True, Math.Floor((pbStatus.Invoke(Function() pbStatus.Maximum) / items) * (pbPercent / 100)), AddressOf addPb, displayStatus, AddressOf addStatus)
-            End If
+    Private Sub Start()
+        If mode = modes.RemoveOnly Then
+            pRemove()
+            StartRemove()
+            Exit Sub
         Else
-            Properties.DelFolderContent(path, deleteRootDirectory)
+            pCheckConnectivity()
+            startCheckConnectivity()
+
+            pDownload()
+            startDownload()
+
+            pPrepareInstall()
+            startPrepareInstall()
+
+            pInstall()
+            startInstall()
+
+            pComplete()
         End If
     End Sub
 
-    Private Sub Start()
-        pPrepare()
-        startPrepare()
-
-        pCheckConnectivity()
-        startCheckConnectivity()
-
-        pDownload()
-        startDownload()
-
-        pInstall()
-        startInstall()
-
-        pCleanup()
-        startCleanup()
-
-        pComplete()
-    End Sub
-
-    Private Sub pPrepare()
+    Private Sub pRemove()
         If Me.InvokeRequired Then
-            Me.Invoke(New Action(AddressOf pPrepare))
+            Me.Invoke(New Action(AddressOf pRemove))
         Else
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
@@ -119,34 +120,19 @@ Public Class frmFlavorSyncDownload
             lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
             lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Preparing"
-            addStatus("Preparing..", True)
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Removing"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Removing"
+            End If
+            addStatus("Removing all builds, please wait..", True)
             Me.Refresh()
         End If
     End Sub
-    Private Sub startPrepare()
-        If Directory.Exists(Properties.TempDirBuilds) Then
-            deleteFilesAndDirectories(Properties.TempDirBuilds, False, True, 100, False)
-        Else
-            My.Computer.FileSystem.CreateDirectory(Properties.TempDirBuilds)
-            addStatus("Creating temp directory: " & Properties.TempDirBuilds)
-            addPbPercentage(90)
-        End If
 
-        My.Computer.FileSystem.CreateDirectory(Properties.TempDirBuilds & "\Config")
-        My.Computer.FileSystem.CreateDirectory(Properties.TempDirBuilds & "\Config\Champions")
-
-        For Each obj As Champion In champsToDownload
-            My.Computer.FileSystem.CreateDirectory(Properties.TempDirBuilds & "\Config\Champions\" & obj.Name)
-            My.Computer.FileSystem.CreateDirectory(Properties.TempDirBuilds & "\Config\Champions\" & obj.Name & "\Recommended")
-        Next
-
-        addPbPercentage(100)
-        System.Threading.Thread.Sleep(250)
-        If cancel Then
-            startCancel()
-            Exit Sub
-        End If
+    Private Sub StartRemove()
+        startPrepareInstall()
+        pComplete()
     End Sub
 
     Private Sub pCheckConnectivity()
@@ -158,8 +144,11 @@ Public Class frmFlavorSyncDownload
             lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
             lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Checking Connectivity"
-            addStatus(" ")
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Checking Connectivity"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Checking Connectivity"
+            End If
             addStatus("Checking connectivity..", True)
             Me.Refresh()
         End If
@@ -212,7 +201,11 @@ Public Class frmFlavorSyncDownload
             lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
             lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Downloading"
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Downloading"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Downloading"
+            End If
             addStatus(" ")
             addStatus("Downloading..", True, True)
             Me.Refresh()
@@ -220,32 +213,93 @@ Public Class frmFlavorSyncDownload
     End Sub
     Private Sub startDownload()
         Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) / champsToDownload.Count / buildsToDownload.Count
-
         For Each objChampion As Champion In champsToDownload
             If cancel Then
                 startCancel()
                 Exit Sub
             End If
             addStatus("Downloading builds for: " & objChampion.DisplayName, True)
-            Using dl As New DownloadChampion(objChampion, Properties.TempDirBuilds)
-                For Each objBuild As DownloadChampion.laneType In buildsToDownload
-                    Dim ln As String = objBuild.ToString
-                    Dim lnf As String = ln.ElementAt(0)
-                    ln = lnf.ToUpper & ln.Remove(0, 1)
-                    Try
-                        dl.DownloadBuild(objBuild)
-                        addStatus(ln & " Success")
-                    Catch ex As Exception
-                        addStatus(ln & " Failed: " & ex.Message)
-                    End Try
-                    addPb(pbIncrement)
-                Next
-            End Using
+            Dim objDL As DownloadChampion
+            If Properties.Garena Then
+                objDL = New DownloadChampion(objChampion, Properties.LoLFlavorSourceUrlFormat, Properties.LoLPath, Properties.GarenaDestinationPath, Properties.GarenaDestinationFile)
+            Else
+                objDL = New DownloadChampion(objChampion, Properties.LoLFlavorSourceUrlFormat, Properties.LoLPath, Properties.RiotDestinationPath, Properties.RiotDestinationFile)
+            End If
+
+            For Each objBuild As DownloadChampion.laneType In buildsToDownload
+                Dim lStrF As String = objBuild.ToString.ElementAt(0)
+                Dim lStr As String = lStrF.ToUpper & objBuild.ToString.Remove(0, 1)
+                Try
+                    objDL.DownloadBuild(objBuild)
+                    addStatus(lStr & " Success")
+                Catch ex As Exception
+                    addStatus(lStr & " Failed: " & ex.Message)
+                End Try
+                addPb(pbIncrement)
+            Next
+            builds.Add(objDL)
             addStatus(" ")
         Next
-
         addPbPercentage(100)
         System.Threading.Thread.Sleep(250)
+    End Sub
+
+    Private Sub pPrepareInstall()
+        If Me.InvokeRequired Then
+            Me.Invoke(New Action(AddressOf pPrepareInstall))
+        Else
+            pbStatus.Maximum = 100000
+            pbStatus.Value = 0
+            pbOverallStatus.Value = 50
+            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
+            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
+
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Preparing"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Preparing"
+            End If
+            addStatus("Preparing..", True)
+            Me.Refresh()
+        End If
+    End Sub
+
+    Private Sub startPrepareInstall()
+        Dim path As String
+        Dim del As New List(Of String)
+
+        If Properties.Garena Then
+            path = Properties.LoLPath & Properties.GarenaDestinationPathB
+        Else
+            path = Properties.LoLPath & Properties.RiotDestinationPathB
+        End If
+
+        If Not Directory.Exists(path) Then
+            Directory.CreateDirectory(path)
+            mode = modes.Overwrite
+        End If
+
+        For Each objChampion As Champion In Properties.AllChampions
+            Dim path2 As String = path & "\" & objChampion.Name()
+            If Directory.Exists(path2) Then
+                If Directory.Exists(path2 & "\Recommended") Then
+                    del.Add(path2 & "\Recommended")
+                Else
+                    Directory.CreateDirectory(path2 & "\Recommended")
+                End If
+            Else
+                Directory.CreateDirectory(path2 & "\Recommended")
+            End If
+        Next
+
+        If mode = modes.Remove Or mode = modes.RemoveOnly Then
+            Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ If(del.Count <= 0, 1, del.Count)
+            For Each objStr As String In del
+                Properties.DelFolderContent(objStr, False, True, pbIncrement, AddressOf addPb, False, Sub(x) x = x)
+            Next
+        End If
+
+        addPbPercentage(100)
     End Sub
 
     Private Sub pInstall()
@@ -254,53 +308,29 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
-            pbOverallStatus.Value = 50
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
-
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Installing"
-            addStatus("Installing..", True)
-            Me.Refresh()
-        End If
-    End Sub
-    Private Sub startInstall()
-        If Not My.Computer.FileSystem.DirectoryExists(Properties.LoLPath & "\Config") Then
-            My.Computer.FileSystem.CreateDirectory(Properties.LoLPath & "\Config")
-            addPbPercentage(95)
-        ElseIf My.Computer.FileSystem.DirectoryExists(Properties.LoLPath & "\Config\Champions") Then
-            deleteFilesAndDirectories(Properties.LoLPath & "\Config\Champions", False, True, 95, False)
-            My.Computer.FileSystem.DeleteDirectory(Properties.LoLPath & "\Config\Champions", FileIO.DeleteDirectoryOption.DeleteAllContents)
-        End If
-
-        addStatus("Copying files from: " & Properties.TempDirBuilds & "\Config\Champions to " & LoLPath & "\Config\Champions")
-        My.Computer.FileSystem.CopyDirectory(Properties.TempDirBuilds & "\Config", Properties.LoLPath & "\Config", True)
-
-        addPbPercentage(100)
-        System.Threading.Thread.Sleep(250)
-        If cancel Then
-            startCancel()
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub pCleanup()
-        If Me.InvokeRequired Then
-            Me.Invoke(New Action(AddressOf pCleanup))
-        Else
-            pbStatus.Maximum = 100000
-            pbStatus.Value = 0
             pbOverallStatus.Value = 75
             lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
             lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Finalizing"
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Saving"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Saving"
+            End If
             addStatus(" ")
-            addStatus("Finalizing..", True)
+            addStatus("Saving..", True)
             Me.Refresh()
         End If
     End Sub
-    Private Sub startCleanup(Optional ByVal cancel As Boolean = False)
-        deleteFilesAndDirectories(Properties.TempDirBuilds, True, Not cancel, 99, False)
+    Private Sub startInstall()
+        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ builds.Count
+
+        For Each objDlCh As DownloadChampion In builds
+            objDlCh.SaveBuilds()
+            addPb(pbIncrement)
+        Next
+
+        addPbPercentage(100)
         System.Threading.Thread.Sleep(250)
     End Sub
 
@@ -314,9 +344,13 @@ Public Class frmFlavorSyncDownload
             lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
             lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+            End If
             addStatus(" ")
-            addStatus("Builds Installed!", True)
+            addStatus("Completed!", True)
 
             Me.Cursor = Cursors.Arrow
             btnCancel.Text = "Quit"
@@ -335,7 +369,11 @@ Public Class frmFlavorSyncDownload
             lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
             lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Canceling"
+            If Properties.Garena Then
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Canceling"
+            Else
+                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Canceling"
+            End If
             addStatus(" ")
             addStatus("Canceling.. Please wait..", True)
             Me.Refresh()
@@ -343,7 +381,6 @@ Public Class frmFlavorSyncDownload
     End Sub
     Private Sub startCancel()
         pCancel()
-        startCleanup(True)
         Thread.CurrentThread.Abort()
     End Sub
 

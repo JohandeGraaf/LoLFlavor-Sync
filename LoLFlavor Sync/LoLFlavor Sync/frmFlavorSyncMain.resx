@@ -120,8 +120,19 @@
   <metadata name="MenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="ttMode.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>132, 17</value>
+  </metadata>
+  <data name="cmbMode.ToolTip" xml:space="preserve">
+    <value>Remove    - Removes all the old builds, and downloads new builds.
+Overwrite  - Doesn't remove the old builds, but overwrites them if the new builds have the same name.
+Remove Only - Removes all builds without downloading new builds.
+
+Note: LoLFlavor Sync won't remove or overwrite the builds you've made in the LoL client. (Profile &gt; Item Sets).
+It only overwrites or removes the builds you've downloaded with LoLFlavor Sync or another program that downloads builds.</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>60</value>
+    <value>38</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

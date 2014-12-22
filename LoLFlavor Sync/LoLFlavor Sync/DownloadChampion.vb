@@ -1,15 +1,12 @@
-﻿Namespace Global.LoLFlavor_Sync.Library
+﻿Imports System.IO
+Namespace Global.LoLFlavor_Sync.Library
     Public Class DownloadChampion : Implements IDisposable
         Private _Champ As Champion
-        Private DPB As String
-
-        Public Shared Property LaneVar As String = "{Lane}"
-
-        Public ReadOnly Property Champ As Champion
-            Get
-                Return _Champ
-            End Get
-        End Property
+        Private srcUrl As String
+        Private destPathBase As String
+        Private destPath As String
+        Private destFile As String
+        Private builds As New List(Of Array)
 
         Public Enum laneType As Integer
             lane
@@ -18,32 +15,80 @@
             aram
         End Enum
 
-        Sub New(ByRef ch As Champion, ByVal DestinationPathBase As String)
-            Me.DPB = DestinationPathBase
-            Me._Champ = ch
+        Sub New(ByRef _ch As Champion, ByVal _SourceUrl As String, ByVal _DestinationPathBase As String, ByVal _DestinationPath As String, ByVal _DestinationFile As String)
+            Me._Champ = _ch
+            Me.srcUrl = _SourceUrl
+            Me.destPathBase = _DestinationPathBase
+            Me.destPath = _DestinationPath
+            Me.destFile = _DestinationFile
         End Sub
 
+        Public ReadOnly Property Champ As Champion
+            Get
+                Return _Champ
+            End Get
+        End Property
+
+        Public Function GetSourceUrl() As String
+            Return Me.srcUrl.Replace(Properties.ChampionVar, _Champ.Name)
+        End Function
+
         Public Function GetSourceUrl(ByVal lane As laneType) As String
-            Return _Champ.SourceUrl(False).Replace(LaneVar, lane.ToString())
+            Return GetSourceUrl().Replace(Properties.LaneVar, lane.ToString())
+        End Function
+
+        Public Function GetDestinationPathBase() As String
+            Return Me.destPathBase.Replace(Properties.ChampionVar, _Champ.Name)
         End Function
 
         Public Function GetDestinationPathBase(ByVal lane As laneType) As String
-            Return DPB.Replace(_LaneVar, lane.ToString())
+            Return GetDestinationPathBase().Replace(Properties.LaneVar, lane.ToString())
+        End Function
+
+        Public Function GetDestinationPath() As String
+            Return Me.destPath.Replace(Properties.ChampionVar, _Champ.Name)
         End Function
 
         Public Function GetDestinationPath(ByVal lane As laneType) As String
-            Return _Champ.DestinationPath(False).Replace(_LaneVar, lane.ToString())
+            Return GetDestinationPath().Replace(Properties.LaneVar, lane.ToString())
+        End Function
+
+        Public Function GetDestinationFile() As String
+            Return Me.destFile.Replace(Properties.ChampionVar, _Champ.Name)
         End Function
 
         Public Function GetDestinationFile(ByVal lane As laneType) As String
-            Return _Champ.DestinationFile(False).Replace(_LaneVar, lane.ToString())
+            Return GetDestinationFile().Replace(Properties.LaneVar, lane.ToString())
+        End Function
+
+        Public Function GetFullPath() As String
+            Return GetDestinationPathBase() & GetDestinationPath() & GetDestinationFile()
+        End Function
+
+        Public Function GetFullPath(ByVal lane As laneType) As String
+            Return GetFullPath().Replace(Properties.LaneVar, lane.ToString())
         End Function
 
         Public Sub DownloadBuild(ByVal lane As laneType)
-            Using Downloader As New Download : With Downloader
-                    .Download(GetSourceUrl(lane), GetDestinationPathBase(lane) & GetDestinationPath(lane) & GetDestinationFile(lane))
-                End With
+            Dim URI As New System.Uri(GetSourceUrl(lane), System.UriKind.Absolute)
+            Using client As New System.Net.WebClient
+                Using stream As New StreamReader(client.OpenRead(URI), System.Text.Encoding.UTF8)
+                    Dim bld As String = stream.ReadToEnd()
+                    builds.Add({lane, bld})
+                End Using
             End Using
+        End Sub
+
+        Public Sub SaveBuilds()
+            For Each objArr As Array In builds
+                Try
+                    Dim fs As New FileStream(GetFullPath(objArr(0)), FileMode.Create, FileAccess.ReadWrite)
+                    Dim enc As New System.Text.UTF8Encoding(True, False)
+                    Dim data As Byte() = enc.GetBytes(objArr(1))
+                    fs.Write(data, 0, data.Count)
+                    fs.Close()
+                Catch : End Try
+            Next
         End Sub
 
 #Region "IDisposable Support"

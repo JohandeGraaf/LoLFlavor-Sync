@@ -9,7 +9,11 @@ Public Class frmFlavorSyncSettings
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        If Properties.Garena Then
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+        Else
+            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+        End If
         Me.AcceptButton = btnOk
         Me.CancelButton = btnCancel
         Me.txtLoLPath.Text = Properties.LoLPath
@@ -21,21 +25,13 @@ Public Class frmFlavorSyncSettings
     End Sub
 
     Private Sub LoadSettings()
-        LoadBuitinSources()
+
     End Sub
 
     Private Sub SaveSettings(ByVal save As Boolean, ByVal close As Boolean)
         If Not save Then
             Me.Close()
         Else
-            If clbSource.CheckedIndices.Count <= 0 Then
-                MessageBox.Show("Select at least one source.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                Exit Sub
-            ElseIf clbSource.CheckedIndices.Count >= 2 Then
-                MessageBox.Show("Please select only one source.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                Exit Sub
-            End If
-
             Properties.OptionSkipForm = Not chkHide.Checked
             Properties.OptionVersionCheckDisabled = Not chkCheckNewVersion.Checked
 
@@ -74,6 +70,7 @@ Public Class frmFlavorSyncSettings
             MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
+        If Properties.Garena Then Properties.DetectGarenaPath()
     End Sub
 
     Private Sub AddChampion(ByVal Name As String, Optional ByVal DisplayName As String = Nothing)
@@ -90,46 +87,6 @@ Public Class frmFlavorSyncSettings
         End If
         RenewChampions = True
         MessageBox.Show("Champion added!", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information)
-    End Sub
-
-    Public srcArray(0) As Sources
-    Public Structure Sources
-        Public Name As String
-        Public SourceUrlFormat As String
-        Public DestinationPathFormat As String
-    End Structure
-    Private Sub LoadBuitinSources()
-        Dim src As New Sources
-        src.Name = "LoLFlavor.com"
-        src.SourceUrlFormat = "http://www.lolflavor.com/champions/{Champion}/Recommended/{Champion}_{Lane}_scrape.json"
-        src.DestinationPathFormat = "{Champion}_{Lane}_scrape.json"
-        srcArray(0) = src
-        LoadClb()
-    End Sub
-
-    Private Sub LoadClb()
-        clbSource.Items.Clear()
-        For Each obj In srcArray
-            clbSource.Items.Add(obj.Name)
-        Next
-        clbSource.SetItemChecked(0, True)
-        clbSource.SelectedIndex = 0
-    End Sub
-
-    Private Sub AddSources(ByVal Name As String, ByVal SourceUrlFormat As String, ByVal DestinationPathFormat As String)
-        Dim src As New Sources
-        src.Name = Name
-        src.SourceUrlFormat = SourceUrlFormat
-        src.DestinationPathFormat = DestinationPathFormat
-        ReDim Preserve srcArray(srcArray.Length)
-        srcArray(srcArray.Length - 1) = src
-        LoadClb()
-    End Sub
-
-    Private Sub DeleteSources(ByVal Index As Integer)
-        If Not Index = srcArray.Length - 1 Then moveItemToEndOfArray(srcArray, Index)
-        ReDim Preserve srcArray(srcArray.Length - 2)
-        LoadClb()
     End Sub
 
     Public Sub moveItemToEndOfArray(ByRef Ar As Array, ByVal Indextomove As Integer)
@@ -150,75 +107,11 @@ Public Class frmFlavorSyncSettings
         LoadSettings()
     End Sub
 
-    Private Sub clbSource_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clbSource.SelectedIndexChanged
-        If clbSource.SelectedIndex <= 0 Then
-            btnSave.Visible = False
-            btnSave.Enabled = False
-            btnDelete.Enabled = False
-        Else
-            btnSave.Visible = True
-            btnSave.Enabled = False
-            btnDelete.Enabled = True
-        End If
-        txtUrlFormat.Text = srcArray(clbSource.SelectedIndex).SourceUrlFormat
-        txtFileFormat.Text = srcArray(clbSource.SelectedIndex).DestinationPathFormat
-    End Sub
-
-    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        Dim Name As String = InputBox("Name: ")
-        Dim SourceUrlFormat As String = InputBox("Download URL format: ")
-        Dim DestinationPathFormat As String = InputBox("Filename format: ")
-        AddSources(Name, SourceUrlFormat, DestinationPathFormat)
-    End Sub
-
-    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-        Dim Index As Integer = clbSource.SelectedIndex
-        DeleteSources(Index)
-        clbSource.SelectedIndex = Index - 1
-    End Sub
-
-    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        btnSave.Enabled = False
-    End Sub
-
-    Private Sub txtClick(sender As Object, e As EventArgs) Handles txtUrlFormat.Click, txtFileFormat.Click
-        btnSave.Enabled = True
-    End Sub
-
-    Private Sub clbSource_Click(sender As Object, e As EventArgs) Handles clbSource.Click
-        btnApply.Enabled = True
-    End Sub
-
     Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
+        'About tab
         If TabControl1.SelectedIndex = 1 Then
-            'Advanced tab
-            Me.Width = 620
-            Me.TabControl1.Width = 576
-            Me.tabAdvanced.Width = 568
-            Me.GroupBox3.Width = 559
-            Me.GroupBox4.Width = 400
-            Me.txtUrlFormat.Width = 392
-            Me.txtFileFormat.Width = 392
-            Me.btnOk.Location = New System.Drawing.Point(351, 352)
-            Me.btnCancel.Location = New System.Drawing.Point(432, 352)
-            Me.btnApply.Location = New System.Drawing.Point(513, 352)
-        Else
-            'General or about tab
-            Me.Width = 484
-            Me.TabControl1.Width = 440
-            Me.tabAdvanced.Width = 432
-            Me.GroupBox3.Width = 423
-            Me.GroupBox4.Width = 264
-            Me.txtUrlFormat.Width = 260
-            Me.txtFileFormat.Width = 260
-            Me.btnOk.Location = New System.Drawing.Point(215, 352)
-            Me.btnCancel.Location = New System.Drawing.Point(296, 352)
-            Me.btnApply.Location = New System.Drawing.Point(377, 352)
-            'About tab
-            If TabControl1.SelectedIndex = 2 Then
-                txtChangelog.Select(txtChangelog.TextLength, 0)
-                txtChangelog.ScrollToCaret()
-            End If
+            txtChangelog.Select(txtChangelog.TextLength, 0)
+            txtChangelog.ScrollToCaret()
         End If
     End Sub
 

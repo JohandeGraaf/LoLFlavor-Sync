@@ -22,6 +22,7 @@ Partial Class frmFlavorSyncMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFlavorSyncMain))
         Me.btnDownloadBuilds = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -37,13 +38,20 @@ Partial Class frmFlavorSyncMain
         Me.LoLFlavorSyncToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.grpBuildTypes = New System.Windows.Forms.GroupBox()
         Me.grpBuildsLastUpdated = New System.Windows.Forms.GroupBox()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.lblLoLFlavorUpdated = New System.Windows.Forms.Label()
+        Me.lblInfo2 = New System.Windows.Forms.Label()
+        Me.lblInfo1 = New System.Windows.Forms.Label()
+        Me.grpSettings = New System.Windows.Forms.GroupBox()
+        Me.cmbMode = New System.Windows.Forms.ComboBox()
+        Me.ttMode = New System.Windows.Forms.ToolTip(Me.components)
         Me.MenuStrip1.SuspendLayout()
         Me.grpBuildTypes.SuspendLayout()
         Me.grpBuildsLastUpdated.SuspendLayout()
+        Me.grpSettings.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnDownloadBuilds
@@ -117,7 +125,7 @@ Partial Class frmFlavorSyncMain
         Me.clbChamps.FormattingEnabled = True
         Me.clbChamps.Location = New System.Drawing.Point(15, 91)
         Me.clbChamps.Name = "clbChamps"
-        Me.clbChamps.Size = New System.Drawing.Size(307, 304)
+        Me.clbChamps.Size = New System.Drawing.Size(307, 319)
         Me.clbChamps.TabIndex = 15
         '
         'btnSelectAll
@@ -141,7 +149,7 @@ Partial Class frmFlavorSyncMain
         'lblLastUsed
         '
         Me.lblLastUsed.AutoSize = True
-        Me.lblLastUsed.Location = New System.Drawing.Point(12, 18)
+        Me.lblLastUsed.Location = New System.Drawing.Point(6, 35)
         Me.lblLastUsed.Name = "lblLastUsed"
         Me.lblLastUsed.Size = New System.Drawing.Size(53, 13)
         Me.lblLastUsed.TabIndex = 22
@@ -167,19 +175,24 @@ Partial Class frmFlavorSyncMain
         'DownloadToolStripMenuItem
         '
         Me.DownloadToolStripMenuItem.Name = "DownloadToolStripMenuItem"
-        Me.DownloadToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DownloadToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.DownloadToolStripMenuItem.Text = "Download"
         '
         'SettingsToolStripMenuItem
         '
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(141, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.ExitToolStripMenuItem.Text = "Exit (Alt + F4)"
         '
         'grpBuildTypes
@@ -188,34 +201,91 @@ Partial Class frmFlavorSyncMain
         Me.grpBuildTypes.Controls.Add(Me.chkDownloadJungle)
         Me.grpBuildTypes.Controls.Add(Me.chkDownloadSupport)
         Me.grpBuildTypes.Controls.Add(Me.chkDownloadARAM)
-        Me.grpBuildTypes.Location = New System.Drawing.Point(328, 189)
+        Me.grpBuildTypes.Location = New System.Drawing.Point(328, 242)
         Me.grpBuildTypes.Name = "grpBuildTypes"
         Me.grpBuildTypes.Size = New System.Drawing.Size(146, 115)
         Me.grpBuildTypes.TabIndex = 24
         Me.grpBuildTypes.TabStop = False
         Me.grpBuildTypes.Text = "Builds"
+        Me.ttMode.SetToolTip(Me.grpBuildTypes, "Select the build types you want to download.")
         '
         'grpBuildsLastUpdated
         '
+        Me.grpBuildsLastUpdated.Controls.Add(Me.lblLoLFlavorUpdated)
+        Me.grpBuildsLastUpdated.Controls.Add(Me.lblInfo2)
+        Me.grpBuildsLastUpdated.Controls.Add(Me.lblInfo1)
         Me.grpBuildsLastUpdated.Controls.Add(Me.lblLastUsed)
-        Me.grpBuildsLastUpdated.Location = New System.Drawing.Point(328, 146)
+        Me.grpBuildsLastUpdated.Location = New System.Drawing.Point(328, 143)
         Me.grpBuildsLastUpdated.Name = "grpBuildsLastUpdated"
-        Me.grpBuildsLastUpdated.Size = New System.Drawing.Size(146, 37)
+        Me.grpBuildsLastUpdated.Size = New System.Drawing.Size(146, 93)
         Me.grpBuildsLastUpdated.TabIndex = 25
         Me.grpBuildsLastUpdated.TabStop = False
         Me.grpBuildsLastUpdated.Text = "Last updated"
+        Me.ttMode.SetToolTip(Me.grpBuildsLastUpdated, "Local Builds: Shows when you've last updated your builds." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "LoLFlavor.com: Shows w" & _
+        "hen LoLFlavor.com last updated their builds.")
         '
-        'ToolStripSeparator1
+        'lblLoLFlavorUpdated
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(149, 6)
+        Me.lblLoLFlavorUpdated.AutoSize = True
+        Me.lblLoLFlavorUpdated.Location = New System.Drawing.Point(6, 75)
+        Me.lblLoLFlavorUpdated.Name = "lblLoLFlavorUpdated"
+        Me.lblLoLFlavorUpdated.Size = New System.Drawing.Size(53, 13)
+        Me.lblLoLFlavorUpdated.TabIndex = 25
+        Me.lblLoLFlavorUpdated.Text = "Unknown"
+        '
+        'lblInfo2
+        '
+        Me.lblInfo2.AutoSize = True
+        Me.lblInfo2.Location = New System.Drawing.Point(6, 58)
+        Me.lblInfo2.Name = "lblInfo2"
+        Me.lblInfo2.Size = New System.Drawing.Size(80, 13)
+        Me.lblInfo2.TabIndex = 24
+        Me.lblInfo2.Text = "LoLFlavor.com:"
+        '
+        'lblInfo1
+        '
+        Me.lblInfo1.AutoSize = True
+        Me.lblInfo1.Location = New System.Drawing.Point(6, 18)
+        Me.lblInfo1.Name = "lblInfo1"
+        Me.lblInfo1.Size = New System.Drawing.Size(67, 13)
+        Me.lblInfo1.TabIndex = 23
+        Me.lblInfo1.Text = "Local Builds:"
+        '
+        'grpSettings
+        '
+        Me.grpSettings.Controls.Add(Me.cmbMode)
+        Me.grpSettings.Location = New System.Drawing.Point(328, 363)
+        Me.grpSettings.Name = "grpSettings"
+        Me.grpSettings.Size = New System.Drawing.Size(143, 47)
+        Me.grpSettings.TabIndex = 27
+        Me.grpSettings.TabStop = False
+        Me.grpSettings.Text = "Mode"
+        '
+        'cmbMode
+        '
+        Me.cmbMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbMode.FormattingEnabled = True
+        Me.cmbMode.Items.AddRange(New Object() {"Remove", "Overwrite", "Remove Only"})
+        Me.cmbMode.Location = New System.Drawing.Point(6, 19)
+        Me.cmbMode.Name = "cmbMode"
+        Me.cmbMode.Size = New System.Drawing.Size(131, 21)
+        Me.cmbMode.TabIndex = 1
+        Me.ttMode.SetToolTip(Me.cmbMode, resources.GetString("cmbMode.ToolTip"))
+        '
+        'ttMode
+        '
+        Me.ttMode.AutomaticDelay = 100
+        Me.ttMode.AutoPopDelay = 20000
+        Me.ttMode.InitialDelay = 100
+        Me.ttMode.ReshowDelay = 20
         '
         'frmFlavorSyncMain
         '
         Me.AcceptButton = Me.btnDownloadBuilds
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(483, 403)
+        Me.ClientSize = New System.Drawing.Size(483, 420)
+        Me.Controls.Add(Me.grpSettings)
         Me.Controls.Add(Me.grpBuildsLastUpdated)
         Me.Controls.Add(Me.grpBuildTypes)
         Me.Controls.Add(Me.btnDeselectAll)
@@ -238,6 +308,7 @@ Partial Class frmFlavorSyncMain
         Me.grpBuildTypes.PerformLayout()
         Me.grpBuildsLastUpdated.ResumeLayout(False)
         Me.grpBuildsLastUpdated.PerformLayout()
+        Me.grpSettings.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -260,4 +331,10 @@ Partial Class frmFlavorSyncMain
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents DownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents grpSettings As System.Windows.Forms.GroupBox
+    Friend WithEvents cmbMode As System.Windows.Forms.ComboBox
+    Friend WithEvents ttMode As System.Windows.Forms.ToolTip
+    Friend WithEvents lblLoLFlavorUpdated As System.Windows.Forms.Label
+    Friend WithEvents lblInfo2 As System.Windows.Forms.Label
+    Friend WithEvents lblInfo1 As System.Windows.Forms.Label
 End Class
