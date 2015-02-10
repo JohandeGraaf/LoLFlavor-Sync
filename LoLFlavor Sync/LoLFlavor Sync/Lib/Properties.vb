@@ -1,6 +1,6 @@
 ﻿Imports Microsoft.Win32
 Imports System.IO
-Namespace Global.LoLFlavor_Sync.Library
+Namespace Global.LoLFlavor_Sync.Lib
     ''' <summary>
     ''' Provides static properties and methods for LoLFlavor Sync.
     ''' </summary>
@@ -12,6 +12,7 @@ Namespace Global.LoLFlavor_Sync.Library
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
         Public Property VersionFileName As String = "LoLFlavorSync.version"
+        Public Property Verbose As Integer = 0
 
         Public Property Garena As Boolean = False
 
@@ -57,7 +58,7 @@ Namespace Global.LoLFlavor_Sync.Library
         Public Property About As String = _
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine & _
             Environment.NewLine & _
-            "Copyright © 2014 - Johan de Graaf"
+            "Copyright © 2014-2015 - Johan de Graaf"
 
         Public Property OptionSkipForm As Boolean
             Get

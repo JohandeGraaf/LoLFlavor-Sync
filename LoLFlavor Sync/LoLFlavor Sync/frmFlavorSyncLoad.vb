@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Library
+﻿Imports LoLFlavor_Sync.Lib
 Imports System.IO
 Public Class frmFlavorSyncLoad
     Private LPD As Boolean?

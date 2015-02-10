@@ -1,6 +1,8 @@
-﻿Imports LoLFlavor_Sync.Library
+﻿Imports LoLFlavor_Sync.Lib
 Imports System.IO
 Imports System.Threading
+Imports LoLFlavor_Sync.DLBuilds
+
 Public Class frmFlavorSyncDownload
     Public Property mode As modes = modes.Remove
 
@@ -11,20 +13,15 @@ Public Class frmFlavorSyncDownload
     End Enum
 
     Private downloading As Boolean
-    Private cancel As Boolean
-
-    Private champsToDownload As List(Of Champion)
-    Private buildsToDownload As List(Of DownloadChampion.laneType)
-    Private builds As New List(Of DownloadChampion)
     Private wrkThread As Thread
+    Private _GetBuilds As GetBuilds
 
-    Sub New(ByVal chTD As List(Of Champion), ByVal bTD As List(Of DownloadChampion.laneType))
+    Sub New(ByVal DL As GetBuilds)
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Me.champsToDownload = chTD
-        Me.buildsToDownload = bTD
+        Me._GetBuilds = DL
     End Sub
 
     Private Sub formLoad()
@@ -92,16 +89,12 @@ Public Class frmFlavorSyncDownload
         If mode = modes.RemoveOnly Then
             pRemove()
             StartRemove()
-            Exit Sub
         Else
             pCheckConnectivity()
             startCheckConnectivity()
 
             pDownload()
             startDownload()
-
-            pPrepareInstall()
-            startPrepareInstall()
 
             pInstall()
             startInstall()
@@ -131,7 +124,7 @@ Public Class frmFlavorSyncDownload
     End Sub
 
     Private Sub StartRemove()
-        startPrepareInstall()
+        _GetBuilds.RemoveAllBuilds()
         pComplete()
     End Sub
 
@@ -178,7 +171,7 @@ Public Class frmFlavorSyncDownload
             If tries > maxtries Then
                 addStatus("Not connected after " & maxtries & " tries, canceling..")
                 Me.BeginInvoke(Sub() Me.Close())
-                startCancel()
+                Thread.Sleep(1000)
                 Exit Sub
             Else
                 addStatus("Not connected, try " & tries & " of " & maxtries)
@@ -212,94 +205,28 @@ Public Class frmFlavorSyncDownload
         End If
     End Sub
     Private Sub startDownload()
-        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) / champsToDownload.Count / buildsToDownload.Count
-        For Each objChampion As Champion In champsToDownload
-            If cancel Then
-                startCancel()
-                Exit Sub
-            End If
-            addStatus("Downloading builds for: " & objChampion.DisplayName, True)
-            Dim objDL As DownloadChampion
-            If Properties.Garena Then
-                objDL = New DownloadChampion(objChampion, Properties.LoLFlavorSourceUrlFormat, Properties.LoLPath, Properties.GarenaDestinationPath, Properties.GarenaDestinationFile)
-            Else
-                objDL = New DownloadChampion(objChampion, Properties.LoLFlavorSourceUrlFormat, Properties.LoLPath, Properties.RiotDestinationPath, Properties.RiotDestinationFile)
-            End If
-
-            For Each objBuild As DownloadChampion.laneType In buildsToDownload
-                Dim lStrF As String = objBuild.ToString.ElementAt(0)
-                Dim lStr As String = lStrF.ToUpper & objBuild.ToString.Remove(0, 1)
-                Try
-                    objDL.DownloadBuild(objBuild)
-                    addStatus(lStr & " Success")
-                Catch ex As Exception
-                    addStatus(lStr & " Failed: " & ex.Message)
-                End Try
+        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) / _GetBuilds.GetChampsToDownload.Count / _GetBuilds.GetBuildsToDownload.Count
+        Dim updateStatus As Action(Of String) = _
+            Sub(text As String)
+                addStatus(text)
+            End Sub
+        Dim updateLabel As Action(Of String) = _
+            Sub(text As String)
+                addStatus(text, True, True)
+            End Sub
+        Dim updatePB As Action = _
+            Sub()
                 addPb(pbIncrement)
-            Next
-            builds.Add(objDL)
-            addStatus(" ")
-        Next
+            End Sub
+
+        _GetBuilds.SetUpdateLabel(updateLabel)
+        _GetBuilds.SetUpdateStatus(updateStatus)
+        _GetBuilds.SetUpdatePB(updatePB)
+
+        _GetBuilds.Download()
+
         addPbPercentage(100)
         System.Threading.Thread.Sleep(250)
-    End Sub
-
-    Private Sub pPrepareInstall()
-        If Me.InvokeRequired Then
-            Me.Invoke(New Action(AddressOf pPrepareInstall))
-        Else
-            pbStatus.Maximum = 100000
-            pbStatus.Value = 0
-            pbOverallStatus.Value = 50
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
-
-            If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Preparing"
-            Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Preparing"
-            End If
-            addStatus("Preparing..", True)
-            Me.Refresh()
-        End If
-    End Sub
-
-    Private Sub startPrepareInstall()
-        Dim path As String
-        Dim del As New List(Of String)
-
-        If Properties.Garena Then
-            path = Properties.LoLPath & Properties.GarenaDestinationPathB
-        Else
-            path = Properties.LoLPath & Properties.RiotDestinationPathB
-        End If
-
-        If Not Directory.Exists(path) Then
-            Directory.CreateDirectory(path)
-            mode = modes.Overwrite
-        End If
-
-        For Each objChampion As Champion In Properties.AllChampions
-            Dim path2 As String = path & "\" & objChampion.Name()
-            If Directory.Exists(path2) Then
-                If Directory.Exists(path2 & "\Recommended") Then
-                    del.Add(path2 & "\Recommended")
-                Else
-                    Directory.CreateDirectory(path2 & "\Recommended")
-                End If
-            Else
-                Directory.CreateDirectory(path2 & "\Recommended")
-            End If
-        Next
-
-        If mode = modes.Remove Or mode = modes.RemoveOnly Then
-            Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ If(del.Count <= 0, 1, del.Count)
-            For Each objStr As String In del
-                Properties.DelFolderContent(objStr, False, True, pbIncrement, AddressOf addPb, False, Sub(x) x = x)
-            Next
-        End If
-
-        addPbPercentage(100)
     End Sub
 
     Private Sub pInstall()
@@ -317,18 +244,19 @@ Public Class frmFlavorSyncDownload
             Else
                 Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Saving"
             End If
-            addStatus(" ")
             addStatus("Saving..", True)
             Me.Refresh()
         End If
     End Sub
     Private Sub startInstall()
-        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ builds.Count
+        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ _GetBuilds.GetDownloadedBuilds.Count
+        Dim updatePB As Action = _
+            Sub()
+                addPb(pbIncrement)
+            End Sub
 
-        For Each objDlCh As DownloadChampion In builds
-            objDlCh.SaveBuilds()
-            addPb(pbIncrement)
-        Next
+        _GetBuilds.SetUpdatePB(updatePB)
+        _GetBuilds.Save(CBool(mode = modes.Remove))
 
         addPbPercentage(100)
         System.Threading.Thread.Sleep(250)
@@ -380,8 +308,14 @@ Public Class frmFlavorSyncDownload
         End If
     End Sub
     Private Sub startCancel()
-        pCancel()
-        Thread.CurrentThread.Abort()
+        If Me.InvokeRequired Then
+            Me.Invoke(New Action(AddressOf startCancel))
+        Else
+            pCancel()
+            _GetBuilds.Cancel()
+            Thread.Sleep(750)
+            wrkThread.Abort()
+        End If
     End Sub
 
 #Region "Event Handlers"
@@ -409,7 +343,7 @@ Public Class frmFlavorSyncDownload
     End Sub
 
     Private Sub frmFlavorSyncDownload_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        cancel = True
+        startCancel()
         While wrkThread.IsAlive()
             Application.DoEvents()
         End While

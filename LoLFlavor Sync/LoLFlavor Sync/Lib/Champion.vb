@@ -1,4 +1,4 @@
-﻿Namespace Global.LoLFlavor_Sync.Library
+﻿Namespace Global.LoLFlavor_Sync.Lib
     Public Class Champion
         Private _Name As String
         Private _DisplayName As String

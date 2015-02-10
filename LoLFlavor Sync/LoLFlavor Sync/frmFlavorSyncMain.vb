@@ -1,5 +1,7 @@
-﻿Imports LoLFlavor_Sync.Library
+﻿Imports LoLFlavor_Sync.Lib
 Imports System.IO
+Imports LoLFlavor_Sync.DLBuilds
+
 Public Class frmFlavorSyncMain
     Public Property frmState As Boolean
         Set(value As Boolean)
@@ -69,6 +71,7 @@ Public Class frmFlavorSyncMain
                 popup.ShowBalloonTip(10000)
             End If
         Catch ex As Exception
+            If Properties.Verbose > 0 Then MessageBox.Show(ex.Message() & Environment.NewLine & ex.ToString() & Environment.NewLine & ex.HResult())
             Exit Sub
         End Try
     End Sub
@@ -85,10 +88,11 @@ Public Class frmFlavorSyncMain
             Dim rawDate As String = rawData.Substring(firstIndex, lastIndex)
             dt = Date.Parse(rawDate)
         Catch ex As Exception
-            MessageBox.Show(ex.ToString())
+            If Properties.Verbose > 0 Then MessageBox.Show(ex.Message() & Environment.NewLine & ex.ToString() & Environment.NewLine & ex.HResult())
+            Return "Error"
         End Try
 
-        If dt = Nothing Then
+        If dt = Nothing OrElse dt = (New DateTime) Then
             Return "Unknown"
         Else
             Return dt.ToShortDateString() & " - " & dt.ToShortTimeString()
@@ -147,16 +151,16 @@ Public Class frmFlavorSyncMain
             champsToDownload.Add(Properties.AllChampions.ElementAt(obj))
         Next
 
-        Dim buildTypesToDownload As New List(Of DownloadChampion.laneType)
-        If chkDownloadLane.Checked Then buildTypesToDownload.Add(DownloadChampion.laneType.lane)
-        If chkDownloadJungle.Checked Then buildTypesToDownload.Add(DownloadChampion.laneType.jungle)
-        If chkDownloadSupport.Checked Then buildTypesToDownload.Add(DownloadChampion.laneType.support)
-        If chkDownloadARAM.Checked Then buildTypesToDownload.Add(DownloadChampion.laneType.aram)
+        Dim buildTypesToDownload As New List(Of IDownloadInfo.laneType)
+        If chkDownloadLane.Checked Then buildTypesToDownload.Add(IDownloadInfo.laneType.lane)
+        If chkDownloadJungle.Checked Then buildTypesToDownload.Add(IDownloadInfo.laneType.jungle)
+        If chkDownloadSupport.Checked Then buildTypesToDownload.Add(IDownloadInfo.laneType.support)
+        If chkDownloadARAM.Checked Then buildTypesToDownload.Add(IDownloadInfo.laneType.aram)
 
         Properties.OptionLastUsed = DateTime.Now
         frmState = False
 
-        Dim frmDownload As New frmFlavorSyncDownload(champsToDownload, buildTypesToDownload)
+        Dim frmDownload As New frmFlavorSyncDownload(New GetBuilds(GetBuilds.Source.LoLFlavor, champsToDownload, buildTypesToDownload))
 
         If cmbMode.SelectedIndex = 0 Then
             frmDownload.mode = frmFlavorSyncDownload.modes.Remove

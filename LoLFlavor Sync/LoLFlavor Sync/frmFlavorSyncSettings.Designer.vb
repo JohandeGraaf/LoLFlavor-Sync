@@ -333,6 +333,7 @@ Partial Class frmFlavorSyncSettings
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "frmFlavorSyncSettings"
+        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "LoLFlavor Sync: Settings"
         Me.TabControl1.ResumeLayout(False)

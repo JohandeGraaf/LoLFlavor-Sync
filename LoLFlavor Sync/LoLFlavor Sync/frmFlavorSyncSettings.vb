@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Library
+﻿Imports LoLFlavor_Sync.Lib
 Public Class frmFlavorSyncSettings
 
     Public Property RenewChampions As Boolean
