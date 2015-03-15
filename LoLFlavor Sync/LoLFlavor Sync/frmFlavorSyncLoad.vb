@@ -114,6 +114,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Annie"})
         lst.Add({"Ashe"})
         lst.Add({"Azir"})
+        lst.Add({"Bard"})
         lst.Add({"Blitzcrank"})
         lst.Add({"Brand"})
         lst.Add({"Braum"})

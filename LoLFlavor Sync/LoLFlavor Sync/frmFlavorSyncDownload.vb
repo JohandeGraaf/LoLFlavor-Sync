@@ -30,7 +30,7 @@ Public Class frmFlavorSyncDownload
         Else
             Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
         End If
-        Me.Cursor = Cursors.WaitCursor
+        Me.Cursor = Cursors.AppStarting
         Me.ActiveControl = btnCancel
         Me.txtStatus.Visible = False
         wrkThread = New Thread(AddressOf Me.Start)
@@ -68,6 +68,16 @@ Public Class frmFlavorSyncDownload
         End If
     End Sub
 
+    Private Sub txtStatusToBottom(Optional refresh As Boolean = True)
+        If txtStatus.InvokeRequired Then
+            txtStatus.Invoke(New Action(Sub() txtStatusToBottom(refresh)))
+        Else
+            txtStatus.Select(txtStatus.TextLength, 0)
+            txtStatus.ScrollToCaret()
+            If refresh Then txtStatus.Refresh()
+        End If
+    End Sub
+
     Private Sub addStatus(ByVal status As String, Optional ByVal updateLabel As Boolean = False, Optional ByVal onlyLabel As Boolean = False)
         If txtStatus.InvokeRequired Then
             txtStatus.Invoke(New Action(Sub() addStatus(status, updateLabel, onlyLabel)))
@@ -78,9 +88,7 @@ Public Class frmFlavorSyncDownload
             End If
             If Not onlyLabel Then
                 txtStatus.AppendText(status & Environment.NewLine)
-                txtStatus.Select(txtStatus.TextLength, 0)
-                txtStatus.ScrollToCaret()
-                txtStatus.Refresh()
+                txtStatusToBottom(False)
             End If
         End If
     End Sub
@@ -332,26 +340,29 @@ Public Class frmFlavorSyncDownload
     End Sub
 
     Private Sub btnDisplayOutput_Click(sender As Object, e As EventArgs) Handles btnDisplayOutput.Click
-        If txtStatus.Visible Then
-            Me.Height = 219
-            btnDisplayOutput.Text = "Show output"
-        Else
-            Me.Height = 378
-            btnDisplayOutput.Text = "Hide output"
-        End If
         txtStatus.Visible = Not txtStatus.Visible
+        If txtStatus.Visible Then
+            Me.Height = 378
+            btnDisplayOutput.Text = "Fewer details"
+            txtStatusToBottom()
+        Else
+            Me.Height = 219
+            btnDisplayOutput.Text = "More details"
+        End If
     End Sub
 
     Private Sub frmFlavorSyncDownload_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        startCancel()
-        While wrkThread.IsAlive()
-            Application.DoEvents()
-        End While
+        If downloading Then
+            startCancel()
+            While wrkThread.IsAlive()
+                Application.DoEvents()
+            End While
+        End If
     End Sub
 
     Private Sub frmFlavorSyncDownload_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         If Not downloading Then
-            Environment.Exit(0)
+            Application.Exit()
         End If
     End Sub
 #End Region

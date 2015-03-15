@@ -32,6 +32,7 @@ Public Class frmFlavorSyncMain
         Else
             lblLastUsed.Text = Properties.OptionLastUsed.ToShortDateString() & " - " & Properties.OptionLastUsed.ToShortTimeString()
         End If
+        Me.ttMode.SetToolTip(Me.grpSettings, Me.ttMode.GetToolTip(Me.cmbMode))
         initializeClbChamps(True)
         ActiveControl = btnDownloadBuilds
     End Sub
@@ -62,7 +63,9 @@ Public Class frmFlavorSyncMain
 
             If String.Compare(Properties.VersionLocal, Properties.VersionOnline) <> 0 Then
                 Dim popup As New NotifyIcon
-                AddHandler popup.BalloonTipClicked, Sub(sender As Object, e As EventArgs) Process.Start(Properties.UrlExecutable)
+                Dim openURLToExe As EventHandler = Sub(sender, e) Process.Start(Properties.UrlExecutable)
+                AddHandler popup.BalloonTipClicked, openURLToExe
+                AddHandler popup.Click, openURLToExe
                 popup.BalloonTipTitle = "LoLFlavor Sync " & Properties.VersionLocal
                 popup.BalloonTipText = "New version available." & Environment.NewLine & "Click here to download LoLFlavor Sync " & Properties.VersionOnline
                 popup.BalloonTipIcon = ToolTipIcon.Info
@@ -223,7 +226,7 @@ Public Class frmFlavorSyncMain
     End Sub
 
     Private Sub frmFlavorSync_Close() Handles MyBase.FormClosed
-        Environment.Exit(0)
+        Application.Exit()
     End Sub
 #End Region
 End Class

@@ -104,7 +104,7 @@ Partial Class frmFlavorSyncDownload
         Me.btnDisplayOutput.Name = "btnDisplayOutput"
         Me.btnDisplayOutput.Size = New System.Drawing.Size(94, 23)
         Me.btnDisplayOutput.TabIndex = 8
-        Me.btnDisplayOutput.Text = "Show output"
+        Me.btnDisplayOutput.Text = "More details"
         Me.btnDisplayOutput.UseVisualStyleBackColor = True
         '
         'frmFlavorSyncDownload

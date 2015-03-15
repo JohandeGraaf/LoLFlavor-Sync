@@ -124,12 +124,12 @@
     <value>132, 17</value>
   </metadata>
   <data name="cmbMode.ToolTip" xml:space="preserve">
-    <value>Remove    - Removes all the old builds, and downloads new builds.
-Overwrite  - Doesn't remove the old builds, but overwrites them if the new builds have the same name.
-Remove Only - Removes all builds without downloading new builds.
+    <value>Remove  -  Remove all existing builds, and download new ones.
+Overwrite  -  Does not remove existing builds, but overwrites them if a newer version is found.
+Remove Only  -  Remove all existing builds. (No builds are downloaded.)
 
 Note: LoLFlavor Sync won't remove or overwrite the builds you've made in the LoL client. (Profile &gt; Item Sets).
-It only overwrites or removes the builds you've downloaded with LoLFlavor Sync or another program that downloads builds.</value>
+It only overwrites or removes the builds you've downloaded with LoLFlavor Sync or similar programs.</value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>38</value>
