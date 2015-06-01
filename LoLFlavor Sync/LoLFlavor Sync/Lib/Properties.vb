@@ -7,7 +7,7 @@ Namespace Global.LoLFlavor_Sync.Lib
     Module Properties
         Public Property AllChampions As List(Of Champion)
 
-        Public Property VersionLocal As String = "1.7.3"
+        Public Property VersionLocal As String = "1.7.4"
         Public Property VersionOnline As String
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
@@ -56,7 +56,8 @@ Namespace Global.LoLFlavor_Sync.Lib
             "1.7.1 - Added Garena support; Shows when LoLFlavor.com was last updated; " & Environment.NewLine & _
             "           Option to remove all old builds, or overwrite them; Improved build install." & Environment.NewLine & _
             "1.7.2 - Added Bard and small fixes." & Environment.NewLine & _
-            "1.7.3 - Added Ekko."
+            "1.7.3 - Added Ekko." & Environment.NewLine & _
+            "1.7.4 - Fixed crash when selecting Garena and no directory is found."
         Public Property About As String = _
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine & _
             Environment.NewLine & _
@@ -239,8 +240,8 @@ Namespace Global.LoLFlavor_Sync.Lib
 
         Public Function DetectLoLPath() As String
             If Garena Then
-                For Each subKey In Registry.LocalMachine.OpenSubKey("SOFTWARE\Garena").GetSubKeyNames
-                    Try
+                Try
+                    For Each subKey In Registry.LocalMachine.OpenSubKey("SOFTWARE\Garena").GetSubKeyNames
                         Using sk As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Garena\" & subKey)
                             Dim val As String = sk.GetValue("Path")
                             Dim beginIndex As Integer = val.IndexOf("\GameData\Apps")
@@ -248,11 +249,11 @@ Namespace Global.LoLFlavor_Sync.Lib
                             Dim pt As String = val.Remove(beginIndex)
                             If ValidLoLPath(pt) Then Return pt
                         End Using
-                    Catch : End Try
-                Next
+                    Next
+                Catch : End Try
                 If Environment.Is64BitOperatingSystem Then
-                    For Each subKey In Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Garena").GetSubKeyNames
-                        Try
+                    Try
+                        For Each subKey In Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Garena").GetSubKeyNames
                             Using sk As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Garena\" & subKey)
                                 Dim val As String = sk.GetValue("Path")
                                 Dim beginIndex As Integer = val.IndexOf("\GameData\Apps")
@@ -260,8 +261,8 @@ Namespace Global.LoLFlavor_Sync.Lib
                                 Dim pt As String = val.Remove(beginIndex)
                                 If ValidLoLPath(pt) Then Return pt
                             End Using
-                        Catch : End Try
-                    Next
+                        Next
+                    Catch : End Try
                 End If
             Else
                 Dim keys32 As List(Of Func(Of String)) = New List(Of Func(Of String))({ _
