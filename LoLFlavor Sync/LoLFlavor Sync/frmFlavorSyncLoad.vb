@@ -126,6 +126,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Diana"})
         lst.Add({"Draven"})
         lst.Add({"DrMundo", "Dr. Mundo"})
+        lst.Add({"Ekko"})
         lst.Add({"Elise"})
         lst.Add({"Evelynn"})
         lst.Add({"Ezreal"})
