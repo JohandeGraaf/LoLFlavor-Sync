@@ -7,7 +7,7 @@ Namespace Global.LoLFlavor_Sync.Lib
     Module Properties
         Public Property AllChampions As List(Of Champion)
 
-        Public Property VersionLocal As String = "1.7.4"
+        Public Property VersionLocal As String = "1.7.5"
         Public Property VersionOnline As String
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
@@ -57,7 +57,9 @@ Namespace Global.LoLFlavor_Sync.Lib
             "           Option to remove all old builds, or overwrite them; Improved build install." & Environment.NewLine & _
             "1.7.2 - Added Bard and small fixes." & Environment.NewLine & _
             "1.7.3 - Added Ekko." & Environment.NewLine & _
-            "1.7.4 - Fixed crash when selecting Garena and no directory is found."
+            "1.7.4 - Fixed crash when selecting Garena and no directory is found." & Environment.NewLine & _
+            "1.7.5 - Added Tahm Kench."
+
         Public Property About As String = _
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine & _
             Environment.NewLine & _

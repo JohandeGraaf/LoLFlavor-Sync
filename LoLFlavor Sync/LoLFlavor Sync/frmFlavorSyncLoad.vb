@@ -201,6 +201,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Soraka"})
         lst.Add({"Swain"})
         lst.Add({"Syndra"})
+        lst.Add({"TahmKench", "Tahm Kench"})
         lst.Add({"Talon"})
         lst.Add({"Taric"})
         lst.Add({"Teemo"})
