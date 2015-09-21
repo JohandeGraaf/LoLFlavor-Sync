@@ -1,5 +1,6 @@
 ﻿Imports LoLFlavor_Sync.Lib
 Imports System.IO
+Imports System.Net.NetworkInformation
 Imports System.Threading
 Imports LoLFlavor_Sync.DLBuilds
 
@@ -158,7 +159,7 @@ Public Class frmFlavorSyncDownload
         Dim tries As Integer = 1
         Dim maxtries As Integer = 10
         Dim intervalms As Integer = 10000
-        Dim connectedToInternet As Func(Of Boolean) = _
+        Dim connectedToInternet As Func(Of Boolean) =
             Function()
                 If My.Computer.Network.IsAvailable Then
                     Try
@@ -168,7 +169,27 @@ Public Class frmFlavorSyncDownload
                             End Using
                         End Using
                     Catch
-                        Return False
+                        Dim hosts As String() = {"8.8.8.8", "8.8.4.4", "4.2.2.2", "208.67.222.222", "208.67.220.220"}
+                        Dim success = 0
+
+                        For Each host In hosts
+                            Try
+                                Dim p As New Ping
+                                Dim po As New PingOptions
+                                Dim buffer(32) As Byte
+                                Const timeout As Integer = 1000
+                                Dim pr As PingReply = p.Send(host, timeout, buffer, po)
+                                success += 1
+                            Catch e As Exception
+                                Continue For
+                            End Try
+                        Next
+
+                        If success > 0 Then
+                            Return True
+                        Else
+                            Return False
+                        End If
                     End Try
                 Else
                     Return False

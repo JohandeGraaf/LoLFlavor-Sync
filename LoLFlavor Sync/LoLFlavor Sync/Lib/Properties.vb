@@ -38,27 +38,28 @@ Namespace Global.LoLFlavor_Sync.Lib
 
         Public Property UrlExecutable As String = "http://lolflavorsync.mcpvp.eu"
         Public Property UrlBoLProfile As String = "http://botoflegends.com/forum/user/59209-ampersand/"
-        Public Property UrlSkype As String = "skype:Johan_degraaf95?chat"
+        Public Property UrlSkype As String = "skype:johan95pb?chat"
         Public Property UrlGitHub As String = "https://github.com/Ampersand0"
 
-        Public Property Changelog As String = _
-            "1.0.0 - Release." & Environment.NewLine & _
-            "1.1.0 - Fixed some bugs." & Environment.NewLine & _
-            "1.2.0 - Added some settings." & Environment.NewLine & _
-            Environment.NewLine & _
-            "1.5.0 - Changed the download method to improve performance." & Environment.NewLine & _
-            "1.6.0 - Added settings to add champions and add a custom source for builds." & Environment.NewLine & _
-            "1.6.1 - Added Azir and Gnar." & Environment.NewLine & _
-            "1.6.2 - Added update message." & Environment.NewLine & _
-            "1.6.3 - Added Kalista." & Environment.NewLine & _
-            "1.6.4 - Added Rek'Sai." & Environment.NewLine & _
-            "1.7.0 - Recoded almost everything; improved performance; less bugs." & Environment.NewLine & _
-            "1.7.1 - Added Garena support; Shows when LoLFlavor.com was last updated; " & Environment.NewLine & _
-            "           Option to remove all old builds, or overwrite them; Improved build install." & Environment.NewLine & _
-            "1.7.2 - Added Bard and small fixes." & Environment.NewLine & _
-            "1.7.3 - Added Ekko." & Environment.NewLine & _
-            "1.7.4 - Fixed crash when selecting Garena and no directory is found." & Environment.NewLine & _
-            "1.7.5 - Added Tahm Kench."
+        Public Property Changelog As String =
+            "1.0.0 - Release." & Environment.NewLine &
+            "1.1.0 - Fixed some bugs." & Environment.NewLine &
+            "1.2.0 - Added some settings." & Environment.NewLine &
+            Environment.NewLine &
+            "1.5.0 - Changed the download method to improve performance." & Environment.NewLine &
+            "1.6.0 - Added settings to add champions and add a custom source for builds." & Environment.NewLine &
+            "1.6.1 - Added Azir and Gnar." & Environment.NewLine &
+            "1.6.2 - Added update message." & Environment.NewLine &
+            "1.6.3 - Added Kalista." & Environment.NewLine &
+            "1.6.4 - Added Rek'Sai." & Environment.NewLine &
+            "1.7.0 - Recoded almost everything; improved performance; less bugs." & Environment.NewLine &
+            "1.7.1 - Added Garena support; Shows when LoLFlavor.com was last updated; " & Environment.NewLine &
+            "           Option to remove all old builds, or overwrite them; Improved build install." & Environment.NewLine &
+            "1.7.2 - Added Bard and small fixes." & Environment.NewLine &
+            "1.7.3 - Added Ekko." & Environment.NewLine &
+            "1.7.4 - Fixed crash when selecting Garena and no directory is found." & Environment.NewLine &
+            "1.7.5 - Added Tahm Kench." & Environment.NewLine &
+            "1.7.51 - Fixed: Not connected to internet bug."
 
         Public Property About As String = _
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine & _
