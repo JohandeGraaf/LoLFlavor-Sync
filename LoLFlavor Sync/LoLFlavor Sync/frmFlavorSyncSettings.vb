@@ -148,7 +148,7 @@ Public Class frmFlavorSyncSettings
         Process.Start(Properties.UrlExecutable)
     End Sub
 
-    Private Sub lblBoLProfile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblBoLProfile.LinkClicked
+    Private Sub lblBoLProfile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
         Process.Start(Properties.UrlBoLProfile)
     End Sub
 

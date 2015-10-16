@@ -30,7 +30,6 @@ Partial Class frmFlavorSyncSettings
         Me.grpAddChampions = New System.Windows.Forms.GroupBox()
         Me.btnAddChamp = New System.Windows.Forms.Button()
         Me.txtAddChamp = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.grpGeneral = New System.Windows.Forms.GroupBox()
         Me.chkCheckNewVersion = New System.Windows.Forms.CheckBox()
         Me.chkHide = New System.Windows.Forms.CheckBox()
@@ -42,7 +41,6 @@ Partial Class frmFlavorSyncSettings
         Me.txtChangelog = New System.Windows.Forms.TextBox()
         Me.lblGithub = New System.Windows.Forms.LinkLabel()
         Me.lblSkype = New System.Windows.Forms.LinkLabel()
-        Me.lblBoLProfile = New System.Windows.Forms.LinkLabel()
         Me.lblGetLatestVersion = New System.Windows.Forms.LinkLabel()
         Me.txtAbout = New System.Windows.Forms.TextBox()
         Me.fbdLoLPath = New System.Windows.Forms.FolderBrowserDialog()
@@ -59,7 +57,7 @@ Partial Class frmFlavorSyncSettings
         'btnOk
         '
         Me.btnOk.Location = New System.Drawing.Point(287, 433)
-        Me.btnOk.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnOk.Margin = New System.Windows.Forms.Padding(4)
         Me.btnOk.Name = "btnOk"
         Me.btnOk.Size = New System.Drawing.Size(100, 28)
         Me.btnOk.TabIndex = 0
@@ -70,7 +68,7 @@ Partial Class frmFlavorSyncSettings
         '
         Me.btnApply.Enabled = False
         Me.btnApply.Location = New System.Drawing.Point(503, 433)
-        Me.btnApply.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnApply.Margin = New System.Windows.Forms.Padding(4)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(100, 28)
         Me.btnApply.TabIndex = 2
@@ -82,7 +80,7 @@ Partial Class frmFlavorSyncSettings
         Me.TabControl1.Controls.Add(Me.tabGeneral)
         Me.TabControl1.Controls.Add(Me.tabAbout)
         Me.TabControl1.Location = New System.Drawing.Point(16, 15)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(587, 411)
@@ -95,9 +93,9 @@ Partial Class frmFlavorSyncSettings
         Me.tabGeneral.Controls.Add(Me.grpGeneral)
         Me.tabGeneral.Controls.Add(Me.grpLoLPath)
         Me.tabGeneral.Location = New System.Drawing.Point(4, 25)
-        Me.tabGeneral.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tabGeneral.Margin = New System.Windows.Forms.Padding(4)
         Me.tabGeneral.Name = "tabGeneral"
-        Me.tabGeneral.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tabGeneral.Padding = New System.Windows.Forms.Padding(4)
         Me.tabGeneral.Size = New System.Drawing.Size(579, 382)
         Me.tabGeneral.TabIndex = 0
         Me.tabGeneral.Text = "General"
@@ -106,20 +104,19 @@ Partial Class frmFlavorSyncSettings
         '
         Me.grpAddChampions.Controls.Add(Me.btnAddChamp)
         Me.grpAddChampions.Controls.Add(Me.txtAddChamp)
-        Me.grpAddChampions.Controls.Add(Me.Label4)
         Me.grpAddChampions.Location = New System.Drawing.Point(8, 174)
-        Me.grpAddChampions.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.grpAddChampions.Margin = New System.Windows.Forms.Padding(4)
         Me.grpAddChampions.Name = "grpAddChampions"
-        Me.grpAddChampions.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.grpAddChampions.Size = New System.Drawing.Size(559, 108)
+        Me.grpAddChampions.Padding = New System.Windows.Forms.Padding(4)
+        Me.grpAddChampions.Size = New System.Drawing.Size(559, 76)
         Me.grpAddChampions.TabIndex = 3
         Me.grpAddChampions.TabStop = False
-        Me.grpAddChampions.Text = "Add champions"
+        Me.grpAddChampions.Text = "Add champions that aren't implemented yet in LoLFlavor Sync"
         '
         'btnAddChamp
         '
-        Me.btnAddChamp.Location = New System.Drawing.Point(219, 65)
-        Me.btnAddChamp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAddChamp.Location = New System.Drawing.Point(214, 35)
+        Me.btnAddChamp.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAddChamp.Name = "btnAddChamp"
         Me.btnAddChamp.Size = New System.Drawing.Size(100, 25)
         Me.btnAddChamp.TabIndex = 2
@@ -128,30 +125,20 @@ Partial Class frmFlavorSyncSettings
         '
         'txtAddChamp
         '
-        Me.txtAddChamp.Location = New System.Drawing.Point(13, 65)
-        Me.txtAddChamp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtAddChamp.Location = New System.Drawing.Point(8, 35)
+        Me.txtAddChamp.Margin = New System.Windows.Forms.Padding(4)
         Me.txtAddChamp.Name = "txtAddChamp"
         Me.txtAddChamp.Size = New System.Drawing.Size(195, 22)
         Me.txtAddChamp.TabIndex = 1
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(9, 31)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(516, 17)
-        Me.Label4.TabIndex = 0
-        Me.Label4.Text = "This allows you to add champions that aren't implemented yet in LoLFlavor Sync."
         '
         'grpGeneral
         '
         Me.grpGeneral.Controls.Add(Me.chkCheckNewVersion)
         Me.grpGeneral.Controls.Add(Me.chkHide)
         Me.grpGeneral.Location = New System.Drawing.Point(8, 7)
-        Me.grpGeneral.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.grpGeneral.Margin = New System.Windows.Forms.Padding(4)
         Me.grpGeneral.Name = "grpGeneral"
-        Me.grpGeneral.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.grpGeneral.Padding = New System.Windows.Forms.Padding(4)
         Me.grpGeneral.Size = New System.Drawing.Size(559, 80)
         Me.grpGeneral.TabIndex = 2
         Me.grpGeneral.TabStop = False
@@ -161,18 +148,18 @@ Partial Class frmFlavorSyncSettings
         '
         Me.chkCheckNewVersion.AutoSize = True
         Me.chkCheckNewVersion.Location = New System.Drawing.Point(13, 52)
-        Me.chkCheckNewVersion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkCheckNewVersion.Margin = New System.Windows.Forms.Padding(4)
         Me.chkCheckNewVersion.Name = "chkCheckNewVersion"
-        Me.chkCheckNewVersion.Size = New System.Drawing.Size(188, 21)
+        Me.chkCheckNewVersion.Size = New System.Drawing.Size(195, 21)
         Me.chkCheckNewVersion.TabIndex = 1
-        Me.chkCheckNewVersion.Text = "Show update notification."
+        Me.chkCheckNewVersion.Text = "Show update notifications."
         Me.chkCheckNewVersion.UseVisualStyleBackColor = True
         '
         'chkHide
         '
         Me.chkHide.AutoSize = True
         Me.chkHide.Location = New System.Drawing.Point(13, 23)
-        Me.chkHide.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkHide.Margin = New System.Windows.Forms.Padding(4)
         Me.chkHide.Name = "chkHide"
         Me.chkHide.Size = New System.Drawing.Size(173, 21)
         Me.chkHide.TabIndex = 0
@@ -184,9 +171,9 @@ Partial Class frmFlavorSyncSettings
         Me.grpLoLPath.Controls.Add(Me.btnBrowse)
         Me.grpLoLPath.Controls.Add(Me.txtLoLPath)
         Me.grpLoLPath.Location = New System.Drawing.Point(8, 95)
-        Me.grpLoLPath.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.grpLoLPath.Margin = New System.Windows.Forms.Padding(4)
         Me.grpLoLPath.Name = "grpLoLPath"
-        Me.grpLoLPath.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.grpLoLPath.Padding = New System.Windows.Forms.Padding(4)
         Me.grpLoLPath.Size = New System.Drawing.Size(559, 71)
         Me.grpLoLPath.TabIndex = 1
         Me.grpLoLPath.TabStop = False
@@ -195,7 +182,7 @@ Partial Class frmFlavorSyncSettings
         'btnBrowse
         '
         Me.btnBrowse.Location = New System.Drawing.Point(435, 34)
-        Me.btnBrowse.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnBrowse.Margin = New System.Windows.Forms.Padding(4)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(115, 25)
         Me.btnBrowse.TabIndex = 1
@@ -206,7 +193,7 @@ Partial Class frmFlavorSyncSettings
         '
         Me.txtLoLPath.BackColor = System.Drawing.SystemColors.Window
         Me.txtLoLPath.Location = New System.Drawing.Point(13, 34)
-        Me.txtLoLPath.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtLoLPath.Margin = New System.Windows.Forms.Padding(4)
         Me.txtLoLPath.Name = "txtLoLPath"
         Me.txtLoLPath.ReadOnly = True
         Me.txtLoLPath.Size = New System.Drawing.Size(412, 22)
@@ -219,13 +206,12 @@ Partial Class frmFlavorSyncSettings
         Me.tabAbout.Controls.Add(Me.txtChangelog)
         Me.tabAbout.Controls.Add(Me.lblGithub)
         Me.tabAbout.Controls.Add(Me.lblSkype)
-        Me.tabAbout.Controls.Add(Me.lblBoLProfile)
         Me.tabAbout.Controls.Add(Me.lblGetLatestVersion)
         Me.tabAbout.Controls.Add(Me.txtAbout)
         Me.tabAbout.Location = New System.Drawing.Point(4, 25)
-        Me.tabAbout.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tabAbout.Margin = New System.Windows.Forms.Padding(4)
         Me.tabAbout.Name = "tabAbout"
-        Me.tabAbout.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tabAbout.Padding = New System.Windows.Forms.Padding(4)
         Me.tabAbout.Size = New System.Drawing.Size(579, 382)
         Me.tabAbout.TabIndex = 2
         Me.tabAbout.Text = "About"
@@ -245,7 +231,7 @@ Partial Class frmFlavorSyncSettings
         '
         Me.txtChangelog.BackColor = System.Drawing.SystemColors.Control
         Me.txtChangelog.Location = New System.Drawing.Point(8, 43)
-        Me.txtChangelog.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtChangelog.Margin = New System.Windows.Forms.Padding(4)
         Me.txtChangelog.Multiline = True
         Me.txtChangelog.Name = "txtChangelog"
         Me.txtChangelog.ReadOnly = True
@@ -257,7 +243,7 @@ Partial Class frmFlavorSyncSettings
         'lblGithub
         '
         Me.lblGithub.AutoSize = True
-        Me.lblGithub.Location = New System.Drawing.Point(344, 353)
+        Me.lblGithub.Location = New System.Drawing.Point(515, 314)
         Me.lblGithub.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblGithub.Name = "lblGithub"
         Me.lblGithub.Size = New System.Drawing.Size(50, 17)
@@ -268,7 +254,7 @@ Partial Class frmFlavorSyncSettings
         'lblSkype
         '
         Me.lblSkype.AutoSize = True
-        Me.lblSkype.Location = New System.Drawing.Point(344, 332)
+        Me.lblSkype.Location = New System.Drawing.Point(515, 341)
         Me.lblSkype.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblSkype.Name = "lblSkype"
         Me.lblSkype.Size = New System.Drawing.Size(47, 17)
@@ -276,37 +262,26 @@ Partial Class frmFlavorSyncSettings
         Me.lblSkype.TabStop = True
         Me.lblSkype.Text = "Skype"
         '
-        'lblBoLProfile
-        '
-        Me.lblBoLProfile.AutoSize = True
-        Me.lblBoLProfile.Location = New System.Drawing.Point(344, 311)
-        Me.lblBoLProfile.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblBoLProfile.Name = "lblBoLProfile"
-        Me.lblBoLProfile.Size = New System.Drawing.Size(77, 17)
-        Me.lblBoLProfile.TabIndex = 2
-        Me.lblBoLProfile.TabStop = True
-        Me.lblBoLProfile.Text = "BoL Profile"
-        '
         'lblGetLatestVersion
         '
         Me.lblGetLatestVersion.AutoSize = True
         Me.lblGetLatestVersion.Location = New System.Drawing.Point(181, 15)
         Me.lblGetLatestVersion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblGetLatestVersion.Name = "lblGetLatestVersion"
-        Me.lblGetLatestVersion.Size = New System.Drawing.Size(384, 17)
+        Me.lblGetLatestVersion.Size = New System.Drawing.Size(385, 17)
         Me.lblGetLatestVersion.TabIndex = 1
         Me.lblGetLatestVersion.TabStop = True
-        Me.lblGetLatestVersion.Text = "Click here to download the latest version of LoLFlavor Sync."
+        Me.lblGetLatestVersion.Text = "Click here to download the latest release of LoLFlavor Sync."
         '
         'txtAbout
         '
         Me.txtAbout.BackColor = System.Drawing.SystemColors.Control
         Me.txtAbout.Location = New System.Drawing.Point(8, 311)
-        Me.txtAbout.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtAbout.Margin = New System.Windows.Forms.Padding(4)
         Me.txtAbout.Multiline = True
         Me.txtAbout.Name = "txtAbout"
         Me.txtAbout.ReadOnly = True
-        Me.txtAbout.Size = New System.Drawing.Size(327, 59)
+        Me.txtAbout.Size = New System.Drawing.Size(499, 59)
         Me.txtAbout.TabIndex = 0
         Me.txtAbout.Text = "About"
         '
@@ -318,7 +293,7 @@ Partial Class frmFlavorSyncSettings
         'btnCancel
         '
         Me.btnCancel.Location = New System.Drawing.Point(395, 433)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 28)
         Me.btnCancel.TabIndex = 4
@@ -328,7 +303,7 @@ Partial Class frmFlavorSyncSettings
         'btnRestoreDefaults
         '
         Me.btnRestoreDefaults.Location = New System.Drawing.Point(16, 433)
-        Me.btnRestoreDefaults.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnRestoreDefaults.Margin = New System.Windows.Forms.Padding(4)
         Me.btnRestoreDefaults.Name = "btnRestoreDefaults"
         Me.btnRestoreDefaults.Size = New System.Drawing.Size(159, 28)
         Me.btnRestoreDefaults.TabIndex = 5
@@ -347,7 +322,7 @@ Partial Class frmFlavorSyncSettings
         Me.Controls.Add(Me.btnOk)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "frmFlavorSyncSettings"
         Me.ShowInTaskbar = False
@@ -380,12 +355,10 @@ Partial Class frmFlavorSyncSettings
     Friend WithEvents txtAbout As System.Windows.Forms.TextBox
     Friend WithEvents lblGetLatestVersion As System.Windows.Forms.LinkLabel
     Friend WithEvents lblSkype As System.Windows.Forms.LinkLabel
-    Friend WithEvents lblBoLProfile As System.Windows.Forms.LinkLabel
     Friend WithEvents lblGithub As System.Windows.Forms.LinkLabel
     Friend WithEvents grpAddChampions As System.Windows.Forms.GroupBox
     Friend WithEvents btnAddChamp As System.Windows.Forms.Button
     Friend WithEvents txtAddChamp As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtChangelog As System.Windows.Forms.TextBox
     Friend WithEvents chkCheckNewVersion As System.Windows.Forms.CheckBox
     Friend WithEvents btnCancel As System.Windows.Forms.Button

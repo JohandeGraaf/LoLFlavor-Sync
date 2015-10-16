@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Net
 Imports LoLFlavor_Sync.Lib
 Imports LoLFlavor_Sync.DLBuilds
 Imports LoLFlavor_Sync.SaveBuilds
@@ -106,13 +107,22 @@ Public Class GetBuilds
                 End If
                 Dim lStrF As String = objBuildType.ToString.ElementAt(0)
                 Dim lStr As String = lStrF.ToUpper & objBuildType.ToString.Remove(0, 1)
+
                 Try
                     Dim nBuild As Build = _DownloadBehaviour.DownloadBuild(objChampion, objBuildType)
                     _Builds.Add(nBuild)
                     If _UpdateStatus IsNot Nothing Then _UpdateStatus(lStr & " Success")
+                Catch ex As WebException
+                    If DirectCast(ex.Response, HttpWebResponse).StatusCode = HttpStatusCode.NotFound Then
+                        If _UpdateStatus IsNot Nothing Then _UpdateStatus(lStr & " Failed: " & "[404] Build not found on " & (New Uri(_DownloadInfo.GetSourceUrl())).Host)
+                    Else
+                        If _UpdateStatus IsNot Nothing Then _UpdateStatus(lStr & " Failed: " & ex.Message)
+                    End If
                 Catch ex As Exception
                     If _UpdateStatus IsNot Nothing Then _UpdateStatus(lStr & " Failed: " & ex.Message)
                 End Try
+
+
                 If _UpdatePB IsNot Nothing Then _UpdatePB()
             Next
             If _UpdateStatus IsNot Nothing Then _UpdateStatus(" ")

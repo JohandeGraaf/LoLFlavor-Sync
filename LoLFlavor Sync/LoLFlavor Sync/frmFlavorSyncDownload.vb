@@ -16,6 +16,7 @@ Public Class frmFlavorSyncDownload
     Private downloading As Boolean
     Private wrkThread As Thread
     Private _GetBuilds As GetBuilds
+    Private baseText As String = ""
 
     Sub New(ByVal DL As GetBuilds)
         ' This call is required by the designer.
@@ -54,9 +55,8 @@ Public Class frmFlavorSyncDownload
             Else
                 pbStatus.Value = pbStatus.Maximum
             End If
-            lblpbStatusPercent.Text = Math.Round((pbStatus.Value / pbStatus.Maximum) * 100).ToString() & "%"
+            Text = baseText & "  |  " & Math.Round((pbStatus.Value / pbStatus.Maximum) * 100).ToString() & "%"
             pbStatus.Refresh()
-            lblpbStatusPercent.Refresh()
         End If
     End Sub
 
@@ -118,10 +118,6 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
-            pbOverallStatus.Value = 0
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
-
             If Properties.Garena Then
                 Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Removing"
             Else
@@ -142,9 +138,6 @@ Public Class frmFlavorSyncDownload
             Me.Invoke(New Action(AddressOf pCheckConnectivity))
         Else
             pbStatus.Value = 0
-            pbOverallStatus.Value = 0
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
             If Properties.Garena Then
                 Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Checking Connectivity"
@@ -219,15 +212,13 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
-            pbOverallStatus.Value = 25
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
             If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Downloading"
+                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Downloading [1/2]"
             Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Downloading"
+                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " - Downloading [1/2]"
             End If
+            Text = baseText
             addStatus(" ")
             addStatus("Downloading..", True, True)
             Me.Refresh()
@@ -264,15 +255,13 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
-            pbOverallStatus.Value = 75
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
             If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Saving"
+                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Saving [2/2]"
             Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Saving"
+                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " - Saving [2/2]"
             End If
+            Me.Text = baseText
             addStatus("Saving..", True)
             Me.Refresh()
         End If
@@ -297,9 +286,6 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100
             pbStatus.Value = 100
-            pbOverallStatus.Value = 100
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
             If Properties.Garena Then
                 Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
@@ -322,9 +308,6 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100
             pbStatus.Value = 0
-            pbOverallStatus.Value = 0
-            lblpbStatusPercent.Text = pbStatus.Value.ToString & "%"
-            lblpbOverallStatusPercent.Text = pbOverallStatus.Value.ToString & "%"
 
             If Properties.Garena Then
                 Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Canceling"
@@ -363,11 +346,11 @@ Public Class frmFlavorSyncDownload
     Private Sub btnDisplayOutput_Click(sender As Object, e As EventArgs) Handles btnDisplayOutput.Click
         txtStatus.Visible = Not txtStatus.Visible
         If txtStatus.Visible Then
-            Me.Height = 378
+            Me.Size = New Size(Me.Size.Width, 392)
             btnDisplayOutput.Text = "Fewer details"
             txtStatusToBottom()
         Else
-            Me.Height = 219
+            Me.Size = New Size(Me.Size.Width, 195)
             btnDisplayOutput.Text = "More details"
         End If
     End Sub

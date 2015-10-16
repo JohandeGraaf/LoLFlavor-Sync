@@ -7,7 +7,7 @@ Namespace Global.LoLFlavor_Sync.Lib
     Module Properties
         Public Property AllChampions As List(Of Champion)
 
-        Public Property VersionLocal As String = "1.7.5"
+        Public Property VersionLocal As String = "1.7.6"
         Public Property VersionOnline As String
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
@@ -59,7 +59,8 @@ Namespace Global.LoLFlavor_Sync.Lib
             "1.7.3 - Added Ekko." & Environment.NewLine &
             "1.7.4 - Fixed crash when selecting Garena and no directory is found." & Environment.NewLine &
             "1.7.5 - Added Tahm Kench." & Environment.NewLine &
-            "1.7.51 - Fixed: Not connected to internet bug."
+            "1.7.51 - Fixed: Not connected to internet bug." & Environment.NewLine &
+            "1.7.6 - Added Kindred and changed UI a bit."
 
         Public Property About As String = _
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine & _

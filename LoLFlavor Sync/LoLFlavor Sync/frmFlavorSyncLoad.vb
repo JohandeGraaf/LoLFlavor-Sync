@@ -155,6 +155,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Kayle"})
         lst.Add({"Kennen"})
         lst.Add({"Khazix", "Kha'Zix"})
+        lst.Add({"Kindred"})
         lst.Add({"KogMaw", "Kog'Maw"})
         lst.Add({"Leblanc", "LeBlanc"})
         lst.Add({"LeeSin", "Lee Sin"})
@@ -250,7 +251,7 @@ Public Class frmFlavorSyncLoad
             Me.LoLPath = fbdLoLPath.SelectedPath
             chkSkip.Enabled = True
         Else
-            MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please select the League of Legends directory.", "Invalid directory", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
     End Sub
@@ -268,7 +269,7 @@ Public Class frmFlavorSyncLoad
             Me.Hide()
             ShowMainForm()
         Else
-            MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please select the League of Legends directory.", "Invalid directory", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
 
