@@ -141,6 +141,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Graves"})
         lst.Add({"Hecarim"})
         lst.Add({"Heimerdinger"})
+        lst.Add({"Illaoi"})
         lst.Add({"Irelia"})
         lst.Add({"Janna"})
         lst.Add({"JarvanIV", "Jarvan IV"})
