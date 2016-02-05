@@ -148,6 +148,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Jax"})
         lst.Add({"Jayce"})
         lst.Add({"Jinx"})
+        lst.Add({"Jhin"})
         lst.Add({"Kalista"})
         lst.Add({"Karma"})
         lst.Add({"Karthus"})
