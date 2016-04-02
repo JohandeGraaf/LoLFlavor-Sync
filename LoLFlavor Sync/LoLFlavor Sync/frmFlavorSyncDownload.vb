@@ -267,7 +267,7 @@ Public Class frmFlavorSyncDownload
         End If
     End Sub
     Private Sub startInstall()
-        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ _GetBuilds.GetDownloadedBuilds.Count
+        Dim pbIncrement As Integer = pbStatus.Invoke(Function() pbStatus.Maximum) \ If(_GetBuilds.GetDownloadedBuilds.Count = 0, 1, _GetBuilds.GetDownloadedBuilds.Count)
         Dim updatePB As Action = _
             Sub()
                 addPb(pbIncrement)
