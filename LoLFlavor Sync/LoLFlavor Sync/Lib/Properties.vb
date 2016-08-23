@@ -7,7 +7,7 @@ Namespace Global.LoLFlavor_Sync.Lib
     Module Properties
         Public Property AllChampions As List(Of Champion)
 
-        Public Property VersionLocal As String = "1.8.0"
+        Public Property VersionLocal As String = "1.8.1"
         Public Property VersionOnline As String
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
@@ -64,7 +64,8 @@ Namespace Global.LoLFlavor_Sync.Lib
             "1.7.7 - Added Illaoi." & Environment.NewLine &
             "1.7.8 - Added Jhin." & Environment.NewLine &
             "1.7.9 - Added Aurelion Sol." & Environment.NewLine &
-            "1.8.0 - Added Taliyah"
+            "1.8.0 - Added Taliyah" & Environment.NewLine &
+            "1.8.1 - Added Kled"
 
         Public Property About As String =
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine &

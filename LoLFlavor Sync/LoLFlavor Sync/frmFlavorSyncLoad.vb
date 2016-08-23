@@ -159,6 +159,7 @@ Public Class frmFlavorSyncLoad
         lst.Add({"Kennen"})
         lst.Add({"Khazix", "Kha'Zix"})
         lst.Add({"Kindred"})
+        lst.Add({"Kled"})
         lst.Add({"KogMaw", "Kog'Maw"})
         lst.Add({"Leblanc", "LeBlanc"})
         lst.Add({"LeeSin", "Lee Sin"})
