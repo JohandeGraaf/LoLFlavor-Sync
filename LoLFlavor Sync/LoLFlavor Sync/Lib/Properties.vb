@@ -7,9 +7,9 @@ Namespace Global.LoLFlavor_Sync.Lib
     Module Properties
         Public Property AllChampions As List(Of Champion)
 
-        Public Property VersionLocal As String = "1.8.1"
+        Public Property VersionLocal As String = "1.8.2"
         Public Property VersionOnline As String
-        Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/Ampersand0/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
+        Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/JohandeGraaf/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
         Public Property VersionFileName As String = "LoLFlavorSync.version"
         Public Property Verbose As Integer = 0
@@ -39,7 +39,7 @@ Namespace Global.LoLFlavor_Sync.Lib
         Public Property UrlExecutable As String = "http://lolflavorsync.mcpvp.eu"
         Public Property UrlBoLProfile As String = "http://botoflegends.com/forum/user/59209-ampersand/"
         Public Property UrlSkype As String = "skype:johan95pb?chat"
-        Public Property UrlGitHub As String = "https://github.com/Ampersand0"
+        Public Property UrlGitHub As String = "https://github.com/JohandeGraaf"
 
         Public Property Changelog As String =
             "1.0.0 - Release." & Environment.NewLine &
@@ -66,12 +66,12 @@ Namespace Global.LoLFlavor_Sync.Lib
             "1.7.9 - Added Aurelion Sol." & Environment.NewLine &
             "1.8.0 - Added Taliyah" & Environment.NewLine &
             "1.8.1 - Added Kled" & Environment.NewLine &
-            "1.8.2 - Added Camile & Ivern" & Environment.NewLine &
+            "1.8.2 - Added Camile & Ivern"
 
         Public Property About As String =
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine &
             Environment.NewLine &
-            "Copyright © 2014-2016 - Johan de Graaf"
+            "Copyright © 2014-2017 - Johan de Graaf"
 
         Public Property OptionSkipForm As Boolean
             Get
