@@ -66,7 +66,8 @@ Namespace Global.LoLFlavor_Sync.Lib
             "1.7.9 - Added Aurelion Sol." & Environment.NewLine &
             "1.8.0 - Added Taliyah" & Environment.NewLine &
             "1.8.1 - Added Kled" & Environment.NewLine &
-            "1.8.2 - Added Camile & Ivern"
+            "1.8.2 - Added Camile & Ivern" & Environment.NewLine &
+            "1.8.3 - Added Xayah & Rakan"
 
         Public Property About As String =
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine &
