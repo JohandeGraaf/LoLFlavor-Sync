@@ -1,10 +1,10 @@
 ﻿Imports Microsoft.Win32
 Imports System.IO
-Namespace Global.LoLFlavor_Sync.Lib
+Namespace Global.LoLFlavor_Sync.Domain
     ''' <summary>
     ''' Provides static properties and methods for LoLFlavor Sync.
     ''' </summary>
-    Module Properties
+    Module GlobalVars
         Public Property AllChampions As List(Of Champion)
 
         Public Property VersionLocal As String = "1.8.2"
@@ -12,7 +12,6 @@ Namespace Global.LoLFlavor_Sync.Lib
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/JohandeGraaf/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
         Public Property VersionFileName As String = "LoLFlavorSync.version"
-        Public Property Verbose As Integer = 0
 
         Public Property Garena As Boolean = False
 
@@ -31,7 +30,7 @@ Namespace Global.LoLFlavor_Sync.Lib
         Public Property GarenaDestinationPath As String
         Public Property GarenaDestinationFile As String = ChampionVar & "_" & LaneVar & "_scrape.json"
 
-        Public Property LoLPath As String
+        Public Property LoLPath As LoLPath = LoLPath.EMPTY
 
         Public Property RegKey As RegistryKey = Registry.CurrentUser
         Public Property RegPath As String = "Software\FlavorSync"
@@ -241,85 +240,9 @@ Namespace Global.LoLFlavor_Sync.Lib
             Return System.Text.Encoding.UTF8.GetString(fileBuffer)
         End Function
 
-        Public Function ValidLoLPath(ByVal path As String) As Boolean
-            If Properties.Garena Then
-                Return Directory.Exists(path & "\GameData") And (File.Exists(path & "\im_installer.exe") Or File.Exists(path & "\LoLLauncher.exe") Or File.Exists(path & "\uninst.exe"))
-            Else
-                Return Directory.Exists(path & "\RADS") And (Directory.Exists(path & "\Config") Or File.Exists(path & "\lol.launcher.exe") Or File.Exists(path & "\lol.launcher.admin.exe"))
-            End If
-        End Function
-
-        Public Function DetectLoLPath() As String
-            If Garena Then
-                Try
-                    For Each subKey In Registry.LocalMachine.OpenSubKey("SOFTWARE\Garena").GetSubKeyNames
-                        Using sk As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Garena\" & subKey)
-                            Dim val As String = sk.GetValue("Path")
-                            Dim beginIndex As Integer = val.IndexOf("\GameData\Apps")
-                            If beginIndex < 0 Then Continue For
-                            Dim pt As String = val.Remove(beginIndex)
-                            If ValidLoLPath(pt) Then Return pt
-                        End Using
-                    Next
-                Catch : End Try
-                If Environment.Is64BitOperatingSystem Then
-                    Try
-                        For Each subKey In Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Garena").GetSubKeyNames
-                            Using sk As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Garena\" & subKey)
-                                Dim val As String = sk.GetValue("Path")
-                                Dim beginIndex As Integer = val.IndexOf("\GameData\Apps")
-                                If beginIndex < 0 Then Continue For
-                                Dim pt As String = val.Remove(beginIndex)
-                                If ValidLoLPath(pt) Then Return pt
-                            End Using
-                        Next
-                    Catch : End Try
-                End If
-            Else
-                Dim keys32 As List(Of Func(Of String)) = New List(Of Func(Of String))({ _
-                Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Riot Games\League of Legends").GetValue("Path").Replace("League of Legends\", "League of Legends"), _
-                Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
-                Function() Registry.CurrentUser.OpenSubKey("Software\Classes\VirtualStore\MACHINE\SOFTWARE\Riot Games\RAD").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
-                Function() Registry.CurrentUser.OpenSubKey("Software\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\")})
-
-                Dim keys64 As List(Of Func(Of String)) = New List(Of Func(Of String))({ _
-                Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Riot Games\League of Legends").GetValue("Path").Replace("League of Legends\", "League of Legends"), _
-                Function() Registry.LocalMachine.OpenSubKey("SOFTWARE\Wow6432Node\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
-                Function() Registry.CurrentUser.OpenSubKey("Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\"), _
-                Function() Registry.CurrentUser.OpenSubKey("Software\Wow6432Node\Riot Games\RADS").GetValue("LocalRootFolder").Replace("/", "\").Replace("\RADS", "\")})
-
-                If ValidLoLPath("C:\Riot Games\League of Legends") Then
-                    Return "C:\Riot Games\League of Legends"
-                End If
-
-                For Each objFunc As Func(Of String) In keys32
-                    Try
-                        Dim str As String = objFunc()
-                        If Not String.IsNullOrWhiteSpace(str) Then
-                            str = str.TrimEnd({Convert.ToChar("\")})
-                            If ValidLoLPath(str) Then Return str
-                        End If
-                    Catch : End Try
-                Next
-
-                If Environment.Is64BitOperatingSystem Then
-                    For Each objFunc As Func(Of String) In keys64
-                        Try
-                            Dim str As String = objFunc()
-                            If Not String.IsNullOrWhiteSpace(str) Then
-                                str = str.TrimEnd({Convert.ToChar("\")})
-                                If ValidLoLPath(str) Then Return str
-                            End If
-                        Catch : End Try
-                    Next
-                End If
-            End If
-            Return Nothing
-        End Function
-
         Public Sub DetectGarenaPath()
-            Dim rpath As String = Properties.GarenaDestinationPathBBase
-            rpath = Properties.LoLPath & rpath.Substring(0, rpath.IndexOf(Properties.LoLVar) - 1)
+            Dim rpath As String = GlobalVars.GarenaDestinationPathBBase
+            rpath = GlobalVars.LoLPath.Path & rpath.Substring(0, rpath.IndexOf(GlobalVars.LoLVar) - 1)
 
             Dim dirInfo As New DirectoryInfo(rpath)
             Dim apath As DirectoryInfo = Nothing
@@ -330,13 +253,13 @@ Namespace Global.LoLFlavor_Sync.Lib
                 apath = dirInfo.GetDirectories.First()
             ElseIf dirInfo.GetDirectories.Count > 1 Then
                 apath = (From d In dirInfo.GetDirectories
-                        Order By d.LastWriteTime Descending
-                        Select d).First()
+                         Order By d.LastWriteTime Descending
+                         Select d).First()
             End If
 
             Dim fullPath As String = apath.FullName & "\Game\DATA\Characters\"
-            Properties.GarenaDestinationPathB = fullPath.Replace(Properties.LoLPath, "")
-            Properties.GarenaDestinationPath = Properties.GarenaDestinationPathB & Properties.GarenaDestinationPathBase
+            GlobalVars.GarenaDestinationPathB = fullPath.Replace(GlobalVars.LoLPath.Path, "")
+            GlobalVars.GarenaDestinationPath = GlobalVars.GarenaDestinationPathB & GlobalVars.GarenaDestinationPathBase
         End Sub
     End Module
 End Namespace

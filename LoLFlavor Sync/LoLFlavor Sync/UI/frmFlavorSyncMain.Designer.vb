@@ -221,7 +221,7 @@ Partial Class frmFlavorSyncMain
         Me.grpBuildsLastUpdated.TabIndex = 25
         Me.grpBuildsLastUpdated.TabStop = False
         Me.grpBuildsLastUpdated.Text = "Last updated"
-        Me.ttMode.SetToolTip(Me.grpBuildsLastUpdated, "Local Builds: Shows when you've last updated your builds." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "LoLFlavor.com: Shows w" & _
+        Me.ttMode.SetToolTip(Me.grpBuildsLastUpdated, "Local Builds: Shows when you've last updated your builds." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "LoLFlavor.com: Shows w" &
         "hen LoLFlavor.com last updated their builds.")
         '
         'lblLoLFlavorUpdated

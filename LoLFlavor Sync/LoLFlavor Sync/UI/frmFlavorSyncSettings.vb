@@ -1,26 +1,26 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Public Class frmFlavorSyncSettings
 
     Public Property RenewChampions As Boolean
     Public Property Quit As Boolean
 
-    Sub New()
+    Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        If Properties.Garena Then
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+        If GlobalVars.Garena Then
+            Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)"
         Else
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+            Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal
         End If
         Me.AcceptButton = btnOk
         Me.CancelButton = btnCancel
-        Me.txtLoLPath.Text = Properties.LoLPath
-        Me.chkHide.Checked = Not Properties.OptionSkipForm
-        Me.chkCheckNewVersion.Checked = Not Properties.OptionVersionCheckDisabled
-        Me.txtChangelog.Text = Properties.Changelog
-        Me.txtAbout.Text = Properties.About
+        Me.txtLoLPath.Text = GlobalVars.LoLPath.Path
+        Me.chkHide.Checked = Not GlobalVars.OptionSkipForm
+        Me.chkCheckNewVersion.Checked = Not GlobalVars.OptionVersionCheckDisabled
+        Me.txtChangelog.Text = GlobalVars.Changelog
+        Me.txtAbout.Text = GlobalVars.About
         Me.btnApply.Enabled = False
     End Sub
 
@@ -32,13 +32,13 @@ Public Class frmFlavorSyncSettings
         If Not save Then
             Me.Close()
         Else
-            Properties.OptionSkipForm = Not chkHide.Checked
-            Properties.OptionVersionCheckDisabled = Not chkCheckNewVersion.Checked
+            GlobalVars.OptionSkipForm = Not chkHide.Checked
+            GlobalVars.OptionVersionCheckDisabled = Not chkCheckNewVersion.Checked
 
-            If Properties.OptionSkipForm Then
-                Properties.OptionLoLPath = Properties.LoLPath
+            If GlobalVars.OptionSkipForm Then
+                GlobalVars.OptionLoLPath = GlobalVars.LoLPath.Path
             Else
-                Properties.OptionLoLPath = ""
+                GlobalVars.OptionLoLPath = ""
             End If
 
             If close Then
@@ -51,7 +51,7 @@ Public Class frmFlavorSyncSettings
 
     Private Sub DefaultSettings()
         If MessageBox.Show("Restore default settings? This will restart LoLFlavor Sync.", "Restore defaults", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-            Properties.DeleteRegistryKeys()
+            GlobalVars.DeleteRegistryKeys()
             If System.IO.File.Exists(Environment.GetCommandLineArgs(0)) Then
                 Process.Start(Environment.GetCommandLineArgs(0))
             End If
@@ -61,29 +61,38 @@ Public Class frmFlavorSyncSettings
     End Sub
 
     Private Sub ChangeLoLPath()
-        fbdLoLPath.SelectedPath = Properties.LoLPath
-        If fbdLoLPath.ShowDialog() = Windows.Forms.DialogResult.Cancel Then Exit Sub
-        If Properties.ValidLoLPath(fbdLoLPath.SelectedPath) Then
-            Properties.LoLPath = fbdLoLPath.SelectedPath
-            txtLoLPath.Text = Properties.LoLPath
+        fbdLoLPath.SelectedPath = GlobalVars.LoLPath.Path
+
+        If fbdLoLPath.ShowDialog() = Windows.Forms.DialogResult.Cancel Then
+            Exit Sub
+        End If
+
+        Dim lolPath = New LoLPath(fbdLoLPath.SelectedPath)
+
+        If lolPath.IsValid() Then
+            GlobalVars.LoLPath = lolPath
+            txtLoLPath.Text = lolPath.Path
         Else
             MessageBox.Show("Incorrect directory specified. Please make sure you are selecting your League of Legends directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
-        If Properties.Garena Then Properties.DetectGarenaPath()
+
+        If GlobalVars.Garena Then
+            GlobalVars.DetectGarenaPath()
+        End If
     End Sub
 
     Private Sub AddChampion(ByVal Name As String, Optional ByVal DisplayName As String = Nothing)
-        For Each obj As Champion In Properties.AllChampions
+        For Each obj As Champion In GlobalVars.AllChampions
             If obj.Name.ToLower() = Name.ToLower() Then
                 MessageBox.Show("Champion already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Exit Sub
             End If
         Next
         If String.IsNullOrWhiteSpace(DisplayName) Then
-            Properties.AllChampions.Add(New Champion(Name))
+            GlobalVars.AllChampions.Add(New Champion(Name))
         Else
-            Properties.AllChampions.Add(New Champion(Name, DisplayName))
+            GlobalVars.AllChampions.Add(New Champion(Name, DisplayName))
         End If
         RenewChampions = True
         MessageBox.Show("Champion added!", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -145,19 +154,19 @@ Public Class frmFlavorSyncSettings
     End Sub
 
     Private Sub lblGetLatestVersion_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGetLatestVersion.LinkClicked
-        Process.Start(Properties.UrlExecutable)
+        Process.Start(GlobalVars.UrlExecutable)
     End Sub
 
     Private Sub lblBoLProfile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
-        Process.Start(Properties.UrlBoLProfile)
+        Process.Start(GlobalVars.UrlBoLProfile)
     End Sub
 
     Private Sub lblSkype_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblSkype.LinkClicked
-        Process.Start(Properties.UrlSkype)
+        Process.Start(GlobalVars.UrlSkype)
     End Sub
 
     Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGithub.LinkClicked
-        Process.Start(Properties.UrlGitHub)
+        Process.Start(GlobalVars.UrlGitHub)
     End Sub
 
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click

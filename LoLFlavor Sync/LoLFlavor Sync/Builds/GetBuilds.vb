@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.Net
-Imports LoLFlavor_Sync.Lib
 Imports LoLFlavor_Sync.DLBuilds
+Imports LoLFlavor_Sync.Domain
 Imports LoLFlavor_Sync.SaveBuilds
 
 Public Class GetBuilds
@@ -75,12 +75,12 @@ Public Class GetBuilds
         Me._BuildsToDownload = buildsToDownload
 
         If src = Source.LoLFlavor Then
-            If Properties.Garena Then
-                Me._DownloadInfo = (New DownloadInfoLF(Properties.LoLFlavorSourceUrlFormat))
-                Me._SaveInfo = (New SaveInfoLF(Properties.LoLPath, Properties.GarenaDestinationPath, Properties.GarenaDestinationFile))
+            If GlobalVars.Garena Then
+                Me._DownloadInfo = (New DownloadInfoLF(GlobalVars.LoLFlavorSourceUrlFormat))
+                Me._SaveInfo = (New SaveInfoLF(GlobalVars.LoLPath.Path, GlobalVars.GarenaDestinationPath, GlobalVars.GarenaDestinationFile))
             Else
-                Me._DownloadInfo = (New DownloadInfoLF(Properties.LoLFlavorSourceUrlFormat))
-                Me._SaveInfo = (New SaveInfoLF(Properties.LoLPath, Properties.RiotDestinationPath, Properties.RiotDestinationFile))
+                Me._DownloadInfo = (New DownloadInfoLF(GlobalVars.LoLFlavorSourceUrlFormat))
+                Me._SaveInfo = (New SaveInfoLF(GlobalVars.LoLPath.Path, GlobalVars.RiotDestinationPath, GlobalVars.RiotDestinationFile))
             End If
             Me._DownloadBehaviour = (New DownloadBehaviourLF(_DownloadInfo))
             Me._SaveBehaviour = (New SaveBehaviourLF(_SaveInfo))
@@ -134,8 +134,8 @@ Public Class GetBuilds
 
     Private Sub prepareSaving(ByVal RemoveOldBuilds As Boolean)
         Dim del As New List(Of String)
-        Dim path As String = If(_SaveInfo.GetDestinationPath.Contains(Properties.ChampionVar), _
-                                    _SaveInfo.GetDestinationPathBase & _SaveInfo.GetDestinationPath.Substring(0, _SaveInfo.GetDestinationPath.IndexOf(Properties.ChampionVar)), _
+        Dim path As String = If(_SaveInfo.GetDestinationPath.Contains(GlobalVars.ChampionVar), _
+                                    _SaveInfo.GetDestinationPathBase & _SaveInfo.GetDestinationPath.Substring(0, _SaveInfo.GetDestinationPath.IndexOf(GlobalVars.ChampionVar)), _
                                     _SaveInfo.GetDestinationPathBase & _SaveInfo.GetDestinationPath)
 
         If Not Directory.Exists(path) Then
@@ -143,7 +143,7 @@ Public Class GetBuilds
             Directory.CreateDirectory(path)
         End If
 
-        For Each objChampion As Champion In Properties.AllChampions
+        For Each objChampion As Champion In GlobalVars.AllChampions
             Dim pth1 As String = _SaveInfo.GetDestinationPathBase(objChampion) & _SaveInfo.GetDestinationPath(objChampion)
 
 
@@ -160,7 +160,7 @@ Public Class GetBuilds
 
         If RemoveOldBuilds Then
             For Each objStr As String In del
-                Properties.DelFolderContent(objStr, False)
+                GlobalVars.DelFolderContent(objStr, False)
             Next
         End If
     End Sub
@@ -190,10 +190,10 @@ Public Class GetBuilds
     End Sub
 
     Public Sub RemoveAllBuilds()
-        For Each objChampion As Champion In Properties.AllChampions
+        For Each objChampion As Champion In GlobalVars.AllChampions
             Dim path As String = _SaveInfo.GetDestinationPathBase(objChampion) & _SaveInfo.GetDestinationPath(objChampion)
             If Directory.Exists(path) Then
-                Properties.DelFolderContent(path, False)
+                GlobalVars.DelFolderContent(path, False)
             End If
         Next
     End Sub

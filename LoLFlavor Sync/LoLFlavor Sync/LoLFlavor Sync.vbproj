@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,10 +26,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -131,36 +131,39 @@
     <Compile Include="Builds\SaveBuilds\ISaveInfo.vb" />
     <Compile Include="Builds\SaveBuilds\SaveBehaviourLF.vb" />
     <Compile Include="Builds\SaveBuilds\SaveInfoLF.vb" />
-    <Compile Include="Lib\CustomExceptions.vb" />
-    <Compile Include="Lib\Build.vb" />
+    <Compile Include="Domain\CustomExceptions.vb" />
+    <Compile Include="Domain\Build.vb" />
     <Compile Include="Builds\GetBuilds.vb" />
     <Compile Include="Builds\DLBuilds\IDownloadInfo.vb" />
-    <Compile Include="Lib\Champion.vb" />
+    <Compile Include="Domain\Champion.vb" />
     <Compile Include="Builds\DLBuilds\DownloadBehaviourLF.vb" />
     <Compile Include="Builds\DLBuilds\DownloadInfoLF.vb" />
-    <Compile Include="frmFlavorSyncLoad.vb">
+    <Compile Include="Domain\Listeners\IStateChanged.vb" />
+    <Compile Include="LoLFlavorSync.vb" />
+    <Compile Include="Domain\LoLPath.vb" />
+    <Compile Include="UI\frmFlavorSyncLoad.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmFlavorSyncLoad.Designer.vb">
+    <Compile Include="UI\frmFlavorSyncLoad.Designer.vb">
       <DependentUpon>frmFlavorSyncLoad.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmFlavorSyncMain.Designer.vb">
+    <Compile Include="UI\frmFlavorSyncMain.Designer.vb">
       <DependentUpon>frmFlavorSyncMain.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmFlavorSyncMain.vb">
+    <Compile Include="UI\frmFlavorSyncMain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmFlavorSyncDownload.Designer.vb">
+    <Compile Include="UI\frmFlavorSyncDownload.Designer.vb">
       <DependentUpon>frmFlavorSyncDownload.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmFlavorSyncDownload.vb">
+    <Compile Include="UI\frmFlavorSyncDownload.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmFlavorSyncSettings.Designer.vb">
+    <Compile Include="UI\frmFlavorSyncSettings.Designer.vb">
       <DependentUpon>frmFlavorSyncSettings.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmFlavorSyncSettings.vb">
+    <Compile Include="UI\frmFlavorSyncSettings.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Builds\DLBuilds\IDownloadBehaviour.vb" />
@@ -179,19 +182,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Lib\Properties.vb" />
+    <Compile Include="Domain\GlobalVars.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmFlavorSyncLoad.resx">
+    <EmbeddedResource Include="UI\frmFlavorSyncLoad.resx">
       <DependentUpon>frmFlavorSyncLoad.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmFlavorSyncMain.resx">
+    <EmbeddedResource Include="UI\frmFlavorSyncMain.resx">
       <DependentUpon>frmFlavorSyncMain.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmFlavorSyncDownload.resx">
+    <EmbeddedResource Include="UI\frmFlavorSyncDownload.resx">
       <DependentUpon>frmFlavorSyncDownload.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmFlavorSyncSettings.resx">
+    <EmbeddedResource Include="UI\frmFlavorSyncSettings.resx">
       <DependentUpon>frmFlavorSyncSettings.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

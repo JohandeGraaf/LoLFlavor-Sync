@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-Imports LoLFlavor_Sync.Lib
+Imports LoLFlavor_Sync.Domain
 Imports LoLFlavor_Sync.DLBuilds
 
 Namespace Global.LoLFlavor_Sync.SaveBuilds

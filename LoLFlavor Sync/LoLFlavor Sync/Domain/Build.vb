@@ -1,6 +1,6 @@
 ﻿Imports LoLFlavor_Sync.DLBuilds
 
-Namespace Global.LoLFlavor_Sync.Lib
+Namespace Global.LoLFlavor_Sync.Domain
     Public Class Build
         Private _Champ As Champion
         Private _Lane As IDownloadInfo.laneType

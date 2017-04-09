@@ -1,8 +1,8 @@
 ﻿Imports System.Security
 Imports System.Runtime.Serialization
 
-Namespace Global.LoLFlavor_Sync.Lib
-    <Serializable()> _
+Namespace Global.LoLFlavor_Sync.Domain
+    <Serializable()>
     Public Class DownloadNotCompletedException : Inherits System.Exception
         ''' <summary>
         ''' Initializes a new instance of the <see cref="DownloadNotCompletedException"/> class.
@@ -34,7 +34,7 @@ Namespace Global.LoLFlavor_Sync.Lib
         End Sub
 
         ' Constructor required for serialization
-        <SecuritySafeCritical()> _
+        <SecuritySafeCritical()>
         Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
             MyBase.New(info, context)
         End Sub

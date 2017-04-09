@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Imports LoLFlavor_Sync.DLBuilds
 
 Namespace Global.LoLFlavor_Sync.DLBuilds
@@ -13,10 +13,10 @@ Namespace Global.LoLFlavor_Sync.DLBuilds
             Return Me.srcUrl
         End Function
         Public Function GetSourceUrl(ByRef champ As Champion) As String Implements IDownloadInfo.GetSourceUrl
-            Return GetSourceUrl().Replace(Properties.ChampionVar, champ.Name)
+            Return GetSourceUrl().Replace(GlobalVars.ChampionVar, champ.Name)
         End Function
         Public Function GetSourceUrl(ByRef champ As Champion, ByVal lane As IDownloadInfo.laneType) As String Implements IDownloadInfo.GetSourceUrl
-            Return GetSourceUrl(champ).Replace(Properties.LaneVar, lane.ToString)
+            Return GetSourceUrl(champ).Replace(GlobalVars.LaneVar, lane.ToString)
         End Function
     End Class
 End Namespace

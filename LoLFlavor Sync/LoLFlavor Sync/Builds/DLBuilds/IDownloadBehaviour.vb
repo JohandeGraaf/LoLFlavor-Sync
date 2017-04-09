@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Namespace Global.LoLFlavor_Sync.DLBuilds
     Public Interface IDownloadBehaviour
         Function DownloadBuild(ByRef champ As Champion, ByVal lane As IDownloadInfo.laneType) As Build

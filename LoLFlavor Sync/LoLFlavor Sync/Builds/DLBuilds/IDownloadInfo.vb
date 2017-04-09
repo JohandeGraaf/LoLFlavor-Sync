@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Namespace Global.LoLFlavor_Sync.DLBuilds
     Public Interface IDownloadInfo
         Enum laneType As Integer

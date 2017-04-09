@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Imports LoLFlavor_Sync.DLBuilds
 
 Namespace Global.LoLFlavor_Sync.SaveBuilds
@@ -19,12 +19,12 @@ Namespace Global.LoLFlavor_Sync.SaveBuilds
             Return Me.destPathBase
         End Function
 
-        Public Function GetDestinationPathBase(ByRef champ As [Lib].Champion) As String Implements ISaveInfo.GetDestinationPathBase
-            Return GetDestinationPathBase().Replace(Properties.ChampionVar, champ.Name)
+        Public Function GetDestinationPathBase(ByRef champ As Champion) As String Implements ISaveInfo.GetDestinationPathBase
+            Return GetDestinationPathBase().Replace(GlobalVars.ChampionVar, champ.Name)
         End Function
 
-        Public Function GetDestinationPathBase(ByRef champ As [Lib].Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetDestinationPathBase
-            Return GetDestinationPathBase(champ).Replace(Properties.LaneVar, lane.ToString())
+        Public Function GetDestinationPathBase(ByRef champ As Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetDestinationPathBase
+            Return GetDestinationPathBase(champ).Replace(GlobalVars.LaneVar, lane.ToString())
         End Function
 
 #End Region
@@ -35,12 +35,12 @@ Namespace Global.LoLFlavor_Sync.SaveBuilds
             Return Me.destPath
         End Function
 
-        Public Function GetDestinationPath(ByRef champ As [Lib].Champion) As String Implements ISaveInfo.GetDestinationPath
-            Return GetDestinationPath().Replace(Properties.ChampionVar, champ.Name)
+        Public Function GetDestinationPath(ByRef champ As Champion) As String Implements ISaveInfo.GetDestinationPath
+            Return GetDestinationPath().Replace(GlobalVars.ChampionVar, champ.Name)
         End Function
 
-        Public Function GetDestinationPath(ByRef champ As [Lib].Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetDestinationPath
-            Return GetDestinationPath(champ).Replace(Properties.LaneVar, lane.ToString())
+        Public Function GetDestinationPath(ByRef champ As Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetDestinationPath
+            Return GetDestinationPath(champ).Replace(GlobalVars.LaneVar, lane.ToString())
         End Function
 
 #End Region
@@ -51,12 +51,12 @@ Namespace Global.LoLFlavor_Sync.SaveBuilds
             Return Me.destFile
         End Function
 
-        Public Function GetDestinationFile(ByRef champ As [Lib].Champion) As String Implements ISaveInfo.GetDestinationFile
-            Return GetDestinationFile().Replace(Properties.ChampionVar, champ.Name)
+        Public Function GetDestinationFile(ByRef champ As Champion) As String Implements ISaveInfo.GetDestinationFile
+            Return GetDestinationFile().Replace(GlobalVars.ChampionVar, champ.Name)
         End Function
 
-        Public Function GetDestinationFile(ByRef champ As [Lib].Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetDestinationFile
-            Return GetDestinationFile(champ).Replace(Properties.LaneVar, lane.ToString())
+        Public Function GetDestinationFile(ByRef champ As Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetDestinationFile
+            Return GetDestinationFile(champ).Replace(GlobalVars.LaneVar, lane.ToString())
         End Function
 
 #End Region
@@ -68,15 +68,15 @@ Namespace Global.LoLFlavor_Sync.SaveBuilds
         End Function
 
         Public Function GetFullPath(lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetFullPath
-            Return GetFullPath().Replace(Properties.LaneVar, lane.ToString())
+            Return GetFullPath().Replace(GlobalVars.LaneVar, lane.ToString())
         End Function
 
-        Public Function GetFullPath(ByRef champ As [Lib].Champion) As String Implements ISaveInfo.GetFullPath
-            Return GetFullPath().Replace(Properties.ChampionVar, champ.Name)
+        Public Function GetFullPath(ByRef champ As Champion) As String Implements ISaveInfo.GetFullPath
+            Return GetFullPath().Replace(GlobalVars.ChampionVar, champ.Name)
         End Function
 
-        Public Function GetFullPath(ByRef champ As [Lib].Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetFullPath
-            Return GetFullPath().Replace(Properties.ChampionVar, champ.Name).Replace(Properties.LaneVar, lane.ToString())
+        Public Function GetFullPath(ByRef champ As Champion, lane As DLBuilds.IDownloadInfo.laneType) As String Implements ISaveInfo.GetFullPath
+            Return GetFullPath().Replace(GlobalVars.ChampionVar, champ.Name).Replace(GlobalVars.LaneVar, lane.ToString())
         End Function
 
 #End Region

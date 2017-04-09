@@ -1,4 +1,4 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Imports System.IO
 Imports System.Net.NetworkInformation
 Imports System.Threading
@@ -27,10 +27,10 @@ Public Class frmFlavorSyncDownload
     End Sub
 
     Private Sub formLoad()
-        If Properties.Garena Then
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+        If GlobalVars.Garena Then
+            Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)"
         Else
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+            Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal
         End If
         Me.Cursor = Cursors.AppStarting
         Me.ActiveControl = btnCancel
@@ -118,10 +118,10 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
-            If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Removing"
+            If GlobalVars.Garena Then
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)" & " - Removing"
             Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Removing"
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " - Removing"
             End If
             addStatus("Removing all builds, please wait..", True)
             Me.Refresh()
@@ -139,10 +139,10 @@ Public Class frmFlavorSyncDownload
         Else
             pbStatus.Value = 0
 
-            If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Checking Connectivity"
+            If GlobalVars.Garena Then
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)" & " - Checking Connectivity"
             Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Checking Connectivity"
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " - Checking Connectivity"
             End If
             addStatus("Checking connectivity..", True)
             Me.Refresh()
@@ -213,10 +213,10 @@ Public Class frmFlavorSyncDownload
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
 
-            If Properties.Garena Then
-                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Downloading [1/2]"
+            If GlobalVars.Garena Then
+                baseText = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)" & " - Downloading [1/2]"
             Else
-                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " - Downloading [1/2]"
+                baseText = "LoLFlavor Sync " & GlobalVars.VersionLocal & " - Downloading [1/2]"
             End If
             Text = baseText
             addStatus(" ")
@@ -256,10 +256,10 @@ Public Class frmFlavorSyncDownload
             pbStatus.Maximum = 100000
             pbStatus.Value = 0
 
-            If Properties.Garena Then
-                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Saving [2/2]"
+            If GlobalVars.Garena Then
+                baseText = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)" & " - Saving [2/2]"
             Else
-                baseText = "LoLFlavor Sync " & Properties.VersionLocal & " - Saving [2/2]"
+                baseText = "LoLFlavor Sync " & GlobalVars.VersionLocal & " - Saving [2/2]"
             End If
             Me.Text = baseText
             addStatus("Saving..", True)
@@ -287,10 +287,10 @@ Public Class frmFlavorSyncDownload
             pbStatus.Maximum = 100
             pbStatus.Value = 100
 
-            If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+            If GlobalVars.Garena Then
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)"
             Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal
             End If
             addStatus(" ")
             addStatus("Completed!", True)
@@ -309,10 +309,10 @@ Public Class frmFlavorSyncDownload
             pbStatus.Maximum = 100
             pbStatus.Value = 0
 
-            If Properties.Garena Then
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)" & " - Canceling"
+            If GlobalVars.Garena Then
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)" & " - Canceling"
             Else
-                Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " - Canceling"
+                Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " - Canceling"
             End If
             addStatus(" ")
             addStatus("Canceling.. Please wait..", True)

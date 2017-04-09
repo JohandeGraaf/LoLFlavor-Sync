@@ -1,8 +1,10 @@
-﻿Imports LoLFlavor_Sync.Lib
+﻿Imports LoLFlavor_Sync.Domain
 Imports System.IO
 Imports LoLFlavor_Sync.DLBuilds
 
 Public Class frmFlavorSyncMain
+    Private lfs As LoLFlavorSync
+
     Public Property frmState As Boolean
         Set(value As Boolean)
             For i As Integer = 0 To Me.Controls.Count - 1
@@ -19,18 +21,26 @@ Public Class frmFlavorSyncMain
         End Get
     End Property
 
+    Public Sub New(lfs As LoLFlavorSync)
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.lfs = lfs
+    End Sub
+
     Private Sub FormLoad()
-        If Properties.Garena Then
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal & " (Garena)"
+        If GlobalVars.Garena Then
+            Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal & " (Garena)"
         Else
-            Me.Text = "LoLFlavor Sync " & Properties.VersionLocal
+            Me.Text = "LoLFlavor Sync " & GlobalVars.VersionLocal
         End If
         Me.MenuStrip1.BackColor = Color.FromArgb(130, 186, 201, 212)
         Me.cmbMode.SelectedIndex = 0
-        If Properties.OptionLastUsed = Nothing Then
+        If GlobalVars.OptionLastUsed = Nothing Then
             lblLastUsed.Text = "Never"
         Else
-            lblLastUsed.Text = Properties.OptionLastUsed.ToShortDateString() & " - " & Properties.OptionLastUsed.ToShortTimeString()
+            lblLastUsed.Text = GlobalVars.OptionLastUsed.ToShortDateString() & " - " & GlobalVars.OptionLastUsed.ToShortTimeString()
         End If
         Me.ttMode.SetToolTip(Me.grpSettings, Me.ttMode.GetToolTip(Me.cmbMode))
         initializeClbChamps(True)
@@ -45,36 +55,35 @@ Public Class frmFlavorSyncMain
 
     Private Sub initializeClbChamps(ByVal checkAll As Boolean)
         clbChamps.Items.Clear()
-        For Each obj As Champion In Properties.AllChampions
+        For Each obj As Champion In GlobalVars.AllChampions
             clbChamps.Items.Add(obj.DisplayName)
         Next
         If checkAll Then CheckAllItems()
     End Sub
 
     Private Sub CheckNewVersion()
-        If Properties.OptionVersionCheckDisabled Then Exit Sub
+        If GlobalVars.OptionVersionCheckDisabled Then Exit Sub
         Try
             Dim cl As New System.Net.WebClient
-            Dim str As New StreamReader(cl.OpenRead(Properties.VersionUrl))
+            Dim str As New StreamReader(cl.OpenRead(GlobalVars.VersionUrl))
 
-            Properties.VersionOnline = str.ReadToEnd()
+            GlobalVars.VersionOnline = str.ReadToEnd()
             str.Close()
             cl.Dispose()
 
-            If String.Compare(Properties.VersionLocal, Properties.VersionOnline) <> 0 Then
+            If String.Compare(GlobalVars.VersionLocal, GlobalVars.VersionOnline) <> 0 Then
                 Dim popup As New NotifyIcon
-                Dim openURLToExe As EventHandler = Sub(sender, e) Process.Start(Properties.UrlExecutable)
+                Dim openURLToExe As EventHandler = Sub(sender, e) Process.Start(GlobalVars.UrlExecutable)
                 AddHandler popup.BalloonTipClicked, openURLToExe
                 AddHandler popup.Click, openURLToExe
-                popup.BalloonTipTitle = "LoLFlavor Sync " & Properties.VersionLocal
-                popup.BalloonTipText = "New version available." & Environment.NewLine & "Click here to download LoLFlavor Sync " & Properties.VersionOnline
+                popup.BalloonTipTitle = "LoLFlavor Sync " & GlobalVars.VersionLocal
+                popup.BalloonTipText = "New version available." & Environment.NewLine & "Click here to download LoLFlavor Sync " & GlobalVars.VersionOnline
                 popup.BalloonTipIcon = ToolTipIcon.Info
                 popup.Icon = Me.Icon
                 popup.Visible = True
                 popup.ShowBalloonTip(10000)
             End If
         Catch ex As Exception
-            If Properties.Verbose > 0 Then MessageBox.Show(ex.Message() & Environment.NewLine & ex.ToString() & Environment.NewLine & ex.HResult())
             Exit Sub
         End Try
     End Sub
@@ -83,7 +92,7 @@ Public Class frmFlavorSyncMain
         Dim dt As DateTime
         Try
             Dim cl As New System.Net.WebClient
-            Dim stread As New StreamReader(cl.OpenRead(Properties.VersionLFS))
+            Dim stread As New StreamReader(cl.OpenRead(GlobalVars.VersionLFS))
             Dim rawData As String = stread.ReadToEnd()
             stread.Close()
             Dim firstIndex As Integer = rawData.IndexOf("""createDate""") + ("""createDate""").Count + 2
@@ -91,7 +100,6 @@ Public Class frmFlavorSyncMain
             Dim rawDate As String = rawData.Substring(firstIndex, lastIndex)
             dt = Date.Parse(rawDate)
         Catch ex As Exception
-            If Properties.Verbose > 0 Then MessageBox.Show(ex.Message() & Environment.NewLine & ex.ToString() & Environment.NewLine & ex.HResult())
             Return "Error"
         End Try
 
@@ -113,7 +121,7 @@ Public Class frmFlavorSyncMain
     End Sub
 
     Private Sub DownloadBuilds()
-        Dim buildsChecked As Func(Of CheckBox(), Integer) = _
+        Dim buildsChecked As Func(Of CheckBox(), Integer) =
             Function(x)
                 Dim num As Integer = 0
                 For Each obj In x
@@ -124,7 +132,7 @@ Public Class frmFlavorSyncMain
                 Return num
             End Function
 
-        If Not Properties.ValidLoLPath(Properties.LoLPath) Then
+        If Not GlobalVars.LoLPath.IsValid Then
             MessageBox.Show("Incorrect League of Legends directory specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
@@ -151,7 +159,7 @@ Public Class frmFlavorSyncMain
 
         Dim champsToDownload As New List(Of Champion)
         For Each obj As Integer In clbChamps.CheckedIndices
-            champsToDownload.Add(Properties.AllChampions.ElementAt(obj))
+            champsToDownload.Add(GlobalVars.AllChampions.ElementAt(obj))
         Next
 
         Dim buildTypesToDownload As New List(Of IDownloadInfo.laneType)
@@ -160,7 +168,7 @@ Public Class frmFlavorSyncMain
         If chkDownloadSupport.Checked Then buildTypesToDownload.Add(IDownloadInfo.laneType.support)
         If chkDownloadARAM.Checked Then buildTypesToDownload.Add(IDownloadInfo.laneType.aram)
 
-        Properties.OptionLastUsed = DateTime.Now
+        GlobalVars.OptionLastUsed = DateTime.Now
         frmState = False
 
         Dim frmDownload As New frmFlavorSyncDownload(New GetBuilds(GetBuilds.Source.LoLFlavor, champsToDownload, buildTypesToDownload))
