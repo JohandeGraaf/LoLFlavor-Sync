@@ -7,7 +7,7 @@ Namespace Global.LoLFlavor_Sync.Domain
     Module GlobalVars
         Public Property AllChampions As List(Of Champion)
 
-        Public Property VersionLocal As String = "1.8.2"
+        Public Property VersionLocal As String = "1.8.3"
         Public Property VersionOnline As String
         Public Property VersionUrl As New Uri("https://raw.githubusercontent.com/JohandeGraaf/LoLFlavor-Sync/master/LoLFlavor%20Sync.version?rand=" & (New Random).Next(0, 9999), UriKind.Absolute)
         Public Property VersionLFS As New Uri("http://lolflavor.com/Api/buildFree/GetVersion", System.UriKind.Absolute)
@@ -66,7 +66,8 @@ Namespace Global.LoLFlavor_Sync.Domain
             "1.8.0 - Added Taliyah" & Environment.NewLine &
             "1.8.1 - Added Kled" & Environment.NewLine &
             "1.8.2 - Added Camile & Ivern" & Environment.NewLine &
-            "1.8.3 - Added Xayah & Rakan"
+            "1.8.3 - Added Xayah & Rakan," & Environment.NewLine &
+            "           Champion list is now loaded from GitHub instead of being hardcoded."
 
         Public Property About As String =
             "LoLFlavor Sync - Version " & VersionLocal & Environment.NewLine &
