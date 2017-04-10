@@ -143,6 +143,7 @@
     <Compile Include="Domain\Champion.vb" />
     <Compile Include="Builds\DLBuilds\DownloadBehaviourLF.vb" />
     <Compile Include="Builds\DLBuilds\DownloadInfoLF.vb" />
+    <Compile Include="Domain\FileLoader.vb" />
     <Compile Include="Domain\Listeners\IStateChanged.vb" />
     <Compile Include="LoLFlavorSync.vb" />
     <Compile Include="Domain\LoLPath.vb" />

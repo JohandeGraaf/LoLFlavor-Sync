@@ -1,4 +1,6 @@
-﻿Namespace Global.LoLFlavor_Sync.Domain
+﻿Imports Newtonsoft.Json
+
+Namespace Global.LoLFlavor_Sync.Domain
     Public Class Champion
         Private Shared _champions As List(Of Champion) = New List(Of Champion)(
             New Champion() {
@@ -151,12 +153,13 @@
         Private _Name As String
         Private _DisplayName As String
 
-        Sub New(ByVal ChampionName As String)
-            Me._Name = ChampionName
+        Sub New(ByVal Name As String)
+            Me._Name = Name
         End Sub
 
-        Sub New(ByVal ChampionName As String, ByVal DisplayName As String)
-            Me._Name = ChampionName
+        <JsonConstructor>
+        Sub New(ByVal Name As String, ByVal DisplayName As String)
+            Me._Name = Name
             Me._DisplayName = DisplayName
         End Sub
 
