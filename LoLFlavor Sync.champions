@@ -212,6 +212,10 @@
     "DisplayName": "Kayle"
   },
   {
+    "Name": "Kayn",
+    "DisplayName": "Kayn"
+  },
+  {
     "Name": "Kennen",
     "DisplayName": "Kennen"
   },
@@ -322,6 +326,10 @@
   {
     "Name": "Orianna",
     "DisplayName": "Orianna"
+  },
+  {
+    "Name": "Ornn",
+    "DisplayName": "Ornn"
   },
   {
     "Name": "Pantheon",
